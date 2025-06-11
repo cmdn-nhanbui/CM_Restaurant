@@ -3,6 +3,14 @@ export const TOAST_TYPES = {
   ERROR: 'error',
 };
 
+export interface ErrorProps {
+  status: number;
+  title: string;
+  description: string;
+  navigateTo?: string | false;
+  navigateTitle?: string;
+}
+
 export interface Toast {
   id: string;
   message: string;
