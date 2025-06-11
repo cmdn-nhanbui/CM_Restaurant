@@ -6,7 +6,7 @@ import { LoginOutlined } from '@ant-design/icons';
 
 export const Sidebar = () => {
   return (
-    <aside className='bg-[var(--background-secondary)] min-h-screen flex flex-col items-center justify-between'>
+    <aside className='bg-[var(--background-secondary)] min-h-screen  flex-col items-center justify-between hidden sm:flex'>
       <div className='flex flex-col'>
         <h1 className='p-4 logo'>
           <div className='p-3 bg-[#eb956a4d] rounded-xl'>

@@ -133,6 +133,13 @@ const ICON_DATA = {
     color: '#3B5162',
     viewBox: '0 0 20 20',
   },
+  search: {
+    data: <rect x='-2' y='-2.5' width='20' height='20' fill='inherit' />,
+    width: 20,
+    height: 20,
+    color: '#3B5162',
+    viewBox: '0 0 20 20',
+  },
 };
 
 export const Icon = ({ icon, className, width, height, color }: IconProps) => {
