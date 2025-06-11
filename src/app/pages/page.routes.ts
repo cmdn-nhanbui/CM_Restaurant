@@ -5,6 +5,7 @@ import homeRoutes from './home/home.routes';
 import errorRoutes from './error/error.routes';
 import notificationRoutes from './notification/notification.routes';
 import cartRoutes from './cart/cart.routes';
+import loginRoutes from './login/login.routes';
 
 const Page = React.lazy(() => import('./Page'));
 
@@ -12,7 +13,7 @@ const pageRoutes: PageRoute[] = [
   {
     path: '/',
     element: Page,
-    children: [...homeRoutes, ...notificationRoutes, ...cartRoutes, ...errorRoutes],
+    children: [...homeRoutes, ...notificationRoutes, ...cartRoutes, ...loginRoutes, ...errorRoutes],
   },
 ];
 

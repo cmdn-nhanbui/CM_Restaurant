@@ -2,16 +2,17 @@ import { NavLink } from 'react-router-dom';
 import { Icon } from './Icons';
 import { ROUTES } from '@/core/constants/routes';
 import classNames from 'classnames';
+import { LoginOutlined } from '@ant-design/icons';
 
 export const Sidebar = () => {
   return (
     <aside className='bg-[var(--background-secondary)] min-h-screen flex flex-col items-center justify-between'>
       <div className='flex flex-col'>
-        <button className='p-4'>
-          <div className='p-3 bg-[#eb956a4d] rounded-xl cursor-pointer'>
+        <h1 className='p-4 logo'>
+          <div className='p-3 bg-[#eb956a4d] rounded-xl'>
             <Icon icon='logo' />
           </div>
-        </button>
+        </h1>
         <button className='p-4'>
           <NavLink
             to={ROUTES.ROOT}
@@ -51,8 +52,16 @@ export const Sidebar = () => {
       </div>
 
       <button className='p-4'>
-        <NavLink to={ROUTES.ROOT} className='flex p-[18px] rounded-xl cursor-pointer'>
-          <Icon icon='logout' color='var(--primary)' />
+        <NavLink
+          to={ROUTES.LOGIN}
+          className={(nav) =>
+            classNames('flex p-[18px] rounded-xl text-[var(--primary)] cursor-pointer', {
+              'bg-[var(--primary)] text-white': nav.isActive,
+            })
+          }
+        >
+          <LoginOutlined style={{ fontSize: 20, color: 'inherit' }} />
+          {/* <Icon icon='logout' color='var(--primary)' /> */}
         </NavLink>
       </button>
     </aside>
