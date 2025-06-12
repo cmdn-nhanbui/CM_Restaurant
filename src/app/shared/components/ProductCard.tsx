@@ -9,7 +9,7 @@ type ProductCardProps = {
 
 const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, name, price, available }) => {
   return (
-    <div className='bg-[var(--background-secondary)] rounded-2xl p-6 min-w-[192px] min-h-[226px] text-white text-center mt-12 '>
+    <div className='bg-[var(--background-secondary)] rounded-2xl p-3 sm:p-6 min-h-[226px] text-white text-center mt-12'>
       <img
         src={imageUrl}
         alt={name}

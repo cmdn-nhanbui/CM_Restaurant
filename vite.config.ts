@@ -10,6 +10,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src/app/'),
       '@components': path.resolve(__dirname, './src/app/shared/components'),
+      '@assets': path.resolve(__dirname, './src/assets'),
     },
   },
   server: {

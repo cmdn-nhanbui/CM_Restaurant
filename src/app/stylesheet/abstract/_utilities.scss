@@ -1,0 +1,24 @@
+.container {
+  max-width: 1152px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 740px) {
+  .container {
+    padding: 0 24px;
+  }
+}
+
+@media (min-width: 740px) and (max-width: 1023px) {
+  .row {
+    margin: 0 -4px;
+  }
+  .row-sm {
+    display: flex;
+  }
+
+  .container {
+    padding: 0 24px;
+  }
+}

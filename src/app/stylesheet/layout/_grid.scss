@@ -1,0 +1,67 @@
+@use 'sass:math';
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+}
+$columns: 12;
+
+.col {
+  padding: 0 12px;
+  padding-bottom: 12px;
+  @for $i from 1 through $columns {
+    &.col-#{$i} {
+      width: math.div(100%, $columns) * $i;
+    }
+  }
+}
+
+@media (max-width: 740px) {
+  .col-sm {
+    flex-direction: column;
+  }
+  .col {
+    padding: 6px;
+    padding-bottom: 12px;
+  }
+  .col.col-sm-6 {
+    width: 50%;
+  }
+  .col.col-sm-12 {
+    width: 100%;
+  }
+  .row {
+    margin: 0 -4px;
+  }
+  .row-sm {
+    display: flex;
+  }
+  .col-sm-12 {
+    width: 100%;
+  }
+}
+
+@media (min-width: 740px) and (max-width: 1023px) {
+  .row {
+    margin: 0 -10px;
+  }
+  .col {
+    padding: 10px;
+  }
+  .col-md {
+    flex-direction: column;
+  }
+  .flex-md {
+    display: flex;
+  }
+  .col.col-md-6 {
+    width: 50%;
+  }
+  .col.col-md-12 {
+    width: 100%;
+  }
+  .col.col-md-4 {
+    width: 25%;
+  }
+}
