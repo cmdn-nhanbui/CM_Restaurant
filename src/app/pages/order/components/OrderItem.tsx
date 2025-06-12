@@ -39,8 +39,9 @@ export const OrderItem = ({ id, imageUrl, name, price, note, quantity, status, o
             <div className='flex flex-col flex-1 min-w-0'>
               <span className='text-base font-semibold text-white truncate'>{name}</span>
               <div className='text-sm text-[var(--text-light)] space-y-1'>
-                <p>Price: ${price.toFixed(2)}</p>
-                <p>Quantity: {quantity}</p>
+                <p>
+                  Price: ${price.toFixed(2)} x {quantity}
+                </p>
                 <p>Total: ${(price * quantity).toFixed(2)}</p>
               </div>
               {note && (
