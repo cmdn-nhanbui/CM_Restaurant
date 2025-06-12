@@ -1,0 +1,16 @@
+.custom-modal .ant-modal-content {
+  background-color: var(--background-primary);
+  border-radius: 12px;
+  .ant-modal-header,
+  .ant-modal-body {
+    background-color: transparent;
+  }
+  .ant-modal-title,
+  .ant-modal-close {
+    color: white;
+  }
+  .ant-modal-title {
+    font-size: 18px;
+    text-align: center;
+  }
+}

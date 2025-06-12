@@ -2,6 +2,7 @@ import { ROUTES } from '@/core/constants/routes';
 import { NavLink } from 'react-router-dom';
 import { Icon } from './Icons';
 import classNames from 'classnames';
+import { ShoppingCartOutlined } from '@ant-design/icons';
 
 export const Footer = () => {
   return (
@@ -25,6 +26,26 @@ export const Footer = () => {
         <div className='flex flex-1 items-center justify-center'>
           <NavLink
             to={ROUTES.CART}
+            className={(nav) =>
+              classNames(
+                'flex h-10  cursor-pointer items-center justify-center rounded-sm fill-[var(--primary)] px-6 text-[var(--primary)]',
+                {
+                  'bg-[var(--primary)] shadow-primary fill-white text-white': nav.isActive,
+                },
+              )
+            }
+          >
+            <ShoppingCartOutlined
+              color='inherit'
+              style={{
+                fontSize: 20,
+              }}
+            />
+          </NavLink>
+        </div>
+        <div className='flex flex-1 items-center justify-center'>
+          <NavLink
+            to={ROUTES.ORDER}
             className={(nav) =>
               classNames(
                 'flex h-10  cursor-pointer items-center justify-center rounded-sm fill-[var(--primary)] px-6',

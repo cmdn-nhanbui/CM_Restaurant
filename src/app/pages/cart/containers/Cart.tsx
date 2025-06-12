@@ -1,35 +1,35 @@
-import OrderItem from '@/shared/components/OrderItem';
+import { CartItem } from '@/shared/components/CartItem';
+import { useSelector } from 'react-redux';
+import { type RootState } from '@src/redux/store';
+import { Button } from '@/shared/components/Button';
 
 const Cart = () => {
+  const { data } = useSelector((state: RootState) => state.cart);
+
   return (
     <div className='flex flex-col'>
       <h2 className='text-lg text-white font-semibold'>Orders #34562</h2>
-      <div className='py-6 flex justify-between text-white text-lg font-semibold border-b border-[var(--dark-line)]'>
+      <div className='sm:py-6 py-4 flex justify-between text-white text-lg font-semibold border-b border-[var(--dark-line)]'>
         <span>Item</span>
         <div className='flex'>
-          <span className='px-8'>Qty</span>
           <span>Price</span>
         </div>
       </div>
 
-      <div className='py-6 flex flex-col gap-6'>
-        <OrderItem
-          imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-          name='Spicy seasoned seafood noodles'
-          price={2.29}
-          quantity={2}
-          onDelete={() => console.log('Delete item')}
-          onNoteChange={(note) => console.log('Note:', note)}
-        />
-        <OrderItem
-          imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-          name='Spicy seasoned seafood noodles'
-          price={2.29}
-          quantity={2}
-          onDelete={() => console.log('Delete item')}
-          onNoteChange={(note) => console.log('Note:', note)}
-        />
+      <div className='sm:py-6 py-4 flex flex-col sm:gap-6 gap-4'>
+        {data?.map((item, index) => (
+          <CartItem
+            id={item?.id}
+            key={index}
+            imageUrl={item?.imageUrl}
+            name={item?.name}
+            price={item?.price}
+            quantity={item?.quantity}
+            note={item?.note}
+          />
+        ))}
       </div>
+      <Button>Confirm Order</Button>
     </div>
   );
 };

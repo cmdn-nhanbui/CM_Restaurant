@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Icon } from './Icons';
 import { ROUTES } from '@/core/constants/routes';
 import classNames from 'classnames';
-import { LoginOutlined } from '@ant-design/icons';
+import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 
 export const Sidebar = () => {
   return (
@@ -41,12 +41,17 @@ export const Sidebar = () => {
           <NavLink
             to={ROUTES.CART}
             className={(nav) =>
-              classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer', {
-                'bg-[var(--primary)] fill-white': nav.isActive,
+              classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
+                'bg-[var(--primary)] fill-white text-white': nav.isActive,
               })
             }
           >
-            <Icon icon='shop' color='inherit' />
+            <ShoppingCartOutlined
+              color='inherit'
+              style={{
+                fontSize: 20,
+              }}
+            />
           </NavLink>
         </button>
       </div>

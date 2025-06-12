@@ -6,4 +6,5 @@ export const ROUTES = {
   NOT_FOUND: '/404',
   SERVER_ERROR: '/500',
   NOTIFICATION: '/notification',
+  ORDER: '/order',
 };

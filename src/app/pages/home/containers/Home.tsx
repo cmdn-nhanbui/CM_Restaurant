@@ -3,8 +3,13 @@ import { SearchOutlined } from '@ant-design/icons';
 
 import { SectionMenu } from '@/shared/components/SectionMenu';
 import { TextField } from '@/shared/components/TextField';
+import { useEffect } from 'react';
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div>
       <div className='flex sm:flex-row flex-col w-full justify-between items-center'>
