@@ -7,11 +7,13 @@ import './app/stylesheet/style.scss';
 
 function App() {
   return (
-    <Storage>
-      <BrowserRouter>
-        <RouterOutlet routes={appRoutes} />
-      </BrowserRouter>
-    </Storage>
+    <>
+      <Storage>
+        <BrowserRouter>
+          <RouterOutlet routes={appRoutes} />
+        </BrowserRouter>
+      </Storage>
+    </>
   );
 }
 export default App;

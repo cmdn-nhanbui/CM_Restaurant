@@ -1,10 +1,15 @@
 import { AddNewDishCard } from '@/shared/components/AddNewDishCard';
 import { EditCard } from '@/shared/components/EditCard';
+import type { RootState } from '@src/redux/store';
+import { useSelector } from 'react-redux';
 
 const Notification = () => {
+  const { data } = useSelector((state: RootState) => state.user);
+
   return (
     <>
       <div>Notification</div>
+      <div>{JSON.stringify(data)}</div>
       <div className='flex gap-3'>
         <AddNewDishCard />
         <EditCard

@@ -1,22 +1,22 @@
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { LoginOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { Icon } from './Icons';
-import { ROUTES } from '@/core/constants/routes';
+import { ADMIN_ROUTES } from '@/core/constants/routes';
 
-export const Sidebar = () => {
+export const SidebarAdmin = () => {
   return (
-    <aside className='bg-[var(--background-secondary)] min-h-screen flex-col items-center justify-between hidden sm:flex rounded-r-2xl h-screen'>
+    <aside className='bg-[var(--background-secondary)] min-h-screen flex-col items-center justify-between flex rounded-r-2xl h-screen'>
       <div className='flex flex-col'>
         <h1 className='p-4 logo'>
           <div className='p-3 bg-[#eb956a4d] rounded-xl'>
             <Icon icon='logo' />
           </div>
         </h1>
-        <button className='p-4'>
+        <div className='p-4'>
           <NavLink
-            to={ROUTES.ROOT}
+            to={ADMIN_ROUTES.DASHBOARD}
+            end
             className={(nav) =>
               classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer', {
                 'bg-[var(--primary)] fill-white': nav.isActive,
@@ -25,10 +25,10 @@ export const Sidebar = () => {
           >
             <Icon icon='home' color='inherit' />
           </NavLink>
-        </button>
-        <button className='p-4'>
+        </div>
+        <div className='p-4'>
           <NavLink
-            to={ROUTES.NOTIFICATION}
+            to={ADMIN_ROUTES.NOTIFICATION}
             className={(nav) =>
               classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer', {
                 'bg-[var(--primary)] fill-white': nav.isActive,
@@ -37,39 +37,39 @@ export const Sidebar = () => {
           >
             <Icon icon='bell' color='inherit' />
           </NavLink>
-        </button>
-        <button className='p-4'>
+        </div>
+
+        <div className='p-4'>
           <NavLink
-            to={ROUTES.CART}
+            to={ADMIN_ROUTES.PRODUCTS}
             className={(nav) =>
               classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
                 'bg-[var(--primary)] fill-white text-white': nav.isActive,
               })
             }
           >
-            <ShoppingCartOutlined
-              color='inherit'
-              style={{
-                fontSize: 20,
-              }}
-            />
+            <Icon icon='products' color='inherit' />
           </NavLink>
-        </button>
+        </div>
+        <div className='p-4'>
+          <NavLink
+            to={ADMIN_ROUTES.STATISTIC}
+            className={(nav) =>
+              classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
+                'bg-[var(--primary)] fill-white text-white': nav.isActive,
+              })
+            }
+          >
+            <Icon icon='chart' color='inherit' />
+          </NavLink>
+        </div>
       </div>
 
-      <button className='p-4'>
-        <NavLink
-          to={ROUTES.LOGIN}
-          className={(nav) =>
-            classNames('flex p-[18px] rounded-xl text-[var(--primary)] cursor-pointer', {
-              'bg-[var(--primary)] text-white': nav.isActive,
-            })
-          }
-        >
-          <LoginOutlined style={{ fontSize: 20, color: 'inherit' }} />
-          {/* <Icon icon='logout' color='var(--primary)' /> */}
-        </NavLink>
-      </button>
+      <div className='p-4'>
+        <button className={'flex p-[18px] rounded-xl text-[var(--primary)] cursor-pointer'}>
+          <Icon icon='logout' color='var(--primary)' />
+        </button>
+      </div>
     </aside>
   );
 };

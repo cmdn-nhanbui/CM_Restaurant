@@ -58,7 +58,7 @@ export type Category = {
   name: string;
 };
 
-export type Role = 'admin' | 'counter';
+export type Role = 'admin' | 'staff';
 
 export interface User {
   id: number;

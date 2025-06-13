@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Icon } from './Icons';
 import classNames from 'classnames';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { Badge } from 'antd';
 
 export const Footer = () => {
   return (
@@ -38,7 +39,7 @@ export const Footer = () => {
             <ShoppingCartOutlined
               color='inherit'
               style={{
-                fontSize: 20,
+                fontSize: 22,
               }}
             />
           </NavLink>
@@ -70,7 +71,9 @@ export const Footer = () => {
               )
             }
           >
-            <Icon icon='bell' color='inherit' />
+            <Badge count={5}>
+              <Icon icon='bell' color='inherit' />
+            </Badge>
           </NavLink>
         </div>
       </div>
