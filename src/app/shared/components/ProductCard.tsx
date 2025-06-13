@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@src/redux/store';
 import { addCartItem } from '@src/redux/actions/cartActions';
 import type { CartItem } from '@/core/constants/types';
+import { message } from 'antd';
 
 type ProductCardProps = {
   id: number;
@@ -16,6 +17,7 @@ type ProductCardProps = {
 const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, name, price, available }) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+  const [messageApi, contextHolder] = message.useMessage();
 
   const handleAddToCart = (quantity: number) => {
     setIsShowModal(false);
@@ -30,10 +32,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, name, price, availa
     };
 
     dispatch(addCartItem(cartItem));
+    messageApi.open({
+      type: 'success',
+      content: 'Add product to card successfully',
+    });
   };
 
   return (
     <>
+      {contextHolder}
       <div
         onClick={() => setIsShowModal(true)}
         className='bg-[var(--background-secondary)] rounded-2xl p-3 sm:p-6 min-h-[226px] text-white text-center mt-12'

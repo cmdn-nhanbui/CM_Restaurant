@@ -4,6 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 import { PaymentCard } from '../PaymentCard';
 import { Icon } from '../Icons';
 import { Button } from '../Button';
+import { useState } from 'react';
 
 type PaymentDrawerProps = {
   onClose: () => void;
@@ -12,6 +13,7 @@ type PaymentDrawerProps = {
 export const PaymentDrawer = ({ onClose, isOpen }: PaymentDrawerProps) => {
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const placement: 'bottom' | 'right' = isMobile ? 'bottom' : 'right';
+  const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'cash'>('credit_card');
 
   return (
     <>
@@ -37,10 +39,17 @@ export const PaymentDrawer = ({ onClose, isOpen }: PaymentDrawerProps) => {
           <PaymentCard
             label='Credit Card'
             method='credit_card'
-            selected
+            selected={paymentMethod === 'credit_card'}
             icon={<Icon icon='credit-card' color='inherit' />}
+            onSelect={() => setPaymentMethod('credit_card')}
           />
-          <PaymentCard label='Cash' method='cash' icon={<Icon icon='wallet' color='inherit' />} />
+          <PaymentCard
+            selected={paymentMethod === 'cash'}
+            label='Pay at the table'
+            method='cash'
+            icon={<Icon icon='wallet' color='inherit' />}
+            onSelect={() => setPaymentMethod('cash')}
+          />
         </div>
 
         <div className='flex gap-2'>
