@@ -1,4 +1,7 @@
+import { BestSellerList } from '@/shared/components/BestSellerList';
 import { Icon } from '@/shared/components/Icons';
+import { ListOrder } from '@/shared/components/ListOrder';
+import { PieChart } from '@/shared/components/PieChart';
 import { SummaryCard } from '@/shared/components/SummaryCard';
 import { DollarOutlined } from '@ant-design/icons';
 
@@ -11,7 +14,7 @@ const Dashboard = () => {
           <p className='text-lg'>Tuesday, 2 Feb 2021</p>
         </div>
 
-        <div className='py-6 flex gap-6 sm:flex-row flex-col'>
+        <section className='py-6 flex gap-6 sm:flex-row flex-col'>
           <SummaryCard
             title='Total Revenue'
             amount={10243}
@@ -37,9 +40,17 @@ const Dashboard = () => {
             percent={2.4}
             icon={<Icon width={24} height={24} icon='users' color='var(--blue)' />}
           />
+        </section>
+
+        <ListOrder />
+      </div>
+      <div className='1/3'>
+        <BestSellerList />
+
+        <div className='mt-6'>
+          <PieChart />
         </div>
       </div>
-      <div className='1/3'>Right Sidebar</div>
     </div>
   );
 };
