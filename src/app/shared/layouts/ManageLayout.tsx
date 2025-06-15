@@ -6,7 +6,7 @@ const ManageLayout = ({ children }: { children: React.ReactNode }) => {
       <main className='h-screen overflow-y-auto scrollbar-hidden px-0 pt-0 overflow-hidden'>
         <div className='flex w-full h-full'>
           <SidebarAdmin />
-          <div className='sm:p-6 w-full h-full sm:h-screen overflow-y-auto'>{children}</div>
+          <div className='sm:p-6 p-4 w-full h-full sm:h-screen overflow-y-auto'>{children}</div>
         </div>
       </main>
     </div>

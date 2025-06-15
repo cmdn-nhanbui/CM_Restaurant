@@ -9,6 +9,7 @@ const Setting: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./con
 const Notification: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Notification'));
 const Products: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Products'));
 const Statistic: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Statistic'));
+const Table: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Table'));
 
 const adminRoutes: PageRoute[] = [
   {
@@ -30,6 +31,10 @@ const adminRoutes: PageRoute[] = [
   {
     path: ADMIN_ROUTES.STATISTIC,
     element: Statistic,
+  },
+  {
+    path: ADMIN_ROUTES.TABLES,
+    element: Table,
   },
 ];
 

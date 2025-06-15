@@ -14,7 +14,7 @@ export const SummaryCard: React.FC<SummaryCardProps> = ({ title, amount, percent
   const isIncrease = percent >= 0;
 
   return (
-    <div className='bg-[var(--background-secondary)] rounded-lg p-4 w-full max-w-xs text-white shadow-md'>
+    <div className='bg-[var(--background-secondary)] rounded-lg p-4 w-full  text-white shadow-md flex-1'>
       <div className='flex gap-3 items-center'>
         <div
           className={classNames(

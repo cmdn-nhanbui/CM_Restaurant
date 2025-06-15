@@ -21,7 +21,7 @@ export const EditCard: React.FC<EdtiDishCardProps> = ({ imageUrl, name, price, q
       </div>
       <button
         onClick={onEdit}
-        className='mt-auto h-[52px] bg-[#3C1E1E] text-[#EA7C69] flex items-center justify-center gap-1 py-2 text-sm font-medium cursor-pointer'
+        className='mt-auto lg:h-[52px] h-auto bg-[#3C1E1E] text-[#EA7C69] flex items-center justify-center gap-1 py-2 text-sm font-medium cursor-pointer'
       >
         <EditOutlined className='w-4 h-4' />
         Edit dish

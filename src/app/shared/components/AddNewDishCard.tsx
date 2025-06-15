@@ -2,9 +2,10 @@ import classNames from 'classnames';
 
 type AddNewDishCardProps = {
   className?: string;
+  onClick?: () => void;
 };
 
-export const AddNewDishCard = ({ className }: AddNewDishCardProps) => {
+export const AddNewDishCard = ({ className, onClick }: AddNewDishCardProps) => {
   const classes = classNames(
     `min-h-[220px] min-w-[160px] flex flex-col items-center justify-center 
                  rounded-lg border border-dashed border-[var(--primary)] 
@@ -12,7 +13,7 @@ export const AddNewDishCard = ({ className }: AddNewDishCardProps) => {
     className,
   );
   return (
-    <div className={classes}>
+    <div onClick={onClick} className={classes}>
       <span className='text-[var(--primary)] text-2xl mb-2'>+</span>
       <span className='text-[var(--primary)] text-sm font-medium'>Add new dish</span>
     </div>

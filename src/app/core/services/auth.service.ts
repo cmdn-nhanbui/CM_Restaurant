@@ -5,7 +5,7 @@ type LoginProps = {
   password: string;
 };
 export const login = async ({ email, password }: LoginProps) => {
-  const response = await request.post(`/login`, {
+  const response = await request.post(`/auth/login`, {
     email,
     password,
   });
