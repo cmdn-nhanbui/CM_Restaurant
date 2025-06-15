@@ -7,7 +7,7 @@ import { ROUTES } from '@/core/constants/routes';
 const AdminPage = () => {
   const { data } = useSelector((state: RootState) => state.user);
 
-  if (!data || data?.role !== 'admin') return <Navigate to={ROUTES.LOGIN} />;
+  // if (!data || data?.role !== 'admin') return <Navigate to={ROUTES.LOGIN} />;
 
   return (
     <ManageLayout>
