@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import { Icon } from './Icons';
 import { ADMIN_ROUTES } from '@/core/constants/routes';
+import { handleLogout } from '@/core/helpers/authHelper';
 
 export const SidebarAdmin = () => {
   return (
@@ -78,7 +79,10 @@ export const SidebarAdmin = () => {
       </div>
 
       <div className='p-4'>
-        <button className={'flex p-[18px] rounded-xl text-[var(--primary)] cursor-pointer'}>
+        <button
+          onClick={() => handleLogout()}
+          className={'flex p-[18px] rounded-xl text-[var(--primary)] cursor-pointer'}
+        >
           <Icon icon='logout' color='var(--primary)' />
         </button>
       </div>

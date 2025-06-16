@@ -3,7 +3,7 @@ import { OrderTable } from './OrderTable';
 
 export const ListOrder = () => {
   return (
-    <section className='bg-[var(--background-secondary)] rounded-lg p-6'>
+    <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden'>
       <div className='flex items-center justify-between'>
         <h2 className='text-lg font-semibold text-white'>Order Report</h2>
         <Select
@@ -29,7 +29,7 @@ export const ListOrder = () => {
         />
       </div>
 
-      <div className='mt-2'>
+      <div className='mt-2 h-full overflow-y-auto pb-4'>
         <OrderTable />
       </div>
     </section>

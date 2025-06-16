@@ -77,7 +77,7 @@ export const OrderTable = () => {
           <th className='py-4'>Status</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className='overflow-y-auto h-full'>
         {orders.map((order, idx) => (
           <tr key={idx} className='border-b border-gray-800 hover:bg-[#2a2a3a] transition'>
             <td className='py-4'>

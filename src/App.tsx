@@ -10,6 +10,9 @@ import { type AppDispatch, type RootState } from './redux/store';
 import { fetchCategories } from './redux/actions/categoryActions';
 
 import './app/stylesheet/style.scss';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   const categories = useSelector((state: RootState) => state.category.data);
@@ -24,9 +27,11 @@ function App() {
   return (
     <>
       <Storage>
-        <BrowserRouter>
-          <RouterOutlet routes={appRoutes} />
-        </BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <RouterOutlet routes={appRoutes} />
+          </BrowserRouter>
+        </QueryClientProvider>
       </Storage>
     </>
   );

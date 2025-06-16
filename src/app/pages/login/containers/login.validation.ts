@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const validation = Joi.object({
+const formLoginValidation = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .required()
@@ -8,4 +8,4 @@ const validation = Joi.object({
   password: Joi.string().min(6).required().label('password'),
 });
 
-export default validation;
+export default formLoginValidation;

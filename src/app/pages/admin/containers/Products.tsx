@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
-import { AddProductModal } from '@/shared/components/Modals/AddProductModal';
+import { AddProductModal } from '@/shared/components/Modals/AddProductModal/AddProductModal';
 import { AddNewDishCard } from '@/shared/components/AddNewDishCard';
 import { CATEGORIES } from '@/shared/layouts/ProductLayout';
 import { Navigation } from '@/shared/components/Navigation';
 import { EditCard } from '@/shared/components/EditCard';
 import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icons';
+import { Pagination } from 'antd';
 
 const Products = () => {
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
@@ -91,13 +92,24 @@ const Products = () => {
             </div>
           </div>
         </section>
+
+        <div className='pb-6 pt-4'>
+          <Pagination
+            rootClassName='antd-custom-pagination'
+            align='center'
+            defaultCurrent={1}
+            total={100}
+            pageSize={10} // số item mỗi trang (cố định)
+            showSizeChanger={false} // ✅ ẩn dropdown chọn số item
+            showLessItems // (tuỳ chọn) hiển thị ít số nút trang hơn
+            onChange={(page) => {
+              console.log('Page:', page);
+            }}
+          />
+        </div>
       </div>
 
-      <AddProductModal
-        isModalOpen={showAddModal}
-        onCancel={() => setShowAddModal(false)}
-        onOk={() => setShowAddModal(false)}
-      />
+      <AddProductModal isModalOpen={showAddModal} onCancel={() => setShowAddModal(false)} />
     </>
   );
 };

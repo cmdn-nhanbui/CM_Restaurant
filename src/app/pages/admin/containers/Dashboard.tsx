@@ -7,8 +7,8 @@ import { DollarOutlined } from '@ant-design/icons';
 
 const Dashboard = () => {
   return (
-    <div className='row gap-6 sm:flex-row flex-col'>
-      <div className='sm:w-2/3 w-full'>
+    <div className='flex gap-6 sm:flex-row flex-col sm:h-full'>
+      <div className='w-full overflow-y-hidden flex flex-col'>
         <div className='flex flex-col text-[var(--text-lighter)] pb-6 border-b border-[var(--dark-line)]'>
           <h2 className='text-white font-semibold text-3xl'>Jaegar Resto</h2>
           <p className='text-lg'>Tuesday, 2 Feb 2021</p>
@@ -44,12 +44,11 @@ const Dashboard = () => {
 
         <ListOrder />
       </div>
-      <div className='1/3'>
-        <BestSellerList />
-
-        <div className='mt-6'>
+      <div className='sm:w-1/3 w-full overflow-y-auto scrollbar-hidden'>
+        <div className='mb-6'>
           <PieChart />
         </div>
+        <BestSellerList />
       </div>
     </div>
   );

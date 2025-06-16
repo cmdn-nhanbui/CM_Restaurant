@@ -4,11 +4,18 @@ import { Popover, Spin } from 'antd';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { SearchPopper } from './SearchPopper';
 import useDebounce from '../hooks/useDebounce';
+import { type Product } from '@/core/constants/types';
+import { searchProduct } from '@/core/services/product.service';
+import { mapProductData } from '@/core/mappers/product.mapper';
 
 export const Search = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
+
+  const [searchResult, setSearchResult] = useState<Product[]>([]);
+  const [isHasMore, setIsHasMore] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
 
   const debounceSearchValue = useDebounce(searchValue, 500);
 
@@ -17,20 +24,45 @@ export const Search = () => {
   };
 
   useEffect(() => {
-    if (!debounceSearchValue.trim()) return;
-    setIsLoading(true);
+    if (!debounceSearchValue.trim()) {
+      setPage(1);
+      setSearchResult([]);
+      return;
+    }
 
-    setTimeout(() => setIsLoading(false), 1000);
-  }, [debounceSearchValue]);
+    const fetchSearchAPI = async () => {
+      setIsLoading(true);
+      try {
+        const response = await searchProduct(debounceSearchValue, page);
+        const { hasNextPage, docs } = response?.data;
+        const productData: Product[] = docs?.map(mapProductData);
+
+        setSearchResult((prev) => [...prev, ...productData]);
+        setIsHasMore(hasNextPage);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSearchAPI();
+  }, [debounceSearchValue, page]);
 
   return (
     <Popover
       arrow={false}
-      content={<SearchPopper isLoadMore />}
+      content={
+        <SearchPopper
+          searchResult={searchResult}
+          isLoadMore={isHasMore}
+          onLoadMore={() => setPage((prev) => prev + 1)}
+        />
+      }
       trigger='click'
-      open={open}
+      open={!!searchResult?.length && open}
       onOpenChange={handleOpenChange}
-      placement='top'
+      placement='bottom'
       getPopupContainer={(triggerNode: HTMLElement) => triggerNode.parentElement as HTMLElement}
       styles={{
         body: {

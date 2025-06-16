@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getLS, KEYS } from '../helpers/storageHelper';
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -14,6 +15,12 @@ const request = axios.create({
 // Add a request interceptor
 request.interceptors.request.use(
   function (config) {
+    const accessToken = getLS(KEYS.ACCESS_TOKEN);
+    if (accessToken) {
+      if (config.headers?.set) {
+        config.headers.set('Authorization', `Bearer ${accessToken}`);
+      }
+    }
     return config;
   },
   function (error) {
