@@ -7,6 +7,7 @@ const request = axios.create({
   headers: {
     Accept: 'application/json, text/plain, */*',
     'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': '69420',
   },
 });
 

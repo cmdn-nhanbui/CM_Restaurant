@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { useDispatch } from 'react-redux';
@@ -10,17 +11,19 @@ import { TextField } from '@/shared/components/TextField';
 import { Icon } from '@/shared/components/Icons';
 
 import validation from './Login.validation';
-import { login } from '@/core/services/auth.service';
-import { KEYS, setLS } from '@/core/helpers/storageHelper';
-import { type AppDispatch } from '@src/redux/store';
 import { updateCurrentUser } from '@src/redux/actions/userActions';
+import { type AppDispatch } from '@src/redux/store';
+import { KEYS, setLS } from '@/core/helpers/storageHelper';
 import { mapUserData } from '@/core/mappers/user.mapper';
+import { login } from '@/core/services/auth.service';
 
 type FormLoginProps = {
   email: string;
   password: string;
 };
 const Login = () => {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [messageApi, contextHolder] = message.useMessage();
   const dispatch = useDispatch<AppDispatch>();
@@ -49,6 +52,7 @@ const Login = () => {
       type: 'loading',
       content: 'Processing...',
     });
+
     const requestLogin = async () => {
       try {
         const { data, token, status } = await login({ email, password });
@@ -72,6 +76,8 @@ const Login = () => {
           content: 'Login successfully',
           duration: 2,
         });
+
+        return navigate(`/${data?.role}`);
       } catch (error) {
         console.log(error);
 

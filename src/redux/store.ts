@@ -6,11 +6,13 @@ import { loggerMiddleware } from './loggerMiddleware';
 import cartReducer from './reducers/cartReducer';
 import productReducer from './reducers/productReducer';
 import userReducer from './reducers/userReducer';
+import categoryReducer from './reducers/categoryReducer';
 
 const rootReducer = combineReducers({
   cart: cartReducer,
   products: productReducer,
   user: userReducer,
+  category: categoryReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk, loggerMiddleware));
