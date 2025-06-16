@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { message, Modal, Select, type UploadFile, type UploadProps } from 'antd';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 
@@ -9,34 +9,35 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '@src/redux/store';
 import { joiResolver } from '@hookform/resolvers/joi';
 import addProductSchema from './addProduct.validation';
-import { addProduct } from '@/core/services/product.service';
+import { updteProduct } from '@/core/services/product.service';
+import type { Product } from '@/core/constants/types';
 
-type ModalProps = {
+interface ModalProps {
   isModalOpen: boolean;
   onCancel: () => void;
   onOk: () => void;
-};
+  data: Product | null;
+}
 
-type FormUploadProductProps = {
+interface FormUpdateProductProps {
   productName: string;
   price: number;
   quantity: number;
-};
+}
 
-export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => {
+export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalProps) => {
   const { data: categoryData } = useSelector((state: RootState) => state.category);
   const [categoryId, setCategoryId] = useState(categoryData?.[0]?.id);
 
   const [messageApi, contextHolder] = message.useMessage();
-
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const {
     register,
-    reset,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<FormUploadProductProps>({
+  } = useForm<FormUpdateProductProps>({
     defaultValues: {
       productName: '',
       price: 0,
@@ -51,35 +52,39 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
     setFileList(newFileList.slice(-1));
   };
 
-  const handleAddProduct: SubmitHandler<FormUploadProductProps> = (data) => {
+  const handleUpdateProduct: SubmitHandler<FormUpdateProductProps> = (formData) => {
     if (!fileList?.length) {
       return messageApi.error('File must be attached');
     }
+    const file = fileList?.[0]?.originFileObj;
+    const { productName, price, quantity } = formData;
 
-    const { productName, price } = data;
-    const file = fileList?.[0].originFileObj;
-
-    const addProductRequest = async () => {
-      const toastKey = 'add_product';
-
-      messageApi.open({
-        key: toastKey,
-        type: 'loading',
-        content: 'Creating...',
-      });
+    const updateRequest = async () => {
+      const toastKey = 'update_product';
 
       try {
-        await addProduct({ productName, price, categoryId, file });
+        if (!data) return;
+        messageApi.open({
+          key: toastKey,
+          type: 'loading',
+          content: 'Updating...',
+        });
+
+        await updteProduct(data.id, {
+          name: productName,
+          categoryId: categoryId,
+          price: price,
+          quantity: quantity,
+          image: file,
+        });
 
         messageApi.open({
           key: toastKey,
           type: 'success',
-          content: 'Create product successfully',
+          content: 'Update product successfully',
           duration: 2,
         });
 
-        reset();
-        setFileList([]);
         return onOk();
       } catch (error) {
         messageApi.open({
@@ -92,23 +97,41 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
         console.log(error);
       }
     };
-
-    addProductRequest();
+    updateRequest();
   };
+
+  useEffect(() => {
+    if (data !== null) {
+      setCategoryId(data?.category?.id);
+      setValue('productName', data.name);
+      setValue('price', data.price);
+      setValue('quantity', data.quantity);
+      if (data?.imageUrl !== null) {
+        setFileList([
+          {
+            uid: `-init-1`,
+            name: `image-1.png`,
+            status: 'done' as const,
+            url: data.imageUrl,
+          },
+        ]);
+      }
+    }
+  }, [data]);
 
   return (
     <>
       {contextHolder}
       <Modal
         className='custom-modal'
-        title='Add New Product'
+        title='Update Product'
         open={isModalOpen}
         onCancel={onCancel}
         destroyOnHidden
         footer={<></>}
       >
         <div className='flex flex-col'>
-          <form onSubmit={handleSubmit(handleAddProduct)}>
+          <form onSubmit={handleSubmit(handleUpdateProduct)}>
             <div className='flex flex-col gap-2'>
               <FilePicker fileList={fileList} setFileList={setFileList} onChange={handleChangePickFile} />
             </div>
@@ -163,8 +186,8 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
               <Button outlined key='cancel' onClick={onCancel}>
                 Cancel
               </Button>
-              <Button key='ok' onClick={handleSubmit(handleAddProduct)}>
-                Add Product
+              <Button key='ok' onClick={handleSubmit(handleUpdateProduct)}>
+                Save
               </Button>
             </div>
           </form>

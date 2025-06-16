@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Filter } from './Filter';
 import ProductCard from './ProductCard';
 import { Pagination, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -7,16 +6,6 @@ import { useProductData } from '../hooks/useProduct';
 import ProductListSkeleton from './ProductListSkeleton';
 import { mapProductData } from '@/core/mappers/product.mapper';
 import type { Product } from '@/core/constants/types';
-
-type SortOption = {
-  label: string;
-  value: string;
-};
-
-const sortOptions: SortOption[] = [
-  { label: 'Name ASC', value: 'name_asc' },
-  { label: 'Price DESC', value: 'price_desc' },
-];
 
 export const SectionMenu = () => {
   const navigate = useNavigate();

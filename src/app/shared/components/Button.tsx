@@ -7,11 +7,13 @@ type Props = {
   children: ReactNode;
   onClick?: () => void;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
 };
 
-export const Button = ({ outlined, primary = true, children, onClick, className }: Props) => {
+export const Button = ({ outlined, primary = true, children, onClick, type = 'button', className }: Props) => {
   return (
     <button
+      type={type}
       className={classNames(
         'text-sm p-[14px] rounded-md font-semibold cursor-pointer',
         {
