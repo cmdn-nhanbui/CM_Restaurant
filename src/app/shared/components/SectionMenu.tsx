@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Filter } from './Filter';
 import ProductCard from './ProductCard';
+import { Pagination } from 'antd';
 
 type SortOption = {
   label: string;
@@ -29,6 +30,7 @@ export const SectionMenu = () => {
       <div className='row'>
         <div className='col col-2 col-md-4 col-sm-6'>
           <ProductCard
+            id={1}
             imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
             name='Spicy seasoned seafood noodles'
             price={2.29}
@@ -37,6 +39,7 @@ export const SectionMenu = () => {
         </div>
         <div className='col col-2 col-md-4 col-sm-6'>
           <ProductCard
+            id={2}
             imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
             name='Spicy seasoned seafood noodles'
             price={2.29}
@@ -45,6 +48,7 @@ export const SectionMenu = () => {
         </div>
         <div className='col col-2 col-md-4 col-sm-6'>
           <ProductCard
+            id={3}
             imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
             name='Spicy seasoned seafood noodles'
             price={2.29}
@@ -53,6 +57,7 @@ export const SectionMenu = () => {
         </div>
         <div className='col col-2 col-md-4 col-sm-6'>
           <ProductCard
+            id={4}
             imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
             name='Spicy seasoned seafood noodles'
             price={2.29}
@@ -61,6 +66,7 @@ export const SectionMenu = () => {
         </div>
         <div className='col col-2 col-md-4 col-sm-6'>
           <ProductCard
+            id={5}
             imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
             name='Spicy seasoned seafood noodles'
             price={2.29}
@@ -69,6 +75,7 @@ export const SectionMenu = () => {
         </div>
         <div className='col col-2 col-md-4 col-sm-6'>
           <ProductCard
+            id={6}
             imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
             name='Spicy seasoned seafood noodles'
             price={2.29}
@@ -77,6 +84,7 @@ export const SectionMenu = () => {
         </div>
         <div className='col col-2 col-md-4 col-sm-6'>
           <ProductCard
+            id={6}
             imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
             name='Spicy seasoned seafood noodles'
             price={2.29}
@@ -84,6 +92,18 @@ export const SectionMenu = () => {
           />
         </div>
       </div>
+      <Pagination
+        rootClassName='antd-custom-pagination'
+        align='center'
+        defaultCurrent={1}
+        total={100}
+        pageSize={10} // số item mỗi trang (cố định)
+        showSizeChanger={false} // ✅ ẩn dropdown chọn số item
+        showLessItems // (tuỳ chọn) hiển thị ít số nút trang hơn
+        onChange={(page) => {
+          console.log('Page:', page);
+        }}
+      />
     </section>
   );
 };

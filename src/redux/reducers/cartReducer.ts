@@ -30,42 +30,6 @@ const initialState: CartState = {
       quantity: 2,
       note: '',
     },
-    {
-      id: 3,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
-    {
-      id: 3,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
-    {
-      id: 3,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
-    {
-      id: 3,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
   ],
 };
 

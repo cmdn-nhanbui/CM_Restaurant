@@ -1,0 +1,15 @@
+.custom-popover-body {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--background-secondary);
+  .ant-popover-inner {
+    padding: 16px;
+    border: 1px solid var(--dark-line);
+  }
+}
+
+@media (min-width: 640px) {
+  .custom-popover-body {
+    width: 100%;
+  }
+}
