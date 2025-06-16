@@ -1,21 +1,12 @@
-import { getCoinsData } from '@/core/services/coin.service';
 import { useEffect } from 'react';
+import { SectionMenu } from '@/shared/components/SectionMenu';
 
 const Home = () => {
   useEffect(() => {
-    getCoinsData({ page: 1, perPage: 10 })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    window.scrollTo(0, 0);
   }, []);
-  return (
-    <>
-      <div>Home</div>
-    </>
-  );
+
+  return <SectionMenu />;
 };
 
 export default Home;
