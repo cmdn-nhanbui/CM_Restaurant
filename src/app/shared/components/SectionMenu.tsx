@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Filter } from './Filter';
 import ProductCard from './ProductCard';
+import { Pagination } from 'antd';
 
 type SortOption = {
   label: string;
@@ -91,6 +92,18 @@ export const SectionMenu = () => {
           />
         </div>
       </div>
+      <Pagination
+        rootClassName='antd-custom-pagination'
+        align='center'
+        defaultCurrent={1}
+        total={100}
+        pageSize={10} // số item mỗi trang (cố định)
+        showSizeChanger={false} // ✅ ẩn dropdown chọn số item
+        showLessItems // (tuỳ chọn) hiển thị ít số nút trang hơn
+        onChange={(page) => {
+          console.log('Page:', page);
+        }}
+      />
     </section>
   );
 };

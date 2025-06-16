@@ -5,7 +5,7 @@ import { Navigation } from '../components/Navigation';
 
 import type { Category } from '@/core/constants/types';
 
-const CATEGORIES: Category[] = [
+export const CATEGORIES: Category[] = [
   {
     name: 'Hot Dishes',
     id: 1,

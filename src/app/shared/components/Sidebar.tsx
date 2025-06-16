@@ -7,7 +7,7 @@ import { ROUTES } from '@/core/constants/routes';
 
 export const Sidebar = () => {
   return (
-    <aside className='bg-[var(--background-secondary)] min-h-screen  flex-col items-center justify-between hidden sm:flex rounded-r-2xl h-screen'>
+    <aside className='bg-[var(--background-secondary)] min-h-screen flex-col items-center justify-between hidden sm:flex rounded-r-2xl h-screen'>
       <div className='flex flex-col'>
         <h1 className='p-4 logo'>
           <div className='p-3 bg-[#eb956a4d] rounded-xl'>

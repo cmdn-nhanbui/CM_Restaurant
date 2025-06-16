@@ -1,85 +1,25 @@
-import type { CartItem } from '../../app/core/constants/types';
-import { ADD_CART_ITEM, UPDATE_QUANTITY_CART_ITEM, REMOVE_CART_ITEM, UPDATE_QUANTITY_ITEM } from '../types';
+import type { User } from '../../app/core/constants/types';
+import { CLEAR_CURRENT_USER_DATA, UPDATE_CURRENT_USER_DATA } from '../types';
 
-interface CartState {
-  data: CartItem[];
+interface UserState {
+  data?: User;
 }
 
-// const saveCartToLocalStorage = (cartData: CartItem[]): void => {
-//   const cartJSON = JSON.stringify(cartData);
-//   setLS(KEYS.CART, cartJSON);
-// };
-
-const initialState: CartState = {
-  data: [
-    {
-      id: 2,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
-    {
-      id: 3,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
-  ],
+const initialState: UserState = {
+  data: undefined,
 };
 
-const cartReducer = (state = initialState, action: any): CartState => {
-  const newCartData = [...state.data];
-  const cartItem = action.payload;
-
+const userReducer = (state = initialState, action: any): UserState => {
   switch (action.type) {
-    case ADD_CART_ITEM: {
-      const isCartExisted = newCartData?.find((item) => item?.id === cartItem?.id);
-
-      if (!isCartExisted) {
-        newCartData.push(cartItem);
-      } else {
-        isCartExisted.quantity += 1;
-      }
-
-      return {
-        ...state,
-        data: newCartData,
-      };
+    case UPDATE_CURRENT_USER_DATA: {
+      return { ...state, data: action.payload };
     }
-
-    case UPDATE_QUANTITY_CART_ITEM: {
-      const updateItem = newCartData?.find((cartItem) => cartItem?.id === action?.payload?.id);
-      if (updateItem) {
-        updateItem.quantity = action?.payload?.quantity;
-      }
-      return { ...state, data: newCartData };
+    case CLEAR_CURRENT_USER_DATA: {
+      return { ...state, data: undefined };
     }
-    case REMOVE_CART_ITEM: {
-      const id = action.payload;
-      const removedArray = state.data?.filter((item) => item?.id !== id);
-
-      return { ...state, data: removedArray };
-    }
-
-    case UPDATE_QUANTITY_ITEM: {
-      const data = action.payload;
-      const updateItem = newCartData?.find((cartItem) => cartItem?.id === action?.payload?.id);
-      if (updateItem) {
-        updateItem.note = data.note;
-        updateItem.price = data.price || updateItem;
-      }
-      return { ...state, data: newCartData };
-    }
-
     default:
       return state;
   }
 };
 
-export default cartReducer;
+export default userReducer;
