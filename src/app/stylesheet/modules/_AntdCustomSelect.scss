@@ -1,0 +1,28 @@
+.custom-antd-select {
+  .ant-select-selector {
+    background-color: var(--form-background) !important;
+    color: white !important;
+    border-color: var(--dark-line) !important;
+    &:hover {
+      border-color: var(--dark-line) !important;
+    }
+    .ant-select-selection-item,
+    .ant-select-suffix {
+      color: white !important;
+    }
+  }
+  .ant-select-dropdown {
+    background-color: var(--backround-secondary) !important;
+  }
+  .ant-select-item-option {
+    color: white !important;
+  }
+  .ant-select-item-option-selected {
+    background-color: var(--background-secondary) !important;
+    color: var(--text-dark);
+  }
+  .ant-select-arrow,
+  .ant-select-arrow {
+    color: white;
+  }
+}

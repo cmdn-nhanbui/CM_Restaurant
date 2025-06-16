@@ -15,7 +15,11 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(({ c
     >
       <input
         ref={ref}
-        className={`p-[14px] text-[var(--text-lighter)] w-full  outline-none bg-transparent ${className}`}
+        className={classNames(
+          'p-[14px] text-[var(--text-lighter)] w-full outline-none bg-transparent',
+          { 'no-spinner': props.type === 'number' },
+          className,
+        )}
         {...props}
       />
       {props?.icon && <div className='absolute top-1/2 left-3 -translate-y-1/2 '>{props.icon}</div>}
