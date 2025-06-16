@@ -67,3 +67,13 @@ export interface User {
   imageUrl: string;
   role: Role;
 }
+
+export interface Product {
+  id: number;
+  name: string;
+  imageUrl: string;
+  category: Category;
+  orderQuantity: number;
+  price: number;
+  quantity: number;
+}

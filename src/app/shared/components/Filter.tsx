@@ -1,8 +1,8 @@
-import { CaretDownOutlined } from '@ant-design/icons';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
+import { Popover, PopoverPanel } from '@headlessui/react';
 
 import { MenuWrapper } from './Menu/MenuWrapper';
 import { MenuItem } from './Menu/MenuItem';
+import { Select } from 'antd';
 
 interface FilterProps<T> {
   value: T;
@@ -16,16 +16,6 @@ export const Filter = <T,>({ value, onChange, options = [], getLabel }: FilterPr
     <Popover>
       {({ close }) => (
         <>
-          <span className='sm:text-base text-sm text-[var(--text-lighter)] mr-2'>Sort by</span>
-          <PopoverButton style={{ outline: 'none' }}>
-            <div className='flex items-center'>
-              <div className='text-white min-w-20 sm:p-3.5 p-2 rounded-lg font-semibold bg-[var(--background-secondary)] cursor-pointer border border-[var(--dark-line)]'>
-                <span className='mr-2 sm:text-base text-sm'>{getLabel(value)}</span>
-                <CaretDownOutlined />
-              </div>
-            </div>
-          </PopoverButton>
-
           <PopoverPanel transition anchor='bottom end'>
             <MenuWrapper>
               {options.map((item) => (
