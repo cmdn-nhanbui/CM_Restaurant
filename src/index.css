@@ -1,20 +1,12 @@
 @import 'tailwindcss';
 
-:root {
-  --green-primary: #4bcc00;
-  --green-secondary: #e8fcc9;
-  --red-primary: #ff3a33;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --text-gray: #334155;
-  --background-secondary: #eff2f5;
-}
-
 .container {
   max-width: 1300px;
   width: 100%;
 }
-
+.shadow-primary {
+  box-shadow: 0px 8px 24px rgba(var(--primary-rgb), 0.32);
+}
 @media (min-width: 1024px) {
   .container {
     max-width: 992px;
@@ -29,4 +21,45 @@
   .container {
     max-width: 600px;
   }
+}
+
+input:-webkit-autofill {
+  background-color: transparent !important;
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color: var(--text-lighter) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+html *::-webkit-scrollbar {
+  border-radius: 0;
+  width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(22, 24, 35, 0.06);
+}
+
+html *::-webkit-scrollbar-track {
+  border-radius: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
 }

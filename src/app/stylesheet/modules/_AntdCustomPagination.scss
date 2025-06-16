@@ -1,0 +1,35 @@
+.antd-custom-pagination {
+  .ant-pagination-item-link {
+    color: var(--primary) !important;
+  }
+  .ant-pagination-item {
+    background-color: var(--form-background);
+    border-color: var(--dark-line);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    a {
+      color: var(--text-lighter);
+    }
+    &:hover {
+      border-color: var(--primary);
+      a {
+        color: var(--text-lighter);
+      }
+    }
+  }
+  .ant-pagination-item-active {
+    a {
+      color: var(--primary);
+    }
+  }
+  .anticon-double-right,
+  .anticon-double-left {
+    color: var(--primary) !important ;
+  }
+  .ant-pagination-item-ellipsis {
+    color: var(--text-lighter) !important;
+  }
+}
