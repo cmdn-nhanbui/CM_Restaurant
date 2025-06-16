@@ -10,7 +10,7 @@ import { Button } from '@/shared/components/Button';
 import { TextField } from '@/shared/components/TextField';
 import { Icon } from '@/shared/components/Icons';
 
-import validation from './Login.validation';
+import validation from './login.validation';
 import { updateCurrentUser } from '@src/redux/actions/userActions';
 import { type AppDispatch } from '@src/redux/store';
 import { KEYS, setLS } from '@/core/helpers/storageHelper';
@@ -65,8 +65,8 @@ const Login = () => {
           return;
         }
 
-        setLS(KEYS.ACCESS_TOKEN, token?.accessToken);
-        setLS(KEYS.REFRESH_TOKEN, token?.refreshToken);
+        setLS(KEYS.ACCESS_TOKEN, token?.access_token);
+        setLS(KEYS.REFRESH_TOKEN, token?.refresh_token);
 
         dispatch(updateCurrentUser(mapUserData(data)));
 

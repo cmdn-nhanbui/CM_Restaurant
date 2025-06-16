@@ -24,7 +24,7 @@ const orders = [
 
 export const BestSellerList = () => {
   return (
-    <div className='bg-[var(--background-secondary)] text-white p-6 rounded-lg w-full max-w-sm mx-auto'>
+    <div className='bg-[var(--background-secondary)] text-white p-6 rounded-lg w-full'>
       <div className='flex justify-between items-center mb-4'>
         <h2 className='text-xl font-semibold'>Most Ordered</h2>
         <Select

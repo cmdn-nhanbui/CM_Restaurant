@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Filter } from './Filter';
 import ProductCard from './ProductCard';
-import { Pagination } from 'antd';
+import { Pagination, Select } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { useProductData } from '../hooks/useProduct';
+import ProductListSkeleton from './ProductListSkeleton';
+import { mapProductData } from '@/core/mappers/product.mapper';
+import type { Product } from '@/core/constants/types';
 
 type SortOption = {
   label: string;
@@ -14,95 +19,91 @@ const sortOptions: SortOption[] = [
 ];
 
 export const SectionMenu = () => {
-  const [sortBy, setSortBy] = useState<SortOption>({ label: 'Name ASC', value: 'name_asc' });
+  const navigate = useNavigate();
 
-  const handleChangeSortMode = (val: SortOption) => {
+  const [sortBy, setSortBy] = useState<string>('name_asc');
+
+  const queryParams = new URLSearchParams(location.search);
+  const page = Number(queryParams.get('page')) || 1;
+  const [totalDocs, setTotalDocs] = useState<number>(0);
+
+  const handleChangePage = (page: number) => {
+    const newParams = new URLSearchParams(location.search);
+    newParams.set('page', String(page));
+    navigate(`?${newParams.toString()}`);
+  };
+
+  const handleChangeSortMode = (val: string) => {
     setSortBy(val);
   };
+
+  const { data, isLoading } = useProductData({ page, perPage: 18, sort: sortBy });
+
+  const products: Product[] = data?.docs?.map(mapProductData);
+
+  useEffect(() => {
+    setTotalDocs(data?.totalDocs);
+  }, [data]);
 
   return (
     <section className='mt-4 sm:mt-6'>
       <div className='flex justify-between items-center mb-4 sm:mb-5'>
         <h2 className='sm:text-2xl text-base text-white font-semibold'>Choose Dishes</h2>
 
-        <Filter value={sortBy} onChange={handleChangeSortMode} options={sortOptions} getLabel={(item) => item.label} />
-      </div>
-      <div className='row'>
-        <div className='col col-2 col-md-4 col-sm-6'>
-          <ProductCard
-            id={1}
-            imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-            name='Spicy seasoned seafood noodles'
-            price={2.29}
-            available={20}
-          />
-        </div>
-        <div className='col col-2 col-md-4 col-sm-6'>
-          <ProductCard
-            id={2}
-            imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-            name='Spicy seasoned seafood noodles'
-            price={2.29}
-            available={20}
-          />
-        </div>
-        <div className='col col-2 col-md-4 col-sm-6'>
-          <ProductCard
-            id={3}
-            imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-            name='Spicy seasoned seafood noodles'
-            price={2.29}
-            available={20}
-          />
-        </div>
-        <div className='col col-2 col-md-4 col-sm-6'>
-          <ProductCard
-            id={4}
-            imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-            name='Spicy seasoned seafood noodles'
-            price={2.29}
-            available={20}
-          />
-        </div>
-        <div className='col col-2 col-md-4 col-sm-6'>
-          <ProductCard
-            id={5}
-            imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-            name='Spicy seasoned seafood noodles'
-            price={2.29}
-            available={20}
-          />
-        </div>
-        <div className='col col-2 col-md-4 col-sm-6'>
-          <ProductCard
-            id={6}
-            imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-            name='Spicy seasoned seafood noodles'
-            price={2.29}
-            available={20}
-          />
-        </div>
-        <div className='col col-2 col-md-4 col-sm-6'>
-          <ProductCard
-            id={6}
-            imageUrl='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVPvcZIxeA9bZukK18CymY32OqFUTVbkKXgQ&s'
-            name='Spicy seasoned seafood noodles'
-            price={2.29}
-            available={20}
+        <div className='flex items-center'>
+          <span className='sm:text-base text-sm text-[var(--text-lighter)] mr-2'>Sort by</span>
+          <Select
+            rootClassName='custom-antd-select'
+            defaultValue='name_asc'
+            value={sortBy}
+            style={{ width: 200 }}
+            styles={{
+              popup: {
+                root: {
+                  backgroundColor: 'var(--form-background)',
+                  color: 'white',
+                },
+              },
+            }}
+            onChange={handleChangeSortMode}
+            options={[
+              { value: 'name_asc', label: 'A - Z' },
+              { value: 'name_desc', label: 'Z - A' },
+              { value: 'price_asc', label: 'Price Increasing' },
+              { value: 'price_desc', label: 'Price Decreasing' },
+            ]}
           />
         </div>
       </div>
+      {isLoading ? (
+        <ProductListSkeleton />
+      ) : (
+        <div className='row'>
+          {products?.map((product, index) => (
+            <div key={index} className='col col-2 col-md-4 col-sm-6'>
+              <ProductCard
+                key={index}
+                id={product.id}
+                name={product.name}
+                imageUrl={product.imageUrl}
+                price={product.price}
+                quantity={product.quantity}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+
       <Pagination
         rootClassName='antd-custom-pagination'
+        current={page}
         align='center'
         defaultCurrent={1}
-        total={100}
-        pageSize={10} // số item mỗi trang (cố định)
-        showSizeChanger={false} // ✅ ẩn dropdown chọn số item
-        showLessItems // (tuỳ chọn) hiển thị ít số nút trang hơn
-        onChange={(page) => {
-          console.log('Page:', page);
-        }}
+        total={totalDocs}
+        pageSize={18}
+        showSizeChanger={false}
+        showLessItems
+        onChange={handleChangePage}
       />
     </section>
   );

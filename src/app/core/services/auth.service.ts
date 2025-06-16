@@ -11,3 +11,8 @@ export const login = async ({ email, password }: LoginProps) => {
   });
   return response?.data;
 };
+
+export const logout = async () => {
+  const response = await request.post('/auth/logout');
+  return response?.data;
+};
