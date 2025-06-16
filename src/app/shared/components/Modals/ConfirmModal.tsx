@@ -32,7 +32,7 @@ export const ConfirmModal = ({ isModalOpen, onOk, onCancel, title, description }
       }
     >
       <div className='flex items-center flex-col'>
-        <p className='text-white text-center text-base my-4'>{description}.</p>
+        <p className='text-white text-center text-base my-4'>{description}</p>
       </div>
     </Modal>
   );

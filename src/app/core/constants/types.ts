@@ -52,3 +52,18 @@ export interface CounterProps {
   min?: number;
   max?: number;
 }
+
+export type Category = {
+  id: number;
+  name: string;
+};
+
+export type Role = 'admin' | 'staff';
+
+export interface User {
+  id: number;
+  fullName: string;
+  email: string;
+  imageUrl: string;
+  role: Role;
+}

@@ -1,13 +1,15 @@
 import React, { useEffect, useState, type ChangeEvent } from 'react';
+import { useDispatch } from 'react-redux';
+import { DeleteOutlined } from '@ant-design/icons';
+
+import { ConfirmModal } from './Modals/ConfirmModal';
 import { TextField } from './TextField';
 import { Button } from './Button';
-import { DeleteOutlined } from '@ant-design/icons';
-import type { OrderItemProps } from '@/core/constants/types';
-import { useDispatch } from 'react-redux';
-import { type AppDispatch } from '@src/redux/store';
-import { removeCartItem, updateCartQuantity, updateQuantityItem } from '@src/redux/actions/cartActions';
+
 import useDebounce from '../hooks/useDebounce';
-import { ConfirmModal } from './Modals/ConfirmModal';
+import { type AppDispatch } from '@src/redux/store';
+import type { OrderItemProps } from '@/core/constants/types';
+import { removeCartItem, updateCartQuantity, updateQuantityItem } from '@src/redux/actions/cartActions';
 
 export const CartItem: React.FC<OrderItemProps> = ({ id, imageUrl, name, price, quantity, note }) => {
   const [noteValue, setNoteValue] = useState(note);
