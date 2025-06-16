@@ -9,7 +9,9 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/app/*"],
+      "@src/*": ["./src/*"],
       "@components/*": ["./src/app/shared/components/*"],
+      "@assets/*": ["./src/assets/*"]
     },
 
     /* Bundler mode */
