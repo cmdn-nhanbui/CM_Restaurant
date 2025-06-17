@@ -20,10 +20,18 @@ export const Search = () => {
   const [isHasMore, setIsHasMore] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
 
-  const debounceSearchValue = useDebounce(searchValue, 500);
+  const debounceSearchValue = useDebounce(searchValue.trim(), 500);
 
   const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
+  };
+
+  const handleChangeSearchValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.trim() === '') {
+      setSearchResult([]);
+    }
+    setSearchValue(value);
   };
 
   useEffect(() => {
@@ -78,11 +86,7 @@ export const Search = () => {
       rootClassName='custom-popover-body'
     >
       <div className='relative'>
-        <TextField
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
-          placeholder='Search for food, coffee, etc...'
-          className='pr-6'
-        />
+        <TextField onChange={handleChangeSearchValue} placeholder='Search for food, coffee, etc...' className='pr-6' />
         <div className='absolute top-1/2 right-3   -translate-y-1/2 flex'>
           {isLoading ? (
             <Spin indicator={<LoadingOutlined spin style={{ color: 'var(--primary)' }} />} />

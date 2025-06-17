@@ -137,7 +137,7 @@ const Products = () => {
           )}
         </section>
 
-        <div className='pb-6 pt-4'>
+        <div className='pb-6 pt-4 border-t border-[var(--dark-line)]'>
           <Pagination
             rootClassName='antd-custom-pagination'
             align='center'
@@ -169,7 +169,7 @@ const Products = () => {
         onCancel={() => setProductDelete(null)}
         onOk={handleDeleteProduct}
         title='Delete this product ?'
-        description='Do you really want to delete these product? This process cannot be undone'
+        description='Do you really want to delete these product? This process cannot be undone.'
       />
     </>
   );

@@ -39,8 +39,8 @@ export const ConfirmModal = ({
         </div>
       }
     >
-      <div className='flex items-center flex-col'>
-        <p className='text-white text-center text-base my-4'>{description}</p>
+      <div className='flex items-start flex-col'>
+        <p className='text-white text-base my-4 text-left'>{description}</p>
       </div>
     </Modal>
   );

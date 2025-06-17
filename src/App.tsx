@@ -11,12 +11,15 @@ import { fetchCategories } from './redux/actions/categoryActions';
 
 import './app/stylesheet/style.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import usePusher from '@/shared/hooks/usePusher';
 
 const queryClient = new QueryClient();
 
 function App() {
   const categories = useSelector((state: RootState) => state.category.data);
   const dispatch = useDispatch<AppDispatch>();
+
+  usePusher();
 
   useEffect(() => {
     if (!categories || !categories.length) {

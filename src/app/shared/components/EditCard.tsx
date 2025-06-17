@@ -2,6 +2,7 @@ import React from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { Product } from '@/core/constants/types';
 import { formatVND } from '@/core/helpers/currencyHelper';
+import { Image } from './Image';
 
 interface EdtiDishCardProps extends Product {
   onEdit?: () => void;
@@ -12,7 +13,7 @@ export const EditCard: React.FC<EdtiDishCardProps> = ({ imageUrl, name, price, o
   return (
     <>
       <div className='lg:min-w-[220px] lg:min-h-[300px] min-w-[160px] min-h-[220px] bg-[var(--background-secondary)] rounded-lg overflow-hidden flex flex-col border border-[var(--dark-line)] relative'>
-        <img src={imageUrl} alt={name} className='w-20 h-20 rounded-full mx-auto mt-4 object-cover' />
+        <Image src={imageUrl} alt={name} className='w-20 h-20 rounded-full mx-auto mt-4 object-cover' />
         <div className='text-center mt-2 px-2'>
           <p className='text-white text-base font-semibold'>{name}</p>
           <p className='text-[var(--text-light)] text-sm mt-1'>

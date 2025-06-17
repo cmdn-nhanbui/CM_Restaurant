@@ -91,7 +91,7 @@ export const CartItem: React.FC<OrderItemProps> = ({ id, imageUrl, name, price, 
           setIsShowModal(false);
         }}
         title='Are you sure ?'
-        description='Do you really want to delete these records? This process cannot be undone'
+        description='Do you really want to delete these records? This process cannot be undone.'
       />
     </>
   );
