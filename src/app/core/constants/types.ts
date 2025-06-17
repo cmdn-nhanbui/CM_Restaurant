@@ -56,6 +56,7 @@ export interface CounterProps {
 export type Category = {
   id: number;
   name: string;
+  navigateTo: string;
 };
 
 export type Role = 'admin' | 'staff';
@@ -76,4 +77,9 @@ export interface Product {
   orderQuantity: number;
   price: number;
   quantity: number;
+}
+
+export interface AdditionalNavItem {
+  name: string;
+  navigateTo: string;
 }

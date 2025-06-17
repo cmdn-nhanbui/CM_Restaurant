@@ -16,5 +16,6 @@ export const ADMIN_ROUTES = {
   STATISTIC: '/admin/statistic',
   NOTIFICATION: '/admin/notify',
   PRODUCTS: '/admin/products',
+  CATEGORIES: '/admin/products/:id',
   TABLES: '/admin/tables',
 };
