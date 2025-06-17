@@ -20,4 +20,5 @@ export const ADMIN_ROUTES = {
   TABLES: '/admin/tables',
   SETTING: '/admin/setting',
   PASSWORD: '/admin/setting/password',
+  USER: '/admin/user',
 };

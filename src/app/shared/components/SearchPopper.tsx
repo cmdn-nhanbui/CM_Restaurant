@@ -14,11 +14,11 @@ export const SearchPopper = ({ isLoadMore, onLoadMore, searchResult }: SearchPop
   };
   return (
     <div>
-      <div className='text-white shadow-lg flex flex-col gap-4 max-h-[450px] overflow-y-auto scrollbar-hidden md:min-w-[374px]'>
+      <ul className='text-white shadow-lg flex flex-col gap-4 max-h-[450px] overflow-y-auto scrollbar-hidden md:min-w-[374px]'>
         {searchResult?.map((item, index) => (
           <SearchItem {...item} key={index} />
         ))}
-      </div>
+      </ul>
 
       {isLoadMore && (
         <div className='pt-4'>

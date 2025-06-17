@@ -3,6 +3,7 @@ import { Sidebar } from '@components/Sidebar';
 import { Search } from '../components/Search';
 import { Navigation } from '../components/Navigation';
 import { ROUTES } from '@/core/constants/routes';
+import { getCurrentDate } from '@/core/helpers/timeHelper';
 
 const ProductLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,7 +15,7 @@ const ProductLayout = ({ children }: { children: React.ReactNode }) => {
             <div className='flex sm:flex-row flex-col w-full justify-between items-center'>
               <div className='flex flex-col text-[var(--text-lighter)] sm:w-auto w-full mb-3 sm:mb-0'>
                 <h2 className='text-white font-semibold text-3xl'>Jaegar Resto</h2>
-                <p className='text-lg'>Tuesday, 2 Feb 2021</p>
+                <p className='text-lg'>{getCurrentDate()}</p>
               </div>
               <div className='py-2 w-full sm:w-[400px]'>
                 <Search />

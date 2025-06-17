@@ -28,23 +28,24 @@ const Cart = () => {
       </div>
 
       {/* Scrollable list */}
-      <div className='flex-1 overflow-y-auto  scrollbar-hidden sm:py-6 py-4 flex flex-col sm:gap-6 gap-4'>
+      <ul className='flex-1 overflow-y-auto  scrollbar-hidden sm:py-6 py-4 flex flex-col sm:gap-6 gap-4'>
         {data?.map((item, index) => (
-          <CartItem
-            id={item?.id}
-            key={index}
-            imageUrl={item?.imageUrl}
-            name={item?.name}
-            price={item?.price}
-            quantity={item?.quantity}
-            note={item?.note}
-          />
+          <li key={index}>
+            <CartItem
+              id={item?.id}
+              imageUrl={item?.imageUrl}
+              name={item?.name}
+              price={item?.price}
+              quantity={item?.quantity}
+              note={item?.note}
+            />
+          </li>
         ))}
 
         {data?.length === 0 && (
           <Empty styles={{ description: { color: 'white', fontSize: 16 } }} description='Cart is empty' />
         )}
-      </div>
+      </ul>
 
       {/* Footer */}
       <div className='flex flex-col'>

@@ -33,7 +33,7 @@ export const SearchItem = ({ id, name, orderQuantity, imageUrl, price }: Product
   return (
     <>
       {contextHolder}
-      <div
+      <li
         onClick={() => setIsShowModal(true)}
         className='cursor-pointer flex gap-4 bg-[var(--form-background)] p-3 rounded-lg shadow-lg'
       >
@@ -49,7 +49,7 @@ export const SearchItem = ({ id, name, orderQuantity, imageUrl, price }: Product
             <span className='text-[var(--text-lighter)] font-semibold text-sm'>{formatVND(price)}</span>
           </div>
         </div>
-      </div>
+      </li>
 
       <AddToCartModal
         isModalOpen={isShowModal}

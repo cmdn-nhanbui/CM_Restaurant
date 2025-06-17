@@ -64,13 +64,13 @@ const Categories = () => {
       {isLoading ? (
         <ProductListSkeleton />
       ) : (
-        <div className='row'>
+        <ul className='row'>
           {products?.map((product, index) => (
-            <div key={index} className='col col-2 col-md-4 col-sm-6'>
+            <li key={index} className='col col-2 col-md-4 col-sm-6'>
               <ProductCard key={index} {...product} />
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       {!products?.length && (

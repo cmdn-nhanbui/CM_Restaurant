@@ -1,3 +1,4 @@
+import { getCurrentDate } from '@/core/helpers/timeHelper';
 import { BestSellerList } from '@/shared/components/BestSellerList';
 import { Icon } from '@/shared/components/Icons';
 import { ListOrder } from '@/shared/components/ListOrder';
@@ -11,7 +12,7 @@ const Dashboard = () => {
       <div className='w-full overflow-y-hidden flex flex-col'>
         <div className='flex flex-col text-[var(--text-lighter)] pb-6 border-b border-[var(--dark-line)]'>
           <h2 className='text-white font-semibold text-3xl'>Dashboard</h2>
-          <p className='text-lg'>Tuesday, 2 Feb 2021</p>
+          <p className='text-lg'>{getCurrentDate()}</p>
         </div>
 
         <section className='py-6 flex gap-6 sm:flex-row flex-col'>

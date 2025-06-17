@@ -61,14 +61,6 @@ export type Category = {
 
 export type Role = 'admin' | 'staff';
 
-export interface User {
-  id: number;
-  fullName: string;
-  email: string;
-  imageUrl: string;
-  role: Role;
-}
-
 export interface Product {
   id: number;
   name: string;
@@ -97,4 +89,15 @@ export interface RenderFieldProps {
   errorMessage?: string;
   show: boolean;
   toggleShow: () => void;
+}
+
+export interface User {
+  id: number;
+  fullName: string;
+  email: string;
+  role: Role;
+  createdAt: string;
+  updatedAt: string;
+  gender: boolean;
+  phoneNumber: string;
 }

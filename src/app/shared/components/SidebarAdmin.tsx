@@ -76,14 +76,14 @@ export const SidebarAdmin = () => {
           </div>
           <div className='p-4'>
             <NavLink
-              to={ADMIN_ROUTES.TABLES}
+              to={ADMIN_ROUTES.USER}
               className={(nav) =>
                 classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
                   'bg-[var(--primary)] fill-white text-white': nav.isActive,
                 })
               }
             >
-              <Icon icon='table' color='inherit' />
+              <Icon icon='users' color='inherit' />
             </NavLink>
           </div>
           <div className='p-4'>

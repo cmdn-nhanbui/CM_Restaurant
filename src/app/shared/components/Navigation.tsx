@@ -20,29 +20,13 @@ export const Navigation = ({ categories, loading, additionalItems }: Props) => {
   if (categories) data = categories;
 
   return (
-    <nav className='flex gap-8 sm:mt-6 mt-4 border-b border-[var(--dark-line)] overflow-x-auto scrollbar-hidden whitespace-nowrap pb-4 sm:pb-6'>
-      {additionalItems?.map((item, index) => (
-        <NavLink
-          key={index}
-          to={item?.navigateTo}
-          end
-          className={(nav) =>
-            classNames('text-white font-semibold', {
-              '!text-[var(--primary)]': nav.isActive,
-            })
-          }
-        >
-          {item.name}
-        </NavLink>
-      ))}
-      {fetchingCategories || loading
-        ? Array.from({ length: 5 }).map((_, index) => (
-            <div key={index} className='w-24 h-6 bg-[var(--form-background)] rounded-md animate-pulse' />
-          ))
-        : data?.map((item, index) => (
+    <nav>
+      <ul className='flex gap-8 sm:mt-6 mt-4 border-b border-[var(--dark-line)] overflow-x-auto scrollbar-hidden whitespace-nowrap pb-4 sm:pb-6'>
+        {additionalItems?.map((item, index) => (
+          <li key={index}>
             <NavLink
-              key={index}
-              to={item?.navigateTo || `/categories/${item.id}`}
+              to={item?.navigateTo}
+              end
               className={(nav) =>
                 classNames('text-white font-semibold', {
                   '!text-[var(--primary)]': nav.isActive,
@@ -51,7 +35,27 @@ export const Navigation = ({ categories, loading, additionalItems }: Props) => {
             >
               {item.name}
             </NavLink>
-          ))}
+          </li>
+        ))}
+        {fetchingCategories || loading
+          ? Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className='w-24 h-6 bg-[var(--form-background)] rounded-md animate-pulse' />
+            ))
+          : data?.map((item, index) => (
+              <li key={index}>
+                <NavLink
+                  to={item?.navigateTo || `/categories/${item.id}`}
+                  className={(nav) =>
+                    classNames('text-white font-semibold', {
+                      '!text-[var(--primary)]': nav.isActive,
+                    })
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              </li>
+            ))}
+      </ul>
     </nav>
   );
 };
