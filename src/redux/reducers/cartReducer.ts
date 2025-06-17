@@ -1,3 +1,4 @@
+import { getLS, KEYS, setLS } from '@/core/helpers/storageHelper';
 import type { CartItem } from '../../app/core/constants/types';
 import { ADD_CART_ITEM, UPDATE_QUANTITY_CART_ITEM, REMOVE_CART_ITEM, UPDATE_QUANTITY_ITEM } from '../types';
 
@@ -5,32 +6,16 @@ interface CartState {
   data: CartItem[];
 }
 
-// const saveCartToLocalStorage = (cartData: CartItem[]): void => {
-//   const cartJSON = JSON.stringify(cartData);
-//   setLS(KEYS.CART, cartJSON);
-// };
+const saveCartToLocalStorage = (cartData: CartItem[]): void => {
+  const cartJSON = JSON.stringify(cartData);
+  setLS(KEYS.CART, cartJSON);
+};
+
+const cart = getLS(KEYS.CART);
+const cartData = JSON.parse(String(cart));
 
 const initialState: CartState = {
-  data: [
-    {
-      id: 2,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
-    {
-      id: 3,
-      imageUrl:
-        'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Noodles-with-chilli-oil-eggs-6ec34e9.jpg',
-      name: 'Noodles with crispy chilli oil eggs',
-      price: 15.0,
-      quantity: 2,
-      note: '',
-    },
-  ],
+  data: Array.isArray(cartData) ? cartData : [],
 };
 
 const cartReducer = (state = initialState, action: any): CartState => {
@@ -44,8 +29,9 @@ const cartReducer = (state = initialState, action: any): CartState => {
       if (!isCartExisted) {
         newCartData.push(cartItem);
       } else {
-        isCartExisted.quantity += 1;
+        isCartExisted.quantity += cartItem.quantity;
       }
+      saveCartToLocalStorage(newCartData);
 
       return {
         ...state,
@@ -58,11 +44,14 @@ const cartReducer = (state = initialState, action: any): CartState => {
       if (updateItem) {
         updateItem.quantity = action?.payload?.quantity;
       }
+      saveCartToLocalStorage(newCartData);
+
       return { ...state, data: newCartData };
     }
     case REMOVE_CART_ITEM: {
       const id = action.payload;
       const removedArray = state.data?.filter((item) => item?.id !== id);
+      saveCartToLocalStorage(removedArray);
 
       return { ...state, data: removedArray };
     }
@@ -74,6 +63,8 @@ const cartReducer = (state = initialState, action: any): CartState => {
         updateItem.note = data.note;
         updateItem.price = data.price || updateItem;
       }
+      saveCartToLocalStorage(newCartData);
+
       return { ...state, data: newCartData };
     }
 

@@ -1,9 +1,16 @@
-import { Select } from 'antd';
+import { Pagination, Select } from 'antd';
 import { OrderTable } from './OrderTable';
 
 export const ListOrder = () => {
+  const handleChangePage = (page: number) => {
+    // const newParams = new URLSearchParams(location.search);
+    // newParams.set('page', String(page));
+    // navigate(`?${newParams.toString()}`);
+    console.log(page);
+  };
+
   return (
-    <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden'>
+    <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col'>
       <div className='flex items-center justify-between'>
         <h2 className='text-lg font-semibold text-white'>Order Report</h2>
         <Select
@@ -31,6 +38,19 @@ export const ListOrder = () => {
 
       <div className='mt-2 h-full overflow-y-auto pb-4'>
         <OrderTable />
+      </div>
+      <div className='pt-3 border-t border-[var(--dark-line)]'>
+        <Pagination
+          rootClassName='antd-custom-pagination'
+          current={1}
+          align='center'
+          defaultCurrent={1}
+          total={20}
+          pageSize={10}
+          showSizeChanger={false}
+          showLessItems
+          onChange={handleChangePage}
+        />
       </div>
     </section>
   );

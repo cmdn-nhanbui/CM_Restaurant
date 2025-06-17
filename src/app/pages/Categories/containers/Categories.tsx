@@ -3,8 +3,8 @@ import { mapProductData } from '@/core/mappers/product.mapper';
 import ProductCard from '@/shared/components/ProductCard';
 import ProductListSkeleton from '@/shared/components/ProductListSkeleton';
 import { useProductByCategory } from '@/shared/hooks/useProduct';
-import { Pagination, Select } from 'antd';
-import { useEffect, useState } from 'react';
+import { Empty, Pagination, Select } from 'antd';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Categories = () => {
@@ -67,30 +67,40 @@ const Categories = () => {
         <div className='row'>
           {products?.map((product, index) => (
             <div key={index} className='col col-2 col-md-4 col-sm-6'>
-              <ProductCard
-                key={index}
-                id={product.id}
-                name={product.name}
-                imageUrl={product.imageUrl}
-                price={product.price}
-                quantity={product.quantity}
-              />
+              <ProductCard key={index} {...product} />
             </div>
           ))}
         </div>
       )}
 
-      <Pagination
-        rootClassName='antd-custom-pagination'
-        current={page}
-        align='center'
-        defaultCurrent={1}
-        total={data?.totalDocs || 1}
-        pageSize={18}
-        showSizeChanger={false}
-        showLessItems
-        onChange={handleChangePage}
-      />
+      {!products?.length && (
+        <Empty
+          style={{
+            margin: '16px 0',
+          }}
+          styles={{
+            description: {
+              color: 'white',
+              fontWeight: 600,
+              fontSize: 20,
+            },
+          }}
+        />
+      )}
+
+      {products?.length && (
+        <Pagination
+          rootClassName='antd-custom-pagination'
+          current={page}
+          align='center'
+          defaultCurrent={1}
+          total={data?.total_docs || 1}
+          pageSize={18}
+          showSizeChanger={false}
+          showLessItems
+          onChange={handleChangePage}
+        />
+      )}
     </section>
   );
 };

@@ -10,12 +10,13 @@ import useDebounce from '../hooks/useDebounce';
 import { type AppDispatch } from '@src/redux/store';
 import type { OrderItemProps } from '@/core/constants/types';
 import { removeCartItem, updateCartQuantity, updateQuantityItem } from '@src/redux/actions/cartActions';
+import { formatVND } from '@/core/helpers/currencyHelper';
 
 export const CartItem: React.FC<OrderItemProps> = ({ id, imageUrl, name, price, quantity, note }) => {
   const [noteValue, setNoteValue] = useState(note);
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
 
-  const total = (price * quantity).toFixed(2);
+  const total = price * quantity;
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveItem = () => {
@@ -43,12 +44,12 @@ export const CartItem: React.FC<OrderItemProps> = ({ id, imageUrl, name, price, 
             <img src={imageUrl} alt={name} className='w-10 h-10 rounded-full object-cover' />
             <div className='flex flex-col'>
               <span className='text-base font-medium text-white truncate w-42 sm:w-full'>{name}</span>
-              <span className='text-sm text-[var(--text-light)]'>${price.toFixed(2)}</span>
+              <span className='text-sm text-[var(--text-light)]'>{formatVND(price)}</span>
             </div>
           </div>
 
           <div className='flex items-center'>
-            <div className='text-white font-semibold'>${total}</div>
+            <div className='text-white font-semibold'>{formatVND(total)}</div>
           </div>
         </div>
 

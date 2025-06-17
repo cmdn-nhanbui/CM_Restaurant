@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { CartItem } from '@/shared/components/CartItem';
 import { Button } from '@/shared/components/Button';
 import { type RootState } from '@src/redux/store';
+import { formatVND } from '@/core/helpers/currencyHelper';
 
 const Cart = () => {
   const { data } = useSelector((state: RootState) => state.cart);
@@ -12,6 +13,7 @@ const Cart = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const total = data?.reduce((prev, current) => prev + current.price * current.quantity, 0);
   return (
     <div className='flex flex-col h-full justify-between'>
       {/* Header */}
@@ -49,7 +51,7 @@ const Cart = () => {
         <div className='border-b border-[var(--dark-line)] my-4'></div>
         <div className='flex items-center justify-between my-4'>
           <span className='text-[var(--text-light)]'>Subtotal</span>
-          <span className='text-white'>$ 21,03</span>
+          <span className='text-white'>{formatVND(total)}</span>
         </div>
         {!!data?.length && <Button>Confirm Order</Button>}
       </div>

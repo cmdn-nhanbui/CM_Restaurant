@@ -1,15 +1,38 @@
-.custom-popover-body {
-  width: 100%;
-  max-width: 400px;
-  background-color: var(--background-secondary);
-  .ant-popover-inner {
-    padding: 16px;
-    border: 1px solid var(--dark-line);
-  }
-}
+// .custom-popover-body {
+//   width: 100%;
+//   max-width: 400px;
+//   background-color: var(--background-secondary);
+//   .ant-popover-inner {
+//     padding: 16px;
+//     border: 1px solid var(--dark-line);
+//   }
+// }
 
-@media (min-width: 640px) {
+// @media (min-width: 640px) {
+//   .custom-popover-body {
+//     width: 100%;
+//   }
+//   .ant-popover {
+//     width: 100% !important;
+//   }
+//   .custom-popover-body {
+//     max-width: 500px;
+//     width: 100%;
+//   }
+// }
+
+@media (max-width: 768px) {
+  .ant-popover {
+    width: 100% !important;
+  }
   .custom-popover-body {
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+
+  .custom-popover-body .ant-popover-arrow {
+    display: none !important;
   }
 }

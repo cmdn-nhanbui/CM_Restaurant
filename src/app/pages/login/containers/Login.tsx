@@ -93,6 +93,8 @@ const Login = () => {
     requestLogin();
   };
 
+  console.log(errors);
+
   return (
     <>
       {contextHolder}
@@ -130,7 +132,7 @@ const Login = () => {
           </div>
           {errors?.password && <p className='text-sm px-2 text-[var(--primary)]'>{errors?.password?.message}</p>}
 
-          <Button outlined className='flex gap-3 justify-center'>
+          <Button type='submit' outlined className='flex gap-3 justify-center'>
             <span>LOGIN</span>
           </Button>
         </form>

@@ -2,6 +2,7 @@ import { Modal } from 'antd';
 import { Button } from '../Button';
 import { Counter } from '../Counter';
 import { useState } from 'react';
+import { Image } from '../Image';
 
 type ModalProps = {
   isModalOpen: boolean;
@@ -35,7 +36,7 @@ export const AddToCartModal = ({ isModalOpen, onOk, onCancel, imageUrl }: ModalP
       }
     >
       <div className='flex items-center flex-col'>
-        <img
+        <Image
           src={imageUrl}
           alt={'product-name'}
           className='w-[120px] h-[120px] object-cover rounded-full mx-auto  border-1 border-[var(--dark-line)] shadow-primary'

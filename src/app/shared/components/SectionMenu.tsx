@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Filter } from './Filter';
+import { useState } from 'react';
 import ProductCard from './ProductCard';
 import { Pagination, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -8,16 +7,6 @@ import ProductListSkeleton from './ProductListSkeleton';
 import { mapProductData } from '@/core/mappers/product.mapper';
 import type { Product } from '@/core/constants/types';
 
-type SortOption = {
-  label: string;
-  value: string;
-};
-
-const sortOptions: SortOption[] = [
-  { label: 'Name ASC', value: 'name_asc' },
-  { label: 'Price DESC', value: 'price_desc' },
-];
-
 export const SectionMenu = () => {
   const navigate = useNavigate();
 
@@ -25,7 +14,6 @@ export const SectionMenu = () => {
 
   const queryParams = new URLSearchParams(location.search);
   const page = Number(queryParams.get('page')) || 1;
-  const [totalDocs, setTotalDocs] = useState<number>(0);
 
   const handleChangePage = (page: number) => {
     const newParams = new URLSearchParams(location.search);
@@ -41,10 +29,6 @@ export const SectionMenu = () => {
 
   const products: Product[] = data?.docs?.map(mapProductData);
 
-  useEffect(() => {
-    setTotalDocs(data?.totalDocs);
-  }, [data]);
-
   return (
     <section className='mt-4 sm:mt-6'>
       <div className='flex justify-between items-center mb-4 sm:mb-5'>
@@ -56,7 +40,7 @@ export const SectionMenu = () => {
             rootClassName='custom-antd-select'
             defaultValue='name_asc'
             value={sortBy}
-            style={{ width: 200 }}
+            style={{ width: 120 }}
             styles={{
               popup: {
                 root: {
@@ -81,14 +65,7 @@ export const SectionMenu = () => {
         <div className='row'>
           {products?.map((product, index) => (
             <div key={index} className='col col-2 col-md-4 col-sm-6'>
-              <ProductCard
-                key={index}
-                id={product.id}
-                name={product.name}
-                imageUrl={product.imageUrl}
-                price={product.price}
-                quantity={product.quantity}
-              />
+              <ProductCard key={index} {...product} />
             </div>
           ))}
         </div>
@@ -99,7 +76,7 @@ export const SectionMenu = () => {
         current={page}
         align='center'
         defaultCurrent={1}
-        total={totalDocs}
+        total={data?.total_docs || 0}
         pageSize={18}
         showSizeChanger={false}
         showLessItems

@@ -1,14 +1,38 @@
 import { useState } from 'react';
 import { AddToCartModal } from './Modals/AddToCartModal';
-import type { Product } from '@/core/constants/types';
+import type { CartItem, Product } from '@/core/constants/types';
 import { formatVND } from '@/core/helpers/currencyHelper';
 import { Image } from './Image';
+import { useDispatch } from 'react-redux';
+import { type AppDispatch } from '@src/redux/store';
+import { message } from 'antd';
+import { addCartItem } from '@src/redux/actions/cartActions';
 
-export const SearchItem = ({ name = 'Spicy seasoned seafood noodles', orderQuantity, imageUrl, price }: Product) => {
+export const SearchItem = ({ id, name, orderQuantity, imageUrl, price }: Product) => {
   const [isShowModal, setIsShowModal] = useState(false);
-  const handleAddToCart = () => {};
+  const dispatch = useDispatch<AppDispatch>();
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const handleAddToCart = (quantity: number) => {
+    setIsShowModal(false);
+    const cartItem: CartItem = {
+      id,
+      name,
+      imageUrl,
+      note: '',
+      quantity: quantity,
+      price,
+    };
+
+    dispatch(addCartItem(cartItem));
+    messageApi.open({
+      type: 'success',
+      content: 'Add product to card successfully',
+    });
+  };
   return (
     <>
+      {contextHolder}
       <div
         onClick={() => setIsShowModal(true)}
         className='cursor-pointer flex gap-4 bg-[var(--form-background)] p-3 rounded-lg shadow-lg'
@@ -31,7 +55,7 @@ export const SearchItem = ({ name = 'Spicy seasoned seafood noodles', orderQuant
         isModalOpen={isShowModal}
         onOk={handleAddToCart}
         onCancel={() => setIsShowModal(false)}
-        imageUrl={'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTILkLfQdFvX_XJmV0o2CXITtllhwrvDB1Nxw&s'}
+        imageUrl={imageUrl}
       />
     </>
   );
