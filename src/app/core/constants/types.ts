@@ -83,3 +83,18 @@ export interface AdditionalNavItem {
   name: string;
   navigateTo: string;
 }
+
+export interface FormUpdatePassword {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export interface RenderFieldProps {
+  label: string;
+  id: string;
+  name: keyof FormUpdatePassword;
+  errorMessage?: string;
+  show: boolean;
+  toggleShow: () => void;
+}

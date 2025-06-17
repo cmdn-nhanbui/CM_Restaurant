@@ -12,10 +12,12 @@ export const ROUTES = {
 
 export const ADMIN_ROUTES = {
   DASHBOARD: '/admin',
-  SETTING: '/admin/setting',
+  SETTINGS: '/admin/setting/*',
   STATISTIC: '/admin/statistic',
   NOTIFICATION: '/admin/notify',
   PRODUCTS: '/admin/products',
   CATEGORIES: '/admin/products/:id',
   TABLES: '/admin/tables',
+  SETTING: '/admin/setting',
+  PASSWORD: '/admin/setting/password',
 };

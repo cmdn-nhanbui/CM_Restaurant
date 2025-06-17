@@ -7,9 +7,17 @@ type ModalProps = {
   onCancel: () => void;
   title: string;
   description: string;
+  contentConfirmButton?: string;
 };
 
-export const ConfirmModal = ({ isModalOpen, onOk, onCancel, title, description }: ModalProps) => {
+export const ConfirmModal = ({
+  isModalOpen,
+  onOk,
+  onCancel,
+  title,
+  description,
+  contentConfirmButton = 'Confirm',
+}: ModalProps) => {
   const handleConfirm = () => {
     return onOk();
   };
@@ -26,7 +34,7 @@ export const ConfirmModal = ({ isModalOpen, onOk, onCancel, title, description }
             Cancel
           </Button>
           <Button key='ok' onClick={handleConfirm}>
-            Confirm
+            {contentConfirmButton}
           </Button>
         </div>
       }

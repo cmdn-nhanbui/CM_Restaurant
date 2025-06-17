@@ -17,7 +17,7 @@ const adminRoutes: PageRoute[] = [
     element: Dashboard,
   },
   {
-    path: ADMIN_ROUTES.SETTING,
+    path: ADMIN_ROUTES.SETTINGS,
     element: Setting,
   },
   {
