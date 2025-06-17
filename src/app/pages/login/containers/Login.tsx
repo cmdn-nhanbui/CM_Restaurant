@@ -93,8 +93,6 @@ const Login = () => {
     requestLogin();
   };
 
-  console.log(errors);
-
   return (
     <>
       {contextHolder}

@@ -29,6 +29,10 @@ const adminRoutes: PageRoute[] = [
     element: Products,
   },
   {
+    path: ADMIN_ROUTES.CATEGORIES,
+    element: Products,
+  },
+  {
     path: ADMIN_ROUTES.STATISTIC,
     element: Statistic,
   },

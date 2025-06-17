@@ -98,9 +98,7 @@ export const updteProduct = async (id: number, data: FormUpdateProduct) => {
   formData.append('price', data.price.toString());
   formData.append('category_id', data.categoryId.toString());
 
-  if (data.quantity) {
-    formData.append('quantity', data.quantity.toString());
-  }
+  formData.append('quantity', data.quantity != null ? data.quantity.toString() : '');
 
   if (data.image) {
     formData.append('image', data.image);

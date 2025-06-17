@@ -2,35 +2,8 @@ import { Footer } from '@components/Footer';
 import { Sidebar } from '@components/Sidebar';
 import { Search } from '../components/Search';
 import { Navigation } from '../components/Navigation';
+import { ROUTES } from '@/core/constants/routes';
 
-import type { Category } from '@/core/constants/types';
-
-export const CATEGORIES: Category[] = [
-  {
-    name: 'Hot Dishes',
-    id: 1,
-  },
-  {
-    name: 'Cold Dishes',
-    id: 2,
-  },
-  {
-    name: 'Soup',
-    id: 3,
-  },
-  {
-    name: 'Grill',
-    id: 4,
-  },
-  {
-    name: 'Appetizer',
-    id: 5,
-  },
-  {
-    name: 'Dessert',
-    id: 6,
-  },
-];
 const ProductLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className='min-h-[100dvh] bg-[var(--background-primary)]'>
@@ -48,7 +21,14 @@ const ProductLayout = ({ children }: { children: React.ReactNode }) => {
               </div>
             </div>
             <div className='w-full'>
-              <Navigation categories={CATEGORIES} />
+              <Navigation
+                additionalItems={[
+                  {
+                    name: 'All',
+                    navigateTo: ROUTES.ROOT,
+                  },
+                ]}
+              />
             </div>
             {children}
           </div>

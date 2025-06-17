@@ -8,7 +8,7 @@ import { message } from 'antd';
 import { formatVND } from '@/core/helpers/currencyHelper';
 import { Image } from './Image';
 
-const ProductCard: React.FC<Product> = ({ id, imageUrl, name, price, quantity }) => {
+const ProductCard: React.FC<Product> = ({ id, imageUrl, name, price, quantity, orderQuantity }) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const [messageApi, contextHolder] = message.useMessage();
@@ -47,7 +47,13 @@ const ProductCard: React.FC<Product> = ({ id, imageUrl, name, price, quantity })
         <div className='mt-4'>
           <h3 className='text-md text-white font-semibold'>{name}</h3>
           <p className='text-md text-white mt-2'>{formatVND(price)}</p>
-          <p className='text-sm text-[var(--text-gray)] mt-1'>{quantity} Bowls available</p>
+          <p className='text-sm text-[var(--text-gray)] mt-1'>
+            {quantity === 0
+              ? `Out of order`
+              : quantity === null
+              ? `${orderQuantity} ordered`
+              : `${quantity} products available`}
+          </p>
         </div>
       </div>
       <AddToCartModal

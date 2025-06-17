@@ -106,6 +106,7 @@ export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalP
       setValue('productName', data.name);
       setValue('price', data.price);
       setValue('quantity', data.quantity);
+
       if (data?.imageUrl !== null) {
         setFileList([
           {
@@ -183,7 +184,7 @@ export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalP
             </div>
 
             <div className='flex gap-3 justify-end mt-4'>
-              <Button outlined key='cancel' onClick={onCancel}>
+              <Button outlined type='button' key='cancel' onClick={onCancel}>
                 Cancel
               </Button>
               <Button key='ok' onClick={handleSubmit(handleUpdateProduct)}>

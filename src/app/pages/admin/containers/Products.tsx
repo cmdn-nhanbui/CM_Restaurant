@@ -2,23 +2,27 @@ import { useState } from 'react';
 
 import { AddProductModal } from '@/shared/components/Modals/AddProductModal/AddProductModal';
 import { AddNewDishCard } from '@/shared/components/AddNewDishCard';
-import { CATEGORIES } from '@/shared/layouts/ProductLayout';
 import { Navigation } from '@/shared/components/Navigation';
 import { EditCard } from '@/shared/components/EditCard';
 import { Button } from '@/shared/components/Button';
 import { Icon } from '@/shared/components/Icons';
 import { message, Pagination } from 'antd';
-import { type Product } from '@/core/constants/types';
+import { type Category, type Product } from '@/core/constants/types';
 import { UpdateProductModal } from '@/shared/components/Modals/AddProductModal/UpdateProductModal';
-import { useProductData } from '@/shared/hooks/useProduct';
-import { useNavigate } from 'react-router-dom';
+import { useProductByCategory, useProductData } from '@/shared/hooks/useProduct';
+import { useNavigate, useParams } from 'react-router-dom';
 import { mapProductData } from '@/core/mappers/product.mapper';
 import ProductListSkeleton from '@/shared/components/ProductListSkeleton';
 import { ConfirmModal } from '@/shared/components/Modals/ConfirmModal';
 import { deleteProduct } from '@/core/services/product.service';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@src/redux/store';
+import { ADMIN_ROUTES } from '@/core/constants/routes';
 
 const Products = () => {
   const navigate = useNavigate();
+
+  const { id } = useParams();
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -29,8 +33,12 @@ const Products = () => {
   const queryParams = new URLSearchParams(location.search);
   const page = Number(queryParams.get('page')) || 1;
 
-  const { data, isLoading, refetch } = useProductData({ page, perPage: 17, sort: 'name_asc' });
+  const { data, isLoading, refetch } = id
+    ? useProductByCategory({ page, perPage: 17, sort: 'name_asc', categoryId: Number(id) })
+    : useProductData({ page, perPage: 17, sort: 'name_asc' });
   const products: Product[] = data?.docs?.map(mapProductData);
+
+  const { data: categories, loading } = useSelector((state: RootState) => state.category);
 
   const handleChangePage = (page: number) => {
     const newParams = new URLSearchParams(location.search);
@@ -77,6 +85,12 @@ const Products = () => {
     setShowAddModal(false);
   };
 
+  const cutomCategories: Category[] = categories?.map((item) => ({
+    id: item.id,
+    name: item.name,
+    navigateTo: `/admin/products/${item.id}`,
+  }));
+
   return (
     <>
       {contextHolder}
@@ -94,7 +108,11 @@ const Products = () => {
             </Button>
           </div>
 
-          <Navigation categories={CATEGORIES} />
+          <Navigation
+            categories={cutomCategories}
+            loading={loading}
+            additionalItems={[{ name: 'All', navigateTo: ADMIN_ROUTES.PRODUCTS }]}
+          />
         </div>
 
         <section className='pt-6 px-6 pb-3 flex-1 overflow-y-auto scrollbar-hidden'>

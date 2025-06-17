@@ -56,7 +56,7 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
       return messageApi.error('File must be attached');
     }
 
-    const { productName, price } = data;
+    const { productName, price, quantity } = data;
     const file = fileList?.[0].originFileObj;
 
     const addProductRequest = async () => {
@@ -69,7 +69,7 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
       });
 
       try {
-        await addProduct({ productName, price, categoryId, file });
+        await addProduct({ productName, price, categoryId, file, quantity });
 
         messageApi.open({
           key: toastKey,
