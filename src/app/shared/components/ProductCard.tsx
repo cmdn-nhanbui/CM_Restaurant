@@ -3,20 +3,12 @@ import { AddToCartModal } from './Modals/AddToCartModal';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@src/redux/store';
 import { addCartItem } from '@src/redux/actions/cartActions';
-import type { CartItem } from '@/core/constants/types';
+import type { CartItem, Product } from '@/core/constants/types';
 import { message } from 'antd';
 import { formatVND } from '@/core/helpers/currencyHelper';
 import { Image } from './Image';
 
-type ProductCardProps = {
-  id: number;
-  imageUrl: string;
-  name: string;
-  price: number;
-  quantity: number;
-};
-
-const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, name, price, quantity }) => {
+const ProductCard: React.FC<Product> = ({ id, imageUrl, name, price, quantity }) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const [messageApi, contextHolder] = message.useMessage();
@@ -24,13 +16,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ imageUrl, name, price, quanti
   const handleAddToCart = (quantity: number) => {
     setIsShowModal(false);
     const cartItem: CartItem = {
-      id: 1,
-      name: 'New Product',
-      imageUrl:
-        'https://marleyspoon.com/media/recipes/224442/main_photos/large/stir-c0162ebd540780d497f1c8a5bcc9a5d8.jpeg',
+      id,
+      name,
+      imageUrl,
       note: '',
       quantity: quantity,
-      price: 20,
+      price,
     };
 
     dispatch(addCartItem(cartItem));

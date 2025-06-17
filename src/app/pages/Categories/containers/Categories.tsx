@@ -67,14 +67,7 @@ const Categories = () => {
         <div className='row'>
           {products?.map((product, index) => (
             <div key={index} className='col col-2 col-md-4 col-sm-6'>
-              <ProductCard
-                key={index}
-                id={product.id}
-                name={product.name}
-                imageUrl={product.imageUrl}
-                price={product.price}
-                quantity={product.quantity}
-              />
+              <ProductCard key={index} {...product} />
             </div>
           ))}
         </div>
@@ -101,7 +94,7 @@ const Categories = () => {
           current={page}
           align='center'
           defaultCurrent={1}
-          total={data?.totalDocs || 1}
+          total={data?.total_docs || 1}
           pageSize={18}
           showSizeChanger={false}
           showLessItems

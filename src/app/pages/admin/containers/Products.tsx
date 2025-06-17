@@ -123,8 +123,8 @@ const Products = () => {
           <Pagination
             rootClassName='antd-custom-pagination'
             align='center'
-            defaultCurrent={1}
-            total={data?.totalDocs || 0}
+            defaultCurrent={page}
+            total={data?.total_docs || 0}
             pageSize={17}
             showSizeChanger={false}
             showLessItems

@@ -7,8 +7,11 @@ import useDebounce from '../hooks/useDebounce';
 import { type Product } from '@/core/constants/types';
 import { searchProduct } from '@/core/services/product.service';
 import { mapProductData } from '@/core/mappers/product.mapper';
+import { useMediaQuery } from 'react-responsive';
 
 export const Search = () => {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
   const [open, setOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState<string>('');
@@ -65,13 +68,14 @@ export const Search = () => {
       placement='bottom'
       getPopupContainer={(triggerNode: HTMLElement) => triggerNode.parentElement as HTMLElement}
       styles={{
+        root: {
+          width: isMobile ? '100%' : undefined,
+        },
         body: {
           backgroundColor: 'var(--background-secondary)',
         },
       }}
-      classNames={{
-        root: 'custom-popover-body',
-      }}
+      rootClassName='custom-popover-body'
     >
       <div className='relative'>
         <TextField

@@ -10,7 +10,7 @@ type Props = {
   type?: 'button' | 'submit' | 'reset';
 };
 
-export const Button = ({ outlined, primary = true, children, onClick, type = 'button', className }: Props) => {
+export const Button = ({ outlined, primary = true, children, onClick, type = 'submit', className }: Props) => {
   return (
     <button
       type={type}
