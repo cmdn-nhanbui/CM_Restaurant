@@ -5,7 +5,10 @@ export const mapUserData = (data: any): User => {
     id: data?.id,
     fullName: data?.fullname,
     email: data?.email,
-    imageUrl: data?.image_url,
     role: data?.role,
+    createdAt: data?.created_at,
+    updatedAt: data?.updated_at,
+    gender: data?.gender,
+    phoneNumber: data?.phone_number,
   };
 };

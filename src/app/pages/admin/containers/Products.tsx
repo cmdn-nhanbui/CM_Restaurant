@@ -119,21 +119,21 @@ const Products = () => {
           {isLoading ? (
             <ProductListSkeleton />
           ) : (
-            <div className='row'>
-              <div className='col col-2 col-md-4 col-sm-6 !pt-3'>
+            <ul className='row'>
+              <li className='col col-2 col-md-4 col-sm-6 !pt-3'>
                 <AddNewDishCard onClick={() => setShowAddModal(true)} className='w-full h-full' />
-              </div>
+              </li>
 
               {products?.map((item, index) => (
-                <div key={index} className='col col-2 col-md-4 col-sm-6 !pt-3'>
+                <li key={index} className='col col-2 col-md-4 col-sm-6 !pt-3'>
                   <EditCard
                     {...item}
                     onEdit={() => setProductSelected(item)}
                     onDelete={() => setProductDelete(item.id)}
                   />
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </section>
 

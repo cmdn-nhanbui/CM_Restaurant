@@ -1,8 +1,11 @@
-import { ROUTES } from '@/core/constants/routes';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { Sidebar } from '@/shared/components/SidebarSetting/Sidebar';
 import { PasswordSetting } from '@/shared/components/SidebarSetting/PasswordSetting';
 import { ProfileSetting } from '@/shared/components/SidebarSetting/ProfileSetting';
-import { Sidebar } from '@/shared/components/SidebarSetting/Sidebar';
-import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { ROUTES } from '@/core/constants/routes';
+import { getCurrentDate } from '@/core/helpers/timeHelper';
 
 const Settings = () => {
   return (
@@ -10,7 +13,7 @@ const Settings = () => {
       <div className='w-full overflow-y-hidden flex flex-col'>
         <div className='flex flex-col text-[var(--text-lighter)] pb-6 border-b border-[var(--dark-line)]'>
           <h2 className='text-white font-semibold text-3xl'>Settings</h2>
-          <p className='text-lg'>Tuesday, 2 Feb 2021</p>
+          <p className='text-lg'>{getCurrentDate()}</p>
         </div>
 
         <div className='flex gap-6 mt-6 h-full'>
