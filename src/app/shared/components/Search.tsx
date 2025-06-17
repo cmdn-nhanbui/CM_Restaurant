@@ -37,11 +37,11 @@ export const Search = () => {
       setIsLoading(true);
       try {
         const response = await searchProduct(debounceSearchValue, page);
-        const { hasNextPage, docs } = response?.data;
+        const { has_next_page, docs } = response?.data;
         const productData: Product[] = docs?.map(mapProductData);
 
         setSearchResult((prev) => [...prev, ...productData]);
-        setIsHasMore(hasNextPage);
+        setIsHasMore(has_next_page);
       } catch (error) {
         console.log(error);
       } finally {
