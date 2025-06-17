@@ -1,69 +1,49 @@
+import { formatVND } from '@/core/helpers/currencyHelper';
 import { Badge } from './Badge';
 
 type Order = {
   avatarColor: string;
   name: string;
-  menu: string;
-  payment: string;
-  status: 'Completed' | 'Preparing' | 'Pending';
+  orderItemQuantity: number;
+  payment: number;
+  status: 'available' | 'occupied' | 'reserved';
 };
 
 const orders: Order[] = [
   {
     avatarColor: 'bg-orange-400',
-    name: 'Eren Jaegar',
-    menu: 'Spicy seasoned seafood noodles',
-    payment: '$125',
-    status: 'Completed',
+    name: 'Table 01',
+    orderItemQuantity: 2,
+    payment: 250000,
+    status: 'available',
   },
   {
-    avatarColor: 'bg-blue-400',
-    name: 'Reiner Braunn',
-    menu: 'Salted Pasta with mushroom sauce',
-    payment: '$145',
-    status: 'Preparing',
-  },
-  {
-    avatarColor: 'bg-pink-400',
-    name: 'Levi Ackerman',
-    menu: 'Beef dumpling in hot and sour soup',
-    payment: '$105',
-    status: 'Pending',
-  },
-  {
-    avatarColor: 'bg-green-400',
-    name: 'Historia Reiss',
-    menu: 'Hot spicy fried rice with omelet',
-    payment: '$45',
-    status: 'Completed',
-  },
-  {
-    avatarColor: 'bg-sky-400',
-    name: 'Hanji Zoe',
-    menu: 'Hot spicy fried rice with omelet',
-    payment: '$245',
-    status: 'Completed',
+    avatarColor: 'bg-orange-400',
+    name: 'Table 02',
+    orderItemQuantity: 0,
+    payment: 0,
+    status: 'available',
   },
   {
     avatarColor: 'bg-purple-400',
-    name: 'Armin Arlert',
-    menu: 'Hot spicy fried rice with omelet',
-    payment: '$435',
-    status: 'Completed',
+    name: 'Table 03',
+    orderItemQuantity: 0,
+    payment: 0,
+    status: 'reserved',
   },
   {
     avatarColor: 'bg-purple-400',
-    name: 'Armin Arlert',
-    menu: 'Hot spicy fried rice with omelet',
-    payment: '$435',
-    status: 'Completed',
+    name: 'Table 04',
+    orderItemQuantity: 0,
+    payment: 0,
+    status: 'reserved',
   },
 ];
 
 const colorMapping = {
-  Completed: 'green',
-  Pending: 'orange',
-  Preparing: 'purple',
+  available: 'green',
+  occupied: 'orange',
+  reserved: 'purple',
 } as const;
 
 export const OrderTable = () => {
@@ -71,8 +51,8 @@ export const OrderTable = () => {
     <table className='w-full table-auto text-center text-white'>
       <thead>
         <tr className='border-b border-gray-700'>
-          <th className='py-4 text-left'>Customer</th>
-          <th className='py-4 text-left'>Menu</th>
+          <th className='py-4 text-left'>Table</th>
+          <th className='py-4 text-left'>Order Items</th>
           <th className='py-4'>Total Payment</th>
           <th className='py-4'>Status</th>
         </tr>
@@ -86,8 +66,8 @@ export const OrderTable = () => {
                 {order.name}
               </div>
             </td>
-            <td className='py-4 text-left'>{order.menu}</td>
-            <td className='py-4'>{order.payment}</td>
+            <td className='py-4 text-left'>{order.orderItemQuantity}</td>
+            <td className='py-4'>{formatVND(order.payment)}</td>
             <td className='py-4'>
               <span className='px-4 py-1 rounded-full text-sm font-medium inline-block'>
                 <Badge color={colorMapping[order.status]}>{order.status}</Badge>

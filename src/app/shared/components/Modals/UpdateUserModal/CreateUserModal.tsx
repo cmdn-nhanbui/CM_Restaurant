@@ -1,68 +1,71 @@
 import { Modal, Select } from 'antd';
-import { Button } from '../../Button';
-import type { User } from '@/core/constants/types';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
-import { joiResolver } from '@hookform/resolvers/joi';
-import { updateUserValidation } from './updateUser.validation';
+
+import { Button } from '../../Button';
 import { TextField } from '../../TextField';
-import { useEffect } from 'react';
+
+import { createUserValidation } from './updateUser.validation';
+import { joiResolver } from '@hookform/resolvers/joi';
 
 type ModalProps = {
   isModalOpen: boolean;
   onOk: () => void;
   onCancel: () => void;
-  data: User | null;
 };
 
-interface FormUpdateUser {
+interface FormCreateUser {
+  email: string;
   userName: string;
   phoneNumber: string;
   gender: boolean;
   newPassword: string;
 }
 
-export const UpdateUserModal = ({ isModalOpen, onOk, onCancel, data }: ModalProps) => {
+export const CreateUserModal = ({ isModalOpen, onOk, onCancel }: ModalProps) => {
   const {
+    reset,
     register,
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
-  } = useForm<FormUpdateUser>({
+  } = useForm<FormCreateUser>({
     defaultValues: {
       gender: true,
     },
     reValidateMode: 'onSubmit',
     mode: 'onSubmit',
-    resolver: joiResolver(updateUserValidation),
+    resolver: joiResolver(createUserValidation),
   });
 
-  const handleUpdateProfile: SubmitHandler<FormUpdateUser> = (data) => {
+  const handleCreateUser: SubmitHandler<FormCreateUser> = (data) => {
     console.log(data);
     return onOk();
   };
 
-  useEffect(() => {
-    if (data) {
-      setValue('gender', data.gender);
-      setValue('phoneNumber', data.phoneNumber);
-      setValue('userName', data.fullName);
-    }
-  }, [data]);
+  const handleClose = () => {
+    reset();
+    return onCancel();
+  };
 
   return (
     <Modal
       className='custom-modal'
-      title='Update User'
+      title='Create User'
       open={isModalOpen}
-      onCancel={onCancel}
+      onCancel={handleClose}
       destroyOnHidden
       footer={<></>}
     >
       <div className='flex items-center flex-col'>
-        <p className='text-white py-3 text-base font-semibold'>Email: {data?.email}</p>
         <div className='flex flex-col w-full'>
-          <form onSubmit={handleSubmit(handleUpdateProfile)}>
+          <form onSubmit={handleSubmit(handleCreateUser)}>
+            <div className='flex flex-col gap-2 mt-2'>
+              <label htmlFor='user-name' className='text-white text-base font-semibold'>
+                Email
+              </label>
+              <TextField id='user-name' {...register('email')} />
+              {errors?.email && <p className='text-sm px-2 text-[var(--primary)]'>{errors.email.message}</p>}
+            </div>
             <div className='flex flex-col gap-2 mt-2'>
               <label htmlFor='user-name' className='text-white text-base font-semibold'>
                 User Name

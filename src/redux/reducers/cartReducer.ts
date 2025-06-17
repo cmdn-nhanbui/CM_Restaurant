@@ -1,6 +1,12 @@
 import { getLS, KEYS, setLS } from '@/core/helpers/storageHelper';
 import type { CartItem } from '../../app/core/constants/types';
-import { ADD_CART_ITEM, UPDATE_QUANTITY_CART_ITEM, REMOVE_CART_ITEM, UPDATE_QUANTITY_ITEM } from '../types';
+import {
+  ADD_CART_ITEM,
+  UPDATE_QUANTITY_CART_ITEM,
+  REMOVE_CART_ITEM,
+  UPDATE_QUANTITY_ITEM,
+  CLEAR_CART_DATA,
+} from '../types';
 
 interface CartState {
   data: CartItem[];
@@ -66,6 +72,11 @@ const cartReducer = (state = initialState, action: any): CartState => {
       saveCartToLocalStorage(newCartData);
 
       return { ...state, data: newCartData };
+    }
+
+    case CLEAR_CART_DATA: {
+      saveCartToLocalStorage([]);
+      return { ...state, data: [] };
     }
 
     default:

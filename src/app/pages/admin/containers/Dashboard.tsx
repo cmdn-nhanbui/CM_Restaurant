@@ -1,7 +1,7 @@
 import { getCurrentDate } from '@/core/helpers/timeHelper';
 import { BestSellerList } from '@/shared/components/BestSellerList';
 import { Icon } from '@/shared/components/Icons';
-import { ListOrder } from '@/shared/components/ListOrder';
+import { ListTable } from '@/shared/components/ListTable';
 import { PieChart } from '@/shared/components/PieChart';
 import { SummaryCard } from '@/shared/components/SummaryCard';
 import { DollarOutlined } from '@ant-design/icons';
@@ -43,7 +43,7 @@ const Dashboard = () => {
           />
         </section>
 
-        <ListOrder />
+        <ListTable />
       </div>
       <div className='sm:w-1/3 w-full overflow-y-auto scrollbar-hidden'>
         <div className='mb-6'>
