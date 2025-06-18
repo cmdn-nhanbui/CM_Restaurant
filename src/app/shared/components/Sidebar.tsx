@@ -6,13 +6,11 @@ import { Icon } from './Icons';
 import { ROUTES } from '@/core/constants/routes';
 import { useSelector } from 'react-redux';
 import type { RootState } from '@src/redux/store';
-import { useMediaQuery } from 'react-responsive';
 import { useState } from 'react';
 import { CartDrawer } from './Drawers/CartDrawer';
 
 export const Sidebar = () => {
   const { data } = useSelector((state: RootState) => state.user);
-  const isMobile = useMediaQuery({ maxWidth: 767 });
   const [showCartDrawer, setShowCartDrawer] = useState<boolean>(false);
 
   return (

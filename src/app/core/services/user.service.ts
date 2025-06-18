@@ -9,3 +9,8 @@ export const getUsersData = async (page: number, perPage: number) => {
   });
   return response?.data;
 };
+
+export const getMyProfile = async () => {
+  const response = await request.get('/auth/me');
+  return response?.data;
+};
