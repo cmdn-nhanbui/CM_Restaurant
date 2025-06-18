@@ -1,18 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import { Badge } from 'antd';
+import { Badge, message } from 'antd';
 
 import { ConfirmModal } from './Modals/ConfirmModal';
 import { Icon } from './Icons';
 import { ADMIN_ROUTES, ROUTES } from '@/core/constants/routes';
 import { handleLogout } from '@/core/helpers/authHelper';
+import Pusher from 'pusher-js';
 
 export const SidebarAdmin = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [confirmLogoutModal, setConfirmLogoutModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    const pusher = new Pusher('f4eeaa896cee7554e3aa', {
+      cluster: 'ap1',
+    });
+
+    const channel = pusher.subscribe('notification-final-project-development');
+
+    channel.bind('NewOrder', (data: any) => {
+      console.log('📩 Notification received:', data);
+      const toastMessage = `${data?.notification?.table_name} just created a new order`;
+      messageApi.open({
+        type: 'success',
+        duration: 0, // không tự động đóng
+        content: <div onClick={() => messageApi.destroy()}>{toastMessage}</div>,
+      });
+    });
+
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+      pusher.disconnect();
+    };
+  }, []);
 
   return (
     <>
+      {contextHolder}
       <aside className='bg-[var(--background-secondary)] min-h-screen flex-col items-center justify-between flex rounded-r-2xl h-screen'>
         <div className='flex flex-col'>
           <h1 className='p-4 logo'>
@@ -64,7 +91,7 @@ export const SidebarAdmin = () => {
           </div>
           <div className='p-4'>
             <NavLink
-              to={ADMIN_ROUTES.STATISTIC}
+              to={ADMIN_ROUTES.ORDER}
               className={(nav) =>
                 classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
                   'bg-[var(--primary)] fill-white text-white': nav.isActive,

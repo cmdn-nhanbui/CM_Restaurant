@@ -1,6 +1,7 @@
 import { QUERY_KEYS } from '@/core/constants/queryKeys';
 import type { User } from '@/core/constants/types';
-import { getMyProfile, getUsersData } from '@/core/services/user.service';
+import { getMyProfile } from '@/core/services/auth.service';
+import { getUsersData } from '@/core/services/user.service';
 import { useQuery } from '@tanstack/react-query';
 
 interface UseUserDataParams {

@@ -112,3 +112,18 @@ export interface CreateOrderPayload {
   tableId: string;
   orderItems: OrderItemPayload[];
 }
+
+export interface UpdateUserPayload {
+  fullname: string;
+  password: string;
+  phone_number: string;
+  gender: boolean;
+}
+
+export interface CreateUserPayload {
+  fullname: string;
+  email: string;
+  password: string;
+  phone_number: string;
+  gender: boolean;
+}

@@ -1,19 +1,34 @@
+import type { User } from '@/core/constants/types';
 import { getCurrentDate } from '@/core/helpers/timeHelper';
+import { mapUserData } from '@/core/mappers/user.mapper';
 import { Button } from '@/shared/components/Button';
 import { CreateUserModal } from '@/shared/components/Modals/UpdateUserModal/CreateUserModal';
 import { UserTable } from '@/shared/components/UserTable';
+import { useUserData } from '@/shared/hooks/useUser';
 import { Pagination, Select } from 'antd';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Table = () => {
-  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+const User = () => {
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const page = Number(queryParams.get('page')) || 1;
 
   const handleChangePage = (page: number) => {
-    // const newParams = new URLSearchParams(location.search);
-    // newParams.set('page', String(page));
-    // navigate(`?${newParams.toString()}`);
-    console.log(page);
+    const newParams = new URLSearchParams(location.search);
+    newParams.set('page', String(page));
+    navigate(`?${newParams.toString()}`);
   };
+
+  const handleCreatedUser = () => {
+    setShowCreateModal(false);
+    refetch();
+  };
+
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+
+  const { data, isLoading, refetch } = useUserData({ page, perPage: 10 });
+  const users: User[] = data?.docs?.map(mapUserData)?.filter((user: User) => user.role !== 'admin') || [];
 
   return (
     <>
@@ -63,15 +78,15 @@ const Table = () => {
             </div>
 
             <div className='mt-2 h-full overflow-y-auto pb-4'>
-              <UserTable />
+              <UserTable loading={isLoading} data={users} onRefetch={() => refetch()} />
             </div>
             <div className='pt-3 border-t border-[var(--dark-line)]'>
               <Pagination
                 rootClassName='antd-custom-pagination'
-                current={1}
+                current={page}
                 align='center'
                 defaultCurrent={1}
-                total={20}
+                total={data?.total_docs}
                 pageSize={10}
                 showSizeChanger={false}
                 showLessItems
@@ -85,12 +100,10 @@ const Table = () => {
       <CreateUserModal
         isModalOpen={showCreateModal}
         onCancel={() => setShowCreateModal(false)}
-        onOk={() => {
-          console.log('ok');
-        }}
+        onOk={handleCreatedUser}
       />
     </>
   );
 };
 
-export default Table;
+export default User;

@@ -1,3 +1,4 @@
+import type { CreateUserPayload, UpdateUserPayload } from '../constants/types';
 import request from './api.service';
 
 export const getUsersData = async (page: number, perPage: number) => {
@@ -10,7 +11,17 @@ export const getUsersData = async (page: number, perPage: number) => {
   return response?.data;
 };
 
-export const getMyProfile = async () => {
-  const response = await request.get('/auth/me');
+export const deleteUser = async (id: number) => {
+  const response = await request.delete(`/users/${id}`);
+  return response?.data;
+};
+
+export const updateUser = async (id: number, data: UpdateUserPayload) => {
+  const response = await request.patch(`/users/${id}`, data);
+  return response?.data;
+};
+
+export const createUser = async (data: CreateUserPayload) => {
+  const response = await request?.post('/users', data);
   return response?.data;
 };

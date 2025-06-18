@@ -46,7 +46,22 @@ const colorMapping = {
   reserved: 'purple',
 } as const;
 
-export const OrderTable = () => {
+interface OrderTableProps {
+  sort: string;
+}
+
+const orderSorting = (orders: Order[], sort: string) => {
+  switch (sort) {
+    case 'available':
+      return orders?.filter((order) => order.status === 'available');
+    case 'reserved':
+      return orders?.filter((order) => order.status === 'reserved');
+    default:
+      return orders;
+  }
+};
+export const OrderTable = ({ sort }: OrderTableProps) => {
+  const data = orderSorting(orders, sort);
   return (
     <table className='w-full table-auto text-center text-white'>
       <thead>
@@ -58,7 +73,7 @@ export const OrderTable = () => {
         </tr>
       </thead>
       <tbody className='overflow-y-auto h-full'>
-        {orders.map((order, idx) => (
+        {data.map((order, idx) => (
           <tr key={idx} className='border-b border-gray-800 hover:bg-[#2a2a3a] transition'>
             <td className='py-4'>
               <div className='flex items-center justify-start gap-3'>

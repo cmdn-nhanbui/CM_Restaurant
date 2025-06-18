@@ -26,10 +26,10 @@ const usePusher = () => {
 
     const channel = pusher.subscribe('notification-final-project-development');
 
-    channel.bind('NotificationSent', (data: any) => {
-      console.log('📩 Notification received:', data);
-      alert(`Nhận dữ liệu từ Pusher: ${JSON.stringify(data)}`);
-    });
+    // channel.bind('NotificationSent', (data: any) => {
+    //   console.log('📩 Notification received:', data);
+    //   alert(`Nhận dữ liệu từ Pusher: ${JSON.stringify(data)}`);
+    // });
 
     return () => {
       channel.unbind_all();

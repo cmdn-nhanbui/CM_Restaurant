@@ -16,3 +16,8 @@ export const logout = async () => {
   const response = await request.post('/auth/logout');
   return response?.data;
 };
+
+export const getMyProfile = async () => {
+  const response = await request.get('/auth/me');
+  return response?.data;
+};

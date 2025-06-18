@@ -90,7 +90,7 @@ export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalP
         messageApi.open({
           key: toastKey,
           type: 'error',
-          content: 'Create product unsuccessfully',
+          content: 'Update product unsuccessfully',
           duration: 2,
         });
 
@@ -138,7 +138,7 @@ export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalP
             </div>
 
             <div className='flex flex-col gap-2 mt-2'>
-              <label htmlFor='product-name' className='text-white text-base'>
+              <label htmlFor='product-name' className='text-white text-base font-semibold'>
                 Product Name
               </label>
               <TextField {...register('productName')} id='product-name' />
@@ -147,40 +147,42 @@ export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalP
               )}
             </div>
             <div className='flex flex-col gap-2 mt-2'>
-              <label htmlFor='product-name' className='text-white text-base'>
+              <label htmlFor='product-name' className='text-white text-base font-semibold'>
                 Price
               </label>
               <TextField {...register('price')} type='number' id='price' />
               {errors?.price && <p className='text-sm px-2 text-[var(--primary)]'>{errors?.price?.message}</p>}
             </div>
-            <div className='flex flex-col gap-2 mt-2'>
-              <label htmlFor='product-name' className='text-white text-base'>
-                Quantity
-              </label>
-              <TextField {...register('quantity')} type='number' id='quantity' />
-              {errors?.quantity && <p className='text-sm px-2 text-[var(--primary)]'>{errors?.quantity?.message}</p>}
-            </div>
-            <div className='flex  gap-2 mt-4'>
-              <label htmlFor='product-name' className='text-white text-base'>
-                Category
-              </label>
-              <Select
-                rootClassName='custom-antd-select'
-                defaultValue={categoryId}
-                style={{ width: 120 }}
-                styles={{
-                  popup: {
-                    root: {
-                      backgroundColor: 'var(--form-background)',
-                      color: 'white',
+            <div className='flex mt-2 gap-4'>
+              <div className='flex flex-1 flex-col gap-2'>
+                <label htmlFor='product-name' className='text-white text-base font-semibold'>
+                  Quantity
+                </label>
+                <TextField {...register('quantity')} type='number' id='quantity' />
+                {errors?.quantity && <p className='text-sm px-2 text-[var(--primary)]'>{errors?.quantity?.message}</p>}
+              </div>
+              <div className='flex flex-1 flex-col gap-2'>
+                <label htmlFor='product-name' className='text-white text-base '>
+                  Category
+                </label>
+                <Select
+                  rootClassName='custom-antd-select'
+                  defaultValue={categoryId}
+                  style={{ width: '100%', height: '100%' }}
+                  styles={{
+                    popup: {
+                      root: {
+                        backgroundColor: 'var(--form-background)',
+                        color: 'white',
+                      },
                     },
-                  },
-                }}
-                onChange={(value) => {
-                  setCategoryId(value);
-                }}
-                options={categoryData.map((item) => ({ value: item.id, label: item.name }))}
-              />
+                  }}
+                  onChange={(value) => {
+                    setCategoryId(value);
+                  }}
+                  options={categoryData.map((item) => ({ value: item.id, label: item.name }))}
+                />
+              </div>
             </div>
 
             <div className='flex gap-3 justify-end mt-4'>

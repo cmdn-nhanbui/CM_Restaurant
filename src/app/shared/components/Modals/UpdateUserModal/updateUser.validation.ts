@@ -47,14 +47,15 @@ export const createUserValidation = Joi.object({
     'string.pattern.base': 'Phone number must contain only digits',
     'string.empty': 'Phone number is required',
   }),
-  newPassword: Joi.string()
+
+  password: Joi.string()
     .min(6)
     .pattern(new RegExp('(?=.*[a-z])'))
     .pattern(new RegExp('(?=.*[A-Z])'))
     .pattern(new RegExp('(?=.*\\d)'))
     .pattern(new RegExp('(?=.*[!@#$%^&*])'))
     .required()
-    .label('New Password')
+    .label('Password')
     .messages({
       'string.pattern.base':
         'Password must include at least one lowercase letter, one uppercase letter, one number, and one special character.',
