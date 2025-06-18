@@ -11,12 +11,15 @@ import type { OrderItemPayload } from '@/core/constants/types';
 import { createOrder } from '@/core/services/order.service';
 import { clearCartData } from '@src/redux/actions/cartActions';
 import axios from 'axios';
-
-const TABLE_UUID = '0d524f1a-3118-4ba0-b8d6-f693862cc3dc';
+import { useLocation } from 'react-router-dom';
 
 const Cart = () => {
   const { data } = useSelector((state: RootState) => state.cart);
   const dispatch = useDispatch<AppDispatch>();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const tableId = searchParams.get('table_id');
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -24,6 +27,14 @@ const Cart = () => {
   const [creating, setIsCreating] = useState<boolean>(false);
 
   const handleOrder = () => {
+    if (!tableId) {
+      setIsShowConfirmModal(false);
+      return messageApi.open({
+        type: 'error',
+        content: 'Not found table id',
+        duration: 2,
+      });
+    }
     const orderRequest = async () => {
       if (creating) return;
 
@@ -42,7 +53,7 @@ const Cart = () => {
       });
 
       try {
-        await createOrder({ tableId: TABLE_UUID, orderItems: payload });
+        await createOrder({ tableId: tableId, orderItems: payload });
 
         messageApi.open({
           key,
@@ -54,8 +65,11 @@ const Cart = () => {
         setIsShowConfirmModal(false);
       } catch (error: unknown) {
         let errorMessage = 'Order unsuccessfully';
+
         if (axios.isAxiosError(error) && error.response?.data?.message) {
           errorMessage = error.response.data.message;
+          const status = error.status;
+          if (status === 422) errorMessage = 'Table id is not valid';
         }
 
         messageApi.open({

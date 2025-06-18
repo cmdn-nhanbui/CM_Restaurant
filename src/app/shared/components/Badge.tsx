@@ -1,8 +1,9 @@
 import { type ReactNode } from 'react';
 import classNames from 'classnames';
 
+export type BadColor = 'green' | 'purple' | 'orange' | 'red' | 'blue';
 type Props = {
-  color?: 'green' | 'purple' | 'orange' | 'red' | 'blue';
+  color?: BadColor;
   children: ReactNode;
 };
 

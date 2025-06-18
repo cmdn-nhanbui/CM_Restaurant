@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 import { Badge } from '@/shared/components/Badge';
 import { ConfirmModal } from '@/shared/components/Modals/ConfirmModal';
+import { formatVND } from '@/core/helpers/currencyHelper';
 
 export type OrderItemProps = {
-  id: number;
+  id: string;
   imageUrl: string;
   name: string;
   price: number;
@@ -12,7 +13,7 @@ export type OrderItemProps = {
   quantity: number;
   note: string;
   status: 'pending' | 'completed' | 'preparing';
-  onDelete?: (id: number) => void;
+  onDelete?: (id: string) => void;
 };
 
 const colorMapping = {
@@ -28,6 +29,7 @@ export const OrderItem = ({ id, imageUrl, name, price, note, quantity, status, o
     setIsShowModal(false);
     if (onDelete) return onDelete(id);
   };
+
   return (
     <>
       <div className='flex flex-col gap-2 bg-[var(--background-secondary)] py-3 px-4 rounded-lg'>
@@ -40,9 +42,9 @@ export const OrderItem = ({ id, imageUrl, name, price, note, quantity, status, o
               <span className='text-base font-semibold text-white truncate'>{name}</span>
               <div className='text-sm text-[var(--text-light)] space-y-1'>
                 <p>
-                  Price: ${price.toFixed(2)} x {quantity}
+                  Price: {formatVND(price)} x {quantity}
                 </p>
-                <p>Total: ${(price * quantity).toFixed(2)}</p>
+                <p>Total: {formatVND(price * quantity)}</p>
               </div>
               {note && (
                 <p className='text-sm text-[var(--text-light)] mt-1 truncate'>

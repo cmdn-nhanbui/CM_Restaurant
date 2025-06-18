@@ -17,6 +17,7 @@ export const useUserData = ({ page, perPage }: UseUserDataParams) => {
       return response?.data;
     },
     staleTime: 1000 * 60,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -29,6 +30,6 @@ export const useGetProfile = (userData: User | undefined) => {
       return data?.data;
     },
     refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5, // Giữ cache trong 5 phút
+    staleTime: 1000 * 60 * 5,
   });
 };

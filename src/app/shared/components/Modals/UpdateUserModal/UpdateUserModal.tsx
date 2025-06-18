@@ -97,6 +97,7 @@ export const UpdateUserModal = ({ isModalOpen, onOk, onCancel, data }: ModalProp
     <>
       {contextHolder}
       <Modal
+        centered
         className='custom-modal'
         title='Update User'
         open={isModalOpen}

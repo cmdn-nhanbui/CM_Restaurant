@@ -11,7 +11,6 @@ import { fetchCategories } from './redux/actions/categoryActions';
 
 import './app/stylesheet/style.scss';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import usePusher from '@/shared/hooks/usePusher';
 import { fetchCurrentUser } from './redux/actions/userActions';
 
 const queryClient = new QueryClient();
@@ -21,8 +20,6 @@ function App() {
   const user = useSelector((state: RootState) => state.user.data);
 
   const dispatch = useDispatch<AppDispatch>();
-
-  usePusher();
 
   useEffect(() => {
     if (!user) {

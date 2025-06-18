@@ -106,6 +106,7 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
     <>
       {contextHolder}
       <Modal
+        centered
         className='custom-modal'
         title='Add New Product'
         open={isModalOpen}

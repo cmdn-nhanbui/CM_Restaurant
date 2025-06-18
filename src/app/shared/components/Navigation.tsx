@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import type { AdditionalNavItem, Category } from '@/core/constants/types';
 import { useSelector } from 'react-redux';
 import type { RootState } from '@src/redux/store';
+import { NavLinkWithQuery } from '@/pages/order/components/NavLinkWithQuery';
 
 type Props = {
   loading?: boolean;
@@ -24,7 +24,7 @@ export const Navigation = ({ categories, loading, additionalItems }: Props) => {
       <ul className='flex gap-8 sm:mt-6 mt-4 border-b border-[var(--dark-line)] overflow-x-auto scrollbar-hidden whitespace-nowrap pb-4 sm:pb-6'>
         {additionalItems?.map((item, index) => (
           <li key={index}>
-            <NavLink
+            <NavLinkWithQuery
               to={item?.navigateTo}
               end
               className={(nav) =>
@@ -34,7 +34,7 @@ export const Navigation = ({ categories, loading, additionalItems }: Props) => {
               }
             >
               {item.name}
-            </NavLink>
+            </NavLinkWithQuery>
           </li>
         ))}
         {fetchingCategories || loading
@@ -43,7 +43,7 @@ export const Navigation = ({ categories, loading, additionalItems }: Props) => {
             ))
           : data?.map((item, index) => (
               <li key={index}>
-                <NavLink
+                <NavLinkWithQuery
                   to={item?.navigateTo || `/categories/${item.id}`}
                   className={(nav) =>
                     classNames('text-white font-semibold', {
@@ -52,7 +52,7 @@ export const Navigation = ({ categories, loading, additionalItems }: Props) => {
                   }
                 >
                   {item.name}
-                </NavLink>
+                </NavLinkWithQuery>
               </li>
             ))}
       </ul>

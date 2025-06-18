@@ -1,16 +1,16 @@
 import { ROUTES } from '@/core/constants/routes';
-import { NavLink } from 'react-router-dom';
 import { Icon } from './Icons';
 import classNames from 'classnames';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge } from 'antd';
+import { NavLinkWithQuery } from '@/pages/order/components/NavLinkWithQuery';
 
 export const Footer = () => {
   return (
     <footer className='fixed bottom-3 w-full block sm:hidden'>
       <div className='m-auto flex h-14 w-[94%] rounded-[4px] bg-[var(--background-secondary)]'>
         <div className='flex flex-1 items-center justify-center'>
-          <NavLink
+          <NavLinkWithQuery
             to={ROUTES.ROOT}
             className={(nav) =>
               classNames(
@@ -22,10 +22,10 @@ export const Footer = () => {
             }
           >
             <Icon icon='home' color='inherit' />
-          </NavLink>
+          </NavLinkWithQuery>
         </div>
         <div className='flex flex-1 items-center justify-center'>
-          <NavLink
+          <NavLinkWithQuery
             to={ROUTES.CART}
             className={(nav) =>
               classNames(
@@ -42,10 +42,10 @@ export const Footer = () => {
                 fontSize: 22,
               }}
             />
-          </NavLink>
+          </NavLinkWithQuery>
         </div>
         <div className='flex flex-1 items-center justify-center'>
-          <NavLink
+          <NavLinkWithQuery
             to={ROUTES.ORDER}
             className={(nav) =>
               classNames(
@@ -57,10 +57,10 @@ export const Footer = () => {
             }
           >
             <Icon icon='shop' color='inherit' />
-          </NavLink>
+          </NavLinkWithQuery>
         </div>
         <div className='flex flex-1 items-center justify-center'>
-          <NavLink
+          <NavLinkWithQuery
             to={ROUTES.NOTIFICATION}
             className={(nav) =>
               classNames(
@@ -74,7 +74,7 @@ export const Footer = () => {
             <Badge count={5}>
               <Icon icon='bell' color='inherit' />
             </Badge>
-          </NavLink>
+          </NavLinkWithQuery>
         </div>
       </div>
     </footer>

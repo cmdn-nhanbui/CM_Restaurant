@@ -21,3 +21,13 @@ export const getMyProfile = async () => {
   const response = await request.get('/auth/me');
   return response?.data;
 };
+
+export const updateProfile = async () => {};
+
+export const changePassword = async (oldPassword: string, newPassword: string) => {
+  const response = await request.put('/auth/change-password', {
+    old_password: oldPassword,
+    new_password: newPassword,
+  });
+  return response?.data;
+};

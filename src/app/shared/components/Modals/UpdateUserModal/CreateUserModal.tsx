@@ -101,6 +101,7 @@ export const CreateUserModal = ({ isModalOpen, onOk, onCancel }: ModalProps) => 
     <>
       {contextHolder}
       <Modal
+        centered
         className='custom-modal'
         title='Create User'
         open={isModalOpen}

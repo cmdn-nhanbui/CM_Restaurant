@@ -22,6 +22,7 @@ export const AddToCartModal = ({ isModalOpen, onOk, onCancel, imageUrl }: ModalP
       className='custom-modal'
       title='Add to Cart'
       open={isModalOpen}
+      centered
       onCancel={onCancel}
       destroyOnHidden
       footer={

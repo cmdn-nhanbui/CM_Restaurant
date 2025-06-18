@@ -102,10 +102,10 @@ export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalP
 
   useEffect(() => {
     if (data !== null) {
-      setCategoryId(data?.category?.id);
+      if (data?.category) setCategoryId(data?.category?.id);
+      if (data?.quantity) setValue('quantity', data.quantity);
       setValue('productName', data.name);
       setValue('price', data.price);
-      setValue('quantity', data.quantity);
 
       if (data?.imageUrl !== null) {
         setFileList([
@@ -124,6 +124,7 @@ export const UpdateProductModal = ({ isModalOpen, onCancel, onOk, data }: ModalP
     <>
       {contextHolder}
       <Modal
+        centered
         className='custom-modal'
         title='Update Product'
         open={isModalOpen}

@@ -65,10 +65,10 @@ export interface Product {
   id: number;
   name: string;
   imageUrl: string;
-  category: Category;
+  category?: Category;
   orderQuantity: number;
   price: number;
-  quantity: number;
+  quantity: number | null;
 }
 
 export interface AdditionalNavItem {
@@ -127,3 +127,29 @@ export interface CreateUserPayload {
   phone_number: string;
   gender: boolean;
 }
+
+export interface Table {
+  id: string;
+  name: string;
+  status: 'available' | 'reserved';
+}
+
+export interface OrderItem {
+  id: string;
+  price: number;
+  status: OrderItemStatus;
+  quantity: number;
+  notes: string;
+  createdAt?: string;
+  updatedAt?: string;
+  product?: Product;
+}
+
+export interface Order {
+  id: string;
+  status: string;
+  table: Table;
+  orderItems: OrderItem[];
+}
+
+export type OrderItemStatus = 'pending' | 'completed' | 'preparing';
