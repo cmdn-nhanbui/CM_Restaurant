@@ -172,7 +172,7 @@ export const UserTable = () => {
         onCancel={() => setSelectDeleteUser(null)}
         isModalOpen={selecDeletetUser !== null}
         title='Delete this user'
-        description='Do you really want to delete this records? This process cannot be undone'
+        description='Do you really want to delete this records? This process cannot be undone.'
       />
 
       <UpdateUserModal

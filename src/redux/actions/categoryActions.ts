@@ -11,7 +11,7 @@ export const fetchCategoriesSuccess = (categories: Category[]) => ({
   payload: categories,
 });
 
-export const fetchProductFail = (error: string) => ({
+export const fetchCategoriesFail = (error: string) => ({
   type: FETCH_CATEGORIES_FAILURE,
   payload: error,
 });
@@ -29,7 +29,7 @@ export const fetchCategories = () => {
         dispatch(fetchCategoriesSuccess(payloadData));
       })
       .catch((error) => {
-        dispatch(fetchProductFail(error.message));
+        dispatch(fetchCategoriesFail(error.message));
       });
   };
 };

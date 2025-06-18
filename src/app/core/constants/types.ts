@@ -101,3 +101,14 @@ export interface User {
   gender: boolean;
   phoneNumber: string;
 }
+
+export interface OrderItemPayload {
+  product_id: number;
+  quantity: number;
+  notes: string;
+}
+
+export interface CreateOrderPayload {
+  tableId: string;
+  orderItems: OrderItemPayload[];
+}

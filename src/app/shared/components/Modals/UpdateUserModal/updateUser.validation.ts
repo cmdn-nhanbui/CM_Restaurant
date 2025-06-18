@@ -36,3 +36,28 @@ export const updateUserValidation = Joi.object({
     .label('New Password'),
   gender: Joi.boolean(),
 });
+
+export const createUserValidation = Joi.object({
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required()
+    .label('email'),
+  userName: Joi.string().required().min(5),
+  phoneNumber: Joi.string().pattern(/^\d+$/).required().messages({
+    'string.pattern.base': 'Phone number must contain only digits',
+    'string.empty': 'Phone number is required',
+  }),
+  newPassword: Joi.string()
+    .min(6)
+    .pattern(new RegExp('(?=.*[a-z])'))
+    .pattern(new RegExp('(?=.*[A-Z])'))
+    .pattern(new RegExp('(?=.*\\d)'))
+    .pattern(new RegExp('(?=.*[!@#$%^&*])'))
+    .required()
+    .label('New Password')
+    .messages({
+      'string.pattern.base':
+        'Password must include at least one lowercase letter, one uppercase letter, one number, and one special character.',
+    }),
+  gender: Joi.boolean(),
+});

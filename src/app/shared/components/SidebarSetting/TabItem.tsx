@@ -13,7 +13,7 @@ export const TabItem: React.FC<TabItemProps> = ({ title, description, active = f
   return (
     <div
       onClick={onClick}
-      className={classNames('cursor-pointer p-6 transition-colors duration-300 relative', {
+      className={classNames('cursor-pointer p-6 transition-colors duration-300 relative]', {
         'bg-[var(--primary)]/16 text-[var(--primary)]': active,
       })}
     >

@@ -6,6 +6,7 @@ import { useProductData } from '../hooks/useProduct';
 import ProductListSkeleton from './ProductListSkeleton';
 import { mapProductData } from '@/core/mappers/product.mapper';
 import type { Product } from '@/core/constants/types';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 
 export const SectionMenu = () => {
   const navigate = useNavigate();
@@ -31,8 +32,8 @@ export const SectionMenu = () => {
 
   return (
     <section className='mt-4 sm:mt-6'>
-      <div className='flex justify-between items-center mb-4 sm:mb-5'>
-        <h2 className='sm:text-2xl text-base text-white font-semibold'>Choose Dishes</h2>
+      <div className='flex sm:justify-between justify-end items-center mb-4 sm:mb-5'>
+        <h2 className='sm:text-2xl text-base text-white font-semibold sm:block hidden'>Choose Dishes</h2>
 
         <div className='flex items-center'>
           <span className='sm:text-base text-sm text-[var(--text-lighter)] mr-2'>Sort by</span>
@@ -40,7 +41,7 @@ export const SectionMenu = () => {
             rootClassName='custom-antd-select'
             defaultValue='name_asc'
             value={sortBy}
-            style={{ width: 120 }}
+            style={{ width: 200 }}
             styles={{
               popup: {
                 root: {
@@ -53,8 +54,22 @@ export const SectionMenu = () => {
             options={[
               { value: 'name_asc', label: 'A - Z' },
               { value: 'name_desc', label: 'Z - A' },
-              { value: 'price_asc', label: 'Price Increasing' },
-              { value: 'price_desc', label: 'Price Decreasing' },
+              {
+                value: 'price_asc',
+                label: (
+                  <span>
+                    Price <ArrowUpOutlined />
+                  </span>
+                ),
+              },
+              {
+                value: 'price_desc',
+                label: (
+                  <span>
+                    Price <ArrowDownOutlined />
+                  </span>
+                ),
+              },
             ]}
           />
         </div>

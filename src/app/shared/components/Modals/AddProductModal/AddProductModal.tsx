@@ -96,6 +96,12 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
     addProductRequest();
   };
 
+  const handleClose = () => {
+    reset();
+    setFileList([]);
+    return onCancel();
+  };
+
   return (
     <>
       {contextHolder}
@@ -103,7 +109,7 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
         className='custom-modal'
         title='Add New Product'
         open={isModalOpen}
-        onCancel={onCancel}
+        onCancel={handleClose}
         destroyOnHidden
         footer={<></>}
       >
@@ -160,7 +166,7 @@ export const AddProductModal = ({ isModalOpen, onCancel, onOk }: ModalProps) => 
             </div>
 
             <div className='flex gap-3 justify-end mt-4'>
-              <Button outlined key='cancel' onClick={onCancel}>
+              <Button outlined key='cancel' onClick={handleClose}>
                 Cancel
               </Button>
               <Button key='ok' onClick={handleSubmit(handleAddProduct)}>
