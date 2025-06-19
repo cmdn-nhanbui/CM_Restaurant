@@ -21,4 +21,5 @@ export const ADMIN_ROUTES = {
   SETTING: '/admin/setting',
   PASSWORD: '/admin/setting/password',
   USER: '/admin/user',
+  ORDER: '/admin/order',
 };

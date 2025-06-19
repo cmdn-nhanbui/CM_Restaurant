@@ -6,8 +6,8 @@ import {
   FETCH_CURRENT_USER_SUCCESS,
   UPDATE_CURRENT_USER_DATA,
 } from '../types';
-import { getMyProfile } from '@/core/services/user.service';
 import { mapUserData } from '@/core/mappers/user.mapper';
+import { getMyProfile } from '@/core/services/auth.service';
 
 export const updateCurrentUser = (userData: User) => ({ type: UPDATE_CURRENT_USER_DATA, payload: userData });
 export const clearCurrentUser = () => ({ type: CLEAR_CURRENT_USER_DATA, payload: undefined });

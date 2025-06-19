@@ -28,6 +28,7 @@ export const ConfirmModal = ({
       open={isModalOpen}
       onCancel={onCancel}
       destroyOnHidden
+      centered
       footer={
         <div className='flex gap-3 justify-end'>
           <Button outlined key='cancel' onClick={onCancel}>

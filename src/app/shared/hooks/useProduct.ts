@@ -20,6 +20,7 @@ export const useProductData = ({ page, perPage, sort = 'name_asc' }: UseProductD
       return response?.data;
     },
     staleTime: 1000 * 60,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -31,5 +32,6 @@ export const useProductByCategory = ({ page, perPage, sort = 'name_asc', categor
       return response?.data;
     },
     staleTime: 1000 * 60,
+    refetchOnWindowFocus: false,
   });
 };

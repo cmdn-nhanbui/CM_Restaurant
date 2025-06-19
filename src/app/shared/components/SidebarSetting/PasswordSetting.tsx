@@ -9,6 +9,8 @@ import { Button } from '../Button';
 
 import { changePasswordValidation } from './setting.validation';
 import type { FormUpdatePassword, RenderFieldProps } from '@/core/constants/types';
+import { changePassword } from '@/core/services/auth.service';
+import axios from 'axios';
 
 export const PasswordSetting = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -20,6 +22,9 @@ export const PasswordSetting = () => {
   const {
     register,
     handleSubmit,
+    reset,
+    setError,
+    setValue,
     formState: { errors },
   } = useForm<FormUpdatePassword>({
     defaultValues: {},
@@ -29,7 +34,32 @@ export const PasswordSetting = () => {
   });
 
   const handleChangePassword: SubmitHandler<FormUpdatePassword> = (data) => {
-    console.log(data);
+    const { currentPassword, newPassword } = data;
+
+    const changePasswordRequest = async () => {
+      const key = 'updateable';
+      try {
+        message.open({ content: 'Processing...', key, type: 'loading' });
+        await changePassword(currentPassword, newPassword);
+        message.open({ type: 'success', content: 'Change password successfully', duration: 2, key });
+        reset();
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          const statusCode = error.status;
+          if (statusCode === 401) {
+            setError('currentPassword', {
+              type: 'manual',
+              message: 'Current password is wrong',
+            });
+            setValue('currentPassword', '');
+          } else {
+            message.open({ type: 'error', content: 'Change password unsuccessfully', duration: 2, key });
+          }
+        }
+      }
+    };
+
+    changePasswordRequest();
   };
 
   const renderField = ({ label, id, name, show, errorMessage, toggleShow }: RenderFieldProps) => (
