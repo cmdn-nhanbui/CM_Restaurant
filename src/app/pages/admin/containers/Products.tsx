@@ -115,7 +115,7 @@ const Products = () => {
           />
         </div>
 
-        <section className='pt-6 px-6 pb-3 flex-1 overflow-y-auto scrollbar-hidden'>
+        <section className='py-3 px-6  flex-1 overflow-y-auto scrollbar-hidden'>
           {isLoading ? (
             <ProductListSkeleton />
           ) : (

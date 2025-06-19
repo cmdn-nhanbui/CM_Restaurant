@@ -72,6 +72,14 @@ const Categories = () => {
                   </span>
                 ),
               },
+              {
+                value: 'order_quantity_desc',
+                label: (
+                  <span>
+                    Order <ArrowDownOutlined />
+                  </span>
+                ),
+              },
             ]}
           />
         </div>

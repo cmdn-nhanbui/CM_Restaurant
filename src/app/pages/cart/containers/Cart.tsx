@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Empty, message } from 'antd';
+import { Empty, message, Select } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { CartItem } from '@/shared/components/CartItem';
@@ -14,14 +14,17 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 
 const Cart = () => {
+  const [messageApi, contextHolder] = message.useMessage();
+
   const { data } = useSelector((state: RootState) => state.cart);
+  const { data: currentUser } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const tableId = searchParams.get('table_id');
 
-  const [messageApi, contextHolder] = message.useMessage();
+  const [selectedTableId, setSelectedTableId] = useState<string>('');
 
   const [isShowConfirmModal, setIsShowConfirmModal] = useState<boolean>(false);
   const [creating, setIsCreating] = useState<boolean>(false);
@@ -85,9 +88,11 @@ const Cart = () => {
 
     orderRequest();
   };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
   const total = data?.reduce((prev, current) => prev + current.price * current.quantity, 0);
 
   return (
@@ -127,7 +132,33 @@ const Cart = () => {
 
         {/* Footer */}
         <div className='flex flex-col'>
-          <div className='border-b border-[var(--dark-line)] my-4'></div>
+          <div className='border-b border-[var(--dark-line)] mb-4'></div>
+          {currentUser && (
+            <div className='flex justify-between items-center'>
+              <label className='text-sm text-white font-semibold'>Select Table</label>
+              <Select
+                rootClassName='custom-antd-select'
+                defaultValue='9b9857d5-abf1-47cc-965b-2965a8779610'
+                style={{ width: 120 }}
+                styles={{
+                  popup: {
+                    root: {
+                      backgroundColor: 'var(--form-background)',
+                      color: 'white',
+                    },
+                  },
+                }}
+                onChange={(value) => {
+                  setSelectedTableId(value);
+                }}
+                options={[
+                  { value: '9b9857d5-abf1-47cc-965b-2965a8779610', label: 'Table 01' },
+                  { value: '0d524f1a-3118-4ba0-b8d6-f693862cc3dc', label: 'Table 02' },
+                ]}
+              />
+            </div>
+          )}
+
           <div className='flex items-center justify-between my-4'>
             <span className='text-[var(--text-light)]'>Subtotal</span>
             <span className='text-white'>{formatVND(total)}</span>

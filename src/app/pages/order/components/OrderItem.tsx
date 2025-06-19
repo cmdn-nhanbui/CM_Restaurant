@@ -3,6 +3,8 @@ import { CloseOutlined, EditOutlined } from '@ant-design/icons';
 import { Badge } from '@/shared/components/Badge';
 import { ConfirmModal } from '@/shared/components/Modals/ConfirmModal';
 import { formatVND } from '@/core/helpers/currencyHelper';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@src/redux/store';
 
 export type OrderItemProps = {
   id: string;
@@ -24,6 +26,7 @@ const colorMapping = {
 
 export const OrderItem = ({ id, imageUrl, name, price, note, quantity, status, onDelete }: OrderItemProps) => {
   const [isShowModal, setIsShowModal] = useState<boolean>(false);
+  const { data: currentUser } = useSelector((state: RootState) => state.user);
 
   const handleOk = () => {
     setIsShowModal(false);
@@ -58,7 +61,7 @@ export const OrderItem = ({ id, imageUrl, name, price, note, quantity, status, o
           {/* Right: Status + Remove */}
           <div className='flex flex-col items-end gap-2 shrink-0'>
             <Badge color={colorMapping[status]}>{status}</Badge>
-            {status !== 'preparing' && (
+            {(status !== 'preparing' || currentUser) && (
               <button onClick={() => setIsShowModal(true)} className='text-white cursor-pointer w-6 h-6'>
                 <CloseOutlined />
               </button>

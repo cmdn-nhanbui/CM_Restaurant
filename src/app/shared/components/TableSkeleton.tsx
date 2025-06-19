@@ -1,24 +1,26 @@
-export const TableSkeleton = () => {
-  return Array.from({ length: 5 }).map((_, idx) => (
-    <tr key={idx} className='animate-pulse border-b border-gray-800'>
-      <td className='py-4'>
-        <div className='h-4 bg-gray-700 rounded w-12 mx-auto'></div>
-      </td>
-      <td className='py-4'>
-        <div className='h-4 bg-gray-700 rounded w-32 mx-auto'></div>
-      </td>
-      <td className='py-4'>
-        <div className='h-4 bg-gray-700 rounded w-40 mx-auto'></div>
-      </td>
-      <td className='py-4'>
-        <div className='h-4 bg-gray-700 rounded w-24 mx-auto'></div>
-      </td>
-      <td className='py-4'>
-        <div className='h-4 bg-gray-700 rounded w-20 mx-auto'></div>
-      </td>
-      <td className='py-4'>
-        <div className='h-4 bg-gray-700 rounded w-6 mx-auto'></div>
-      </td>
-    </tr>
-  ));
+interface TableSkeletonProps {
+  rows?: number;
+  cols?: number;
+}
+
+export const TableSkeleton = ({ rows = 5, cols = 6 }: TableSkeletonProps) => {
+  return (
+    <>
+      {Array.from({ length: rows }).map((_, rowIdx) => (
+        <tr key={rowIdx} className='animate-pulse border-b border-gray-800'>
+          {Array.from({ length: cols }).map((_, colIdx) => (
+            <td key={colIdx} className='py-4'>
+              <div className={`h-4 bg-gray-700 rounded`} style={{ width: getColWidth(colIdx) }} />
+            </td>
+          ))}
+        </tr>
+      ))}
+    </>
+  );
+};
+
+// Optional helper to vary width based on column index (not required)
+const getColWidth = (colIdx: number): string => {
+  const widths = ['3rem', '8rem', '10rem', '6rem', '5rem', '1.5rem'];
+  return widths[colIdx] || '6rem';
 };

@@ -1,96 +1,66 @@
+import { Tooltip } from 'antd';
+import { useState } from 'react';
+
+import { PaymentDrawer } from './Drawers/PaymentDrawer';
+import { TableSkeleton } from './TableSkeleton';
+import { TableStatus } from './TableStatus';
+import { Icon } from './Icons';
+
 import { formatVND } from '@/core/helpers/currencyHelper';
-import { Badge } from './Badge';
+import type { Table } from '@/core/constants/types';
+import { formatTimestamp } from '@/core/helpers/timeHelper';
 
-type Order = {
-  avatarColor: string;
-  name: string;
-  orderItemQuantity: number;
-  payment: number;
-  status: 'available' | 'occupied' | 'reserved';
-};
-
-const orders: Order[] = [
-  {
-    avatarColor: 'bg-orange-400',
-    name: 'Table 01',
-    orderItemQuantity: 2,
-    payment: 250000,
-    status: 'available',
-  },
-  {
-    avatarColor: 'bg-orange-400',
-    name: 'Table 02',
-    orderItemQuantity: 0,
-    payment: 0,
-    status: 'available',
-  },
-  {
-    avatarColor: 'bg-purple-400',
-    name: 'Table 03',
-    orderItemQuantity: 0,
-    payment: 0,
-    status: 'reserved',
-  },
-  {
-    avatarColor: 'bg-purple-400',
-    name: 'Table 04',
-    orderItemQuantity: 0,
-    payment: 0,
-    status: 'reserved',
-  },
-];
-
-const colorMapping = {
-  available: 'green',
-  occupied: 'orange',
-  reserved: 'purple',
-} as const;
-
-interface OrderTableProps {
-  sort: string;
+export interface OrderTableProps {
+  data: Table[];
+  loading: boolean;
+  onRefetch?: () => void;
 }
 
-const orderSorting = (orders: Order[], sort: string) => {
-  switch (sort) {
-    case 'available':
-      return orders?.filter((order) => order.status === 'available');
-    case 'reserved':
-      return orders?.filter((order) => order.status === 'reserved');
-    default:
-      return orders;
-  }
-};
-export const OrderTable = ({ sort }: OrderTableProps) => {
-  const data = orderSorting(orders, sort);
+export const OrderTable = ({ data = [], loading, onRefetch }: OrderTableProps) => {
+  const [isShowCheckoutPayment, setIsShowCheckoutPayment] = useState<any>(null);
+
   return (
-    <table className='w-full table-auto text-center text-white'>
-      <thead>
-        <tr className='border-b border-gray-700'>
-          <th className='py-4 text-left'>Table</th>
-          <th className='py-4 text-left'>Order Items</th>
-          <th className='py-4'>Total Payment</th>
-          <th className='py-4'>Status</th>
-        </tr>
-      </thead>
-      <tbody className='overflow-y-auto h-full'>
-        {data.map((order, idx) => (
-          <tr key={idx} className='border-b border-gray-800 hover:bg-[#2a2a3a] transition'>
-            <td className='py-4'>
-              <div className='flex items-center justify-start gap-3'>
-                <div className={`w-10 h-10 rounded-full ${order.avatarColor}`} />
-                {order.name}
-              </div>
-            </td>
-            <td className='py-4 text-left'>{order.orderItemQuantity}</td>
-            <td className='py-4'>{formatVND(order.payment)}</td>
-            <td className='py-4'>
-              <span className='px-4 py-1 rounded-full text-sm font-medium inline-block'>
-                <Badge color={colorMapping[order.status]}>{order.status}</Badge>
-              </span>
-            </td>
+    <>
+      <table className='w-full table-auto text-center text-white'>
+        <thead>
+          <tr className='border-b border-gray-700'>
+            <th className='py-4 text-left pl-4'>Table</th>
+            <th className='py-4 text-left'>Checkin At</th>
+            <th className='py-4 text-center'>Order Items</th>
+            <th className='py-4 text-right'>Total Payment</th>
+            <th className='py-4'>Status</th>
+            <th className='py-4'></th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className='overflow-y-auto h-full'>
+          {loading && <TableSkeleton cols={4} />}
+          {data?.map((table, idx) => (
+            <tr key={idx} className='border-b border-gray-800 hover:bg-[#2a2a3a] transition'>
+              <td className='py-4 text-left pl-4'>{table.name}</td>
+              <td className='py-4 text-left'>{formatTimestamp(table?.order?.created_at)}</td>
+              <td className='py-4 text-center'>{table.orderItemQuantity}</td>
+              <td className='py-4 text-right'>{formatVND(table.totalPayment)}</td>
+              <td className='py-4'>
+                <TableStatus onUpdated={onRefetch} status={table.status} tableId={table?.id} />
+              </td>
+              <td className='py-4'>
+                {table?.order && (
+                  <Tooltip title='Checkout'>
+                    <button onClick={() => setIsShowCheckoutPayment(table?.order)} className='cursor-pointer'>
+                      <Icon icon='credit-card' color='white' />
+                    </button>
+                  </Tooltip>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <PaymentDrawer
+        isOpen={isShowCheckoutPayment !== null}
+        onClose={() => setIsShowCheckoutPayment(null)}
+        orderData={isShowCheckoutPayment}
+      />
+    </>
   );
 };
