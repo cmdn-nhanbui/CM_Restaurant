@@ -46,7 +46,7 @@ const ProductCard: React.FC<Product> = ({ id, imageUrl, name, price, quantity, o
 
         <div className='mt-4'>
           <h3 className='text-md text-white font-semibold'>{name}</h3>
-          <p className='text-md text-white mt-2'>{formatVND(price)}</p>
+          <p className='text-md text-white mt-2 font-semibold'>{formatVND(price)}</p>
           <p className='text-sm text-[var(--text-gray)] mt-1'>
             {quantity === 0
               ? `Out of order`

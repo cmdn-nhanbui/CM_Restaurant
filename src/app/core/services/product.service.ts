@@ -55,7 +55,13 @@ interface GetProductSchema {
 }
 
 export const getProducts = async ({ page, perPage, sort }: GetProductSchema) => {
-  const response = await request.get(`/products?page=${page}&per_page=${perPage}&sort=${sort}`);
+  const response = await request.get(`/products`, {
+    params: {
+      page,
+      per_page: perPage,
+      sort_by: sort,
+    },
+  });
   return response?.data;
 };
 
@@ -71,7 +77,7 @@ export const getProductsByCategoryId = async ({ page, perPage, sort, categoryId 
     params: {
       page: page,
       per_page: perPage,
-      sort: sort,
+      sort_by: sort,
     },
   });
 

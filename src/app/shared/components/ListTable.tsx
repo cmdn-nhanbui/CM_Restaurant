@@ -1,13 +1,24 @@
 import { Pagination, Select } from 'antd';
 import { OrderTable } from './OrderTable';
-import { useState } from 'react';
+
+import { useGetTables } from '../hooks/useTable';
+import { mapTableData } from '@/core/mappers/table.mapper';
+import { useNavigate } from 'react-router-dom';
 
 export const ListTable = () => {
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const page = Number(queryParams.get('page')) || 1;
+
+  const { data, isLoading, refetch } = useGetTables(page, 10);
+
   const handleChangePage = (page: number) => {
-    console.log(page);
+    const newParams = new URLSearchParams(location.search);
+    newParams.set('page', String(page));
+    navigate(`?${newParams.toString()}`);
   };
 
-  const [sort, setSort] = useState<string>('');
+  const tables = data?.docs?.map(mapTableData);
 
   return (
     <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col'>
@@ -26,7 +37,7 @@ export const ListTable = () => {
             },
           }}
           onChange={(value) => {
-            setSort(value);
+            console.log(value);
           }}
           options={[
             { value: 'all', label: <span className='text-[var(--orange)]'>All</span> },
@@ -37,15 +48,15 @@ export const ListTable = () => {
       </div>
 
       <div className='mt-2 h-full overflow-y-auto pb-4'>
-        <OrderTable sort={sort} />
+        <OrderTable onRefetch={refetch} data={tables} loading={isLoading} />
       </div>
       <div className='pt-3 border-t border-[var(--dark-line)]'>
         <Pagination
           rootClassName='antd-custom-pagination'
-          current={1}
+          current={page}
           align='center'
           defaultCurrent={1}
-          total={20}
+          total={data?.total_docs || 0}
           pageSize={10}
           showSizeChanger={false}
           showLessItems

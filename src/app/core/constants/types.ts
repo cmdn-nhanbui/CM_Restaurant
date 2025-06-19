@@ -128,12 +128,6 @@ export interface CreateUserPayload {
   gender: boolean;
 }
 
-export interface Table {
-  id: string;
-  name: string;
-  status: 'available' | 'reserved';
-}
-
 export interface OrderItem {
   id: string;
   price: number;
@@ -153,3 +147,13 @@ export interface Order {
 }
 
 export type OrderItemStatus = 'pending' | 'completed' | 'preparing';
+export type TableStatus = 'available' | 'occupied' | 'reserved';
+
+export interface Table {
+  id: string;
+  name: string;
+  orderItemQuantity: number;
+  totalPayment: number;
+  status: TableStatus;
+  order?: any;
+}

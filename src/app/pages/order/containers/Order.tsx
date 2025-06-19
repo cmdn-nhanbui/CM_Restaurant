@@ -103,7 +103,7 @@ const Order = () => {
 
         {/* Footer */}
         <div className='flex flex-col'>
-          <div className='border-b border-[var(--dark-line)] my-4'></div>
+          <div className='border-b border-[var(--dark-line)] mb-4'></div>
           <div className='flex items-center justify-between my-4'>
             <span className='text-[var(--text-light)]'>Subtotal</span>
             <span className='text-white'>{formatVND(total)}</span>

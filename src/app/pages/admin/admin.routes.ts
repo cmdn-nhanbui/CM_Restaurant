@@ -6,10 +6,8 @@ import { ADMIN_ROUTES } from '../../core/constants/routes';
 
 const Dashboard: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Dashboard'));
 const Setting: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Settings'));
-const Notification: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Notification'));
 const Products: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Products'));
 const Statistic: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Statistic'));
-const Table: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Table'));
 const User: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/User'));
 const Orders: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Orders'));
 
@@ -23,10 +21,6 @@ const adminRoutes: PageRoute[] = [
     element: Setting,
   },
   {
-    path: ADMIN_ROUTES.NOTIFICATION,
-    element: Notification,
-  },
-  {
     path: ADMIN_ROUTES.PRODUCTS,
     element: Products,
   },
@@ -37,10 +31,6 @@ const adminRoutes: PageRoute[] = [
   {
     path: ADMIN_ROUTES.STATISTIC,
     element: Statistic,
-  },
-  {
-    path: ADMIN_ROUTES.TABLES,
-    element: Table,
   },
   {
     path: ADMIN_ROUTES.USER,
