@@ -4,6 +4,9 @@ import { OrderTable } from './OrderTable';
 import { useGetTables } from '../hooks/useTable';
 import { mapTableData } from '@/core/mappers/table.mapper';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getPusher } from '../hooks/usePusher';
+import { PUSHER_CHANEL } from '@/core/constants/pusher';
 
 export const ListTable = () => {
   const navigate = useNavigate();
@@ -19,6 +22,20 @@ export const ListTable = () => {
   };
 
   const tables = data?.docs?.map(mapTableData);
+
+  useEffect(() => {
+    const pusher = getPusher();
+    const channel = pusher.subscribe(PUSHER_CHANEL);
+
+    channel.bind('NewOrder', () => {
+      refetch();
+    });
+
+    return () => {
+      channel.unbind_all();
+      pusher.unsubscribe(PUSHER_CHANEL);
+    };
+  }, []);
 
   return (
     <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col'>

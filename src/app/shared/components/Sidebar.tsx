@@ -12,10 +12,13 @@ import { PUSHER_CHANEL } from '@/core/constants/pusher';
 import { message } from 'antd';
 import { NavLinkWithQuery } from '@/pages/order/components/NavLinkWithQuery';
 import { OrderDrawer } from './Drawers/OrderDrawer';
+import { useLocation } from 'react-router-dom';
 
 export const Sidebar = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const { data } = useSelector((state: RootState) => state.user);
+
+  const { pathname } = useLocation();
 
   const [showCartDrawer, setShowCartDrawer] = useState<boolean>(false);
   const [showPaymentDrawer, setShowPaymentDrawer] = useState<boolean>(false);
@@ -25,7 +28,6 @@ export const Sidebar = () => {
     const channel = pusher.subscribe(PUSHER_CHANEL);
 
     channel.bind('UpdateOrder', (data: any) => {
-      console.log('📩 Notification received:', data);
       const toastMessage = `${data?.notification?.table_name} just update order`;
       messageApi.open({
         type: 'success',
@@ -62,18 +64,7 @@ export const Sidebar = () => {
               <Icon icon='home' color='inherit' />
             </NavLinkWithQuery>
           </button>
-          <button className='p-4'>
-            <NavLinkWithQuery
-              to={ROUTES.NOTIFICATION}
-              className={(nav) =>
-                classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer', {
-                  'bg-[var(--primary)] fill-white': nav.isActive,
-                })
-              }
-            >
-              <Icon icon='bell' color='inherit' />
-            </NavLinkWithQuery>
-          </button>
+
           <button className='p-4'>
             <div
               onClick={() => setShowCartDrawer(true)}
@@ -98,7 +89,7 @@ export const Sidebar = () => {
               className={classNames(
                 'flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]',
                 {
-                  'bg-[var(--primary)] fill-white text-white': showPaymentDrawer,
+                  'bg-[var(--primary)] fill-white text-white': pathname === ROUTES.ORDER || showPaymentDrawer,
                 },
               )}
             >
@@ -126,7 +117,9 @@ export const Sidebar = () => {
       </aside>
 
       <CartDrawer isOpen={showCartDrawer} onClose={() => setShowCartDrawer(false)} />
-      <OrderDrawer isOpen={showPaymentDrawer} onClose={() => setShowPaymentDrawer(false)} />
+      {pathname !== ROUTES.ORDER && (
+        <OrderDrawer isOpen={showPaymentDrawer} onClose={() => setShowPaymentDrawer(false)} />
+      )}
     </div>
   );
 };

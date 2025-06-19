@@ -1,140 +1,152 @@
-import { Modal, Select, InputNumber, Input } from 'antd';
+import { Modal, Select, InputNumber, Input, message } from 'antd';
 import { useState, useEffect } from 'react';
 import { Button } from '../Button';
-
-type OrderItemStatus = 'pending' | 'preparing' | 'completed';
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-};
-
-type OrderItem = {
-  uuid: string;
-  product: Product;
-  quantity: number;
-  price: number;
-  status: OrderItemStatus;
-  notes: string | null;
-};
+import type { OrderItemRow, OrderItemStatus } from '@/core/constants/types';
+import { formatVND } from '@/core/helpers/currencyHelper';
+import { updateOrderItem } from '@/core/services/orderItem.service';
 
 type ModalProps = {
   isModalOpen: boolean;
-  onOk: (updated: { quantity: number; notes: string; status: OrderItemStatus }) => void;
+  onOk?: () => void;
   onCancel: () => void;
-  orderItem: OrderItem | null;
+  data: OrderItemRow | null;
 };
 
-export const OrderItemModal = ({ isModalOpen, onCancel, onOk, orderItem }: ModalProps) => {
+export const OrderItemModal = ({ isModalOpen, onCancel, onOk, data }: ModalProps) => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState('');
   const [status, setStatus] = useState<OrderItemStatus>('pending');
 
   useEffect(() => {
-    if (orderItem) {
-      setQuantity(orderItem.quantity);
-      setNotes(orderItem.notes || '');
-      setStatus(orderItem.status);
+    if (data) {
+      setQuantity(data.quantity);
+      setNotes(data.notes || '');
+      setStatus(data.status);
     }
-  }, [orderItem]);
+  }, [data]);
 
   const handleSubmit = () => {
-    onOk({
-      quantity,
-      notes,
-      status,
-    });
+    const updateRequest = async () => {
+      const key = 'updateable';
+      messageApi.open({
+        type: 'loading',
+        content: 'Updating...',
+        key,
+      });
+      try {
+        await updateOrderItem({ id: data?.uuid as string, notes, quantity, status });
+        messageApi.open({
+          type: 'success',
+          content: 'Updated order item',
+          key,
+          duration: 2,
+        });
+        if (onOk) return onOk();
+      } catch (error) {
+        messageApi.open({
+          type: 'error',
+          content: 'Update order item unsuccessfully',
+          key,
+          duration: 2,
+        });
+      }
+    };
+
+    updateRequest();
   };
 
   return (
-    <Modal
-      className='custom-modal'
-      title='Update Order Item'
-      open={isModalOpen}
-      centered
-      onCancel={onCancel}
-      destroyOnHidden
-      footer={
-        <div className='flex justify-end gap-3'>
-          <Button outlined onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit}>Save</Button>
-        </div>
-      }
-    >
-      {orderItem && (
-        <div className='flex flex-col gap-4 text-white'>
-          <div>
-            <p className='text-sm text-gray-400'>Product Name</p>
-            <p className='font-medium'>{orderItem.product.name}</p>
+    <>
+      {contextHolder}
+      <Modal
+        className='custom-modal'
+        title='Update Order Item'
+        open={isModalOpen}
+        centered
+        onCancel={onCancel}
+        destroyOnHidden
+        footer={
+          <div className='flex justify-end gap-3'>
+            <Button outlined onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button onClick={handleSubmit}>Save</Button>
           </div>
+        }
+      >
+        {data && (
+          <div className='flex flex-col gap-4 text-white'>
+            <div>
+              <p className='text-sm text-gray-400'>Product Name</p>
+              <p className='font-medium'>{data?.name}</p>
+            </div>
 
-          <div>
-            <p className='text-sm text-gray-400'>Price per item</p>
-            <p className='font-medium'>{orderItem.price} VND</p>
-          </div>
+            <div>
+              <p className='text-sm text-gray-400'>Price per item</p>
+              <p className='font-medium'>{formatVND(data?.price)}</p>
+            </div>
 
-          <div>
-            <p className='text-sm text-gray-400 mb-1'>Quantity</p>
-            <InputNumber
-              style={{
-                backgroundColor: 'var(--form-background)',
-                color: '#fff',
-                borderColor: 'var(--dark-line)',
-              }}
-              min={1}
-              max={100}
-              value={quantity}
-              onChange={(value) => setQuantity(value || 1)}
-              className='w-full'
-            />
-          </div>
-
-          <div>
-            <p className='text-sm text-gray-400 mb-1'>Notes</p>
-            <Input.TextArea
-              className='custom-textarea'
-              styles={{
-                textarea: {
+            <div>
+              <p className='text-sm text-gray-400 mb-1'>Quantity</p>
+              <InputNumber
+                style={{
                   backgroundColor: 'var(--form-background)',
-                  color: 'white',
+                  color: '#fff',
                   borderColor: 'var(--dark-line)',
-                },
-              }}
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              rows={3}
-              placeholder='Enter additional notes...'
-            />
-          </div>
+                }}
+                min={1}
+                max={100}
+                value={quantity}
+                onChange={(value) => setQuantity(value || 1)}
+                className='w-full'
+              />
+            </div>
 
-          <div>
-            <p className='text-sm text-gray-400 mb-1'>Status</p>
-
-            <Select
-              rootClassName='custom-antd-select'
-              styles={{
-                popup: {
-                  root: {
+            <div>
+              <p className='text-sm text-gray-400 mb-1'>Notes</p>
+              <Input.TextArea
+                className='custom-textarea'
+                styles={{
+                  textarea: {
                     backgroundColor: 'var(--form-background)',
                     color: 'white',
+                    borderColor: 'var(--dark-line)',
                   },
-                },
-              }}
-              value={status}
-              onChange={(value) => setStatus(value)}
-              className='w-full'
-              options={[
-                { label: 'Pending', value: 'pending' },
-                { label: 'Preparing', value: 'preparing' },
-                { label: 'Completed', value: 'completed' },
-              ]}
-            />
+                }}
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={3}
+                placeholder='Enter additional notes...'
+              />
+            </div>
+
+            <div>
+              <p className='text-sm text-gray-400 mb-1'>Status</p>
+
+              <Select
+                rootClassName='custom-antd-select'
+                styles={{
+                  popup: {
+                    root: {
+                      backgroundColor: 'var(--form-background)',
+                      color: 'white',
+                    },
+                  },
+                }}
+                value={status}
+                onChange={(value) => setStatus(value)}
+                className='w-full'
+                options={[
+                  { label: 'Pending', value: 'pending' },
+                  { label: 'Preparing', value: 'preparing' },
+                  { label: 'Completed', value: 'completed' },
+                ]}
+              />
+            </div>
           </div>
-        </div>
-      )}
-    </Modal>
+        )}
+      </Modal>
+    </>
   );
 };

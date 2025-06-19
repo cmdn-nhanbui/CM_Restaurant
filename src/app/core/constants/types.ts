@@ -157,3 +157,17 @@ export interface Table {
   status: TableStatus;
   order?: any;
 }
+
+export interface OrderItemRow {
+  uuid: string;
+  table: string;
+  name: string;
+  quantity: number;
+  price: number;
+  total: number;
+  status: OrderItemStatus;
+  notes: string | null;
+  createdAt: string;
+  updatedAt: string;
+  imageUrl: string;
+}

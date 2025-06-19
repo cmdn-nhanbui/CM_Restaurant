@@ -2,72 +2,15 @@ import { formatVND } from '@/core/helpers/currencyHelper';
 import { Badge, type BadColor } from './Badge';
 import { useState } from 'react';
 import { OrderItemModal } from './Modals/OrderItemModal';
+import type { OrderItemRow } from '@/core/constants/types';
+import { Image } from './Image';
+import { TableSkeleton } from './TableSkeleton';
+import { DeleteOutlined } from '@ant-design/icons';
+import { ConfirmModal } from './Modals/ConfirmModal';
+import { message } from 'antd';
+import { cancleOrderItem } from '@/core/services/orderItem.service';
 
 type OrderStatus = 'pending' | 'preparing' | 'completed';
-
-type Order = {
-  id: string;
-  table: string;
-  name: string;
-  quantity: number;
-  price: number;
-  payment: number;
-  status: OrderStatus;
-  avatarColor: string;
-};
-
-const orders: Order[] = [
-  {
-    id: 'ORD-001',
-    table: 'Table 01',
-    name: 'Nguyen Van A',
-    quantity: 2,
-    price: 125000,
-    payment: 250000,
-    status: 'pending',
-    avatarColor: 'bg-yellow-400',
-  },
-  {
-    id: 'ORD-002',
-    table: 'Table 02',
-    name: 'Le Thi B',
-    quantity: 3,
-    price: 85000,
-    payment: 255000,
-    status: 'preparing',
-    avatarColor: 'bg-blue-400',
-  },
-  {
-    id: 'ORD-003',
-    table: 'Table 03',
-    name: 'Tran Van C',
-    quantity: 1,
-    price: 150000,
-    payment: 150000,
-    status: 'completed',
-    avatarColor: 'bg-green-400',
-  },
-  {
-    id: 'ORD-004',
-    table: 'Table 04',
-    name: 'Pham Thi D',
-    quantity: 4,
-    price: 75000,
-    payment: 300000,
-    status: 'preparing',
-    avatarColor: 'bg-blue-400',
-  },
-  {
-    id: 'ORD-005',
-    table: 'Table 05',
-    name: 'Hoang Van E',
-    quantity: 0,
-    price: 0,
-    payment: 0,
-    status: 'pending',
-    avatarColor: 'bg-yellow-400',
-  },
-];
 
 const colorMapping: Record<OrderStatus, string> = {
   pending: 'orange',
@@ -76,57 +19,105 @@ const colorMapping: Record<OrderStatus, string> = {
 };
 
 interface OrderTableProps {
-  sort: OrderStatus | 'all';
+  sort?: OrderStatus | 'all';
+  data: OrderItemRow[];
+  onReload: () => void;
+  isLoading?: boolean;
 }
 
-const orderSorting = (orders: Order[], sort: OrderTableProps['sort']) => {
-  if (sort === 'all') return orders;
-  return orders.filter((order) => order.status === sort);
-};
+export const OrderItemTable = ({ data, onReload, isLoading }: OrderTableProps) => {
+  const [messageApi, contextHolder] = message.useMessage();
 
-export const OrderItemTable = ({ sort }: OrderTableProps) => {
-  const data = orderSorting(orders, sort);
+  const [selectedOrderItem, setSelectedOrderItem] = useState<OrderItemRow | null>(null);
+  const [deleteOrderItemId, setDeleteOrderItemId] = useState<string | null>(null);
 
-  const [selectedOrderItem, setSelectedOrderItem] = useState<null | any>(null);
+  const handleUpdated = () => {
+    setSelectedOrderItem(null);
+    return onReload();
+  };
 
-  const handleUpdateOrderItem = (data: any) => {
-    console.log(data);
+  const handleDeleteOrderItem = () => {
+    const cancleRequest = async () => {
+      const key = 'updatable';
+
+      messageApi.open({
+        key,
+        type: 'loading',
+        content: 'Deleting...',
+      });
+
+      try {
+        await cancleOrderItem(deleteOrderItemId as string);
+        messageApi.open({
+          key,
+          type: 'success',
+          content: 'Cancle order item successfully',
+          duration: 2,
+        });
+        setDeleteOrderItemId(null);
+        return onReload();
+      } catch (error) {
+        console.log(error);
+        messageApi.open({
+          key,
+          type: 'error',
+          content: 'Cancle order item unsuccessfully',
+          duration: 2,
+        });
+      }
+    };
+    cancleRequest();
   };
 
   return (
     <>
+      {contextHolder}
       <table className='w-full table-auto text-center text-white'>
         <thead>
           <tr className='border-b border-gray-700'>
+            <th className='py-4 text-left'></th>
             <th className='py-4 text-left'>Order Item Id</th>
             <th className='py-4 text-left'>Table</th>
             <th className='py-4 text-left'>Name</th>
             <th className='py-4 text-left'>Quantity</th>
-            <th className='py-4 text-left'>Price</th>
-            <th className='py-4 text-left'>Total Payment</th>
+            <th className='py-4 text-right'>Price</th>
+            <th className='py-4 text-right'>Total Payment</th>
             <th className='py-4'>Status</th>
+            <th className='py-4'></th>
           </tr>
         </thead>
         <tbody className='overflow-y-auto h-full'>
-          {data.map((order) => (
+          {isLoading && <TableSkeleton cols={8} />}
+          {data?.map((order, index) => (
             <tr
               onClick={() => setSelectedOrderItem(order)}
-              key={order.id}
+              key={index}
               className='border-b border-gray-800 hover:bg-[#2a2a3a] transition'
             >
+              <td className='pl-4'>
+                <Image className={`w-10 h-10 rounded-full`} alt='' src={order?.imageUrl} />
+              </td>
               <td className='py-4'>
-                <div className='flex items-center justify-start gap-3'>
-                  <div className={`w-10 h-10 rounded-full ${order.avatarColor}`} />
-                  {order.id}
-                </div>
+                <div className='flex items-center justify-start gap-3'>{order?.uuid}</div>
               </td>
               <td className='py-4 text-left'>{order.table}</td>
               <td className='py-4 text-left'>{order.name}</td>
               <td className='py-4 text-left'>{order.quantity}</td>
-              <td className='py-4 text-left'>{formatVND(order.price)}</td>
-              <td className='py-4 text-left'>{formatVND(order.payment)}</td>
+              <td className='py-4 text-right'>{formatVND(order.price)}</td>
+              <td className='py-4 text-right'>{formatVND(order.total)}</td>
               <td className='py-4'>
                 <Badge color={colorMapping[order.status] as BadColor}>{order.status}</Badge>
+              </td>
+              <td className='py-4'>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDeleteOrderItemId(order.uuid);
+                  }}
+                  className='cursor-pointer px-3'
+                >
+                  <DeleteOutlined />
+                </button>
               </td>
             </tr>
           ))}
@@ -134,20 +125,17 @@ export const OrderItemTable = ({ sort }: OrderTableProps) => {
       </table>
       <OrderItemModal
         onCancel={() => setSelectedOrderItem(null)}
-        onOk={handleUpdateOrderItem}
+        onOk={handleUpdated}
         isModalOpen={selectedOrderItem !== null}
-        orderItem={{
-          uuid: '24f499bd-855e-40ee-b8b3-16ba38e5b1ff',
-          quantity: 1,
-          notes: '',
-          price: 25000,
-          status: 'pending',
-          product: {
-            id: 1,
-            name: 'Xien bo nuong',
-            price: 25000,
-          },
-        }}
+        data={selectedOrderItem}
+      />
+
+      <ConfirmModal
+        onOk={handleDeleteOrderItem}
+        onCancel={() => setDeleteOrderItemId(null)}
+        isModalOpen={deleteOrderItemId !== null}
+        title='Delete this user'
+        description='Do you really want to delete this records? This process cannot be undone.'
       />
     </>
   );

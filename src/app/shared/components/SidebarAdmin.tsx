@@ -10,6 +10,7 @@ import { handleLogout } from '@/core/helpers/authHelper';
 import { getPusher } from '../hooks/usePusher';
 import { PUSHER_CHANEL } from '@/core/constants/pusher';
 import { NotificationPopper } from './Notifications/NotificationPopper';
+import { playNotificationSound } from '@/core/helpers/soundHelper';
 
 export const SidebarAdmin = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -30,6 +31,7 @@ export const SidebarAdmin = () => {
       console.log('📩 Notification received:', data);
       const toastMessage = `${data?.notification?.table_name} just created a new order`;
       setNotificationCount((prev) => prev + 1);
+      playNotificationSound();
 
       messageApi.open({
         type: 'success',
