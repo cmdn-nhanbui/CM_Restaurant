@@ -6,6 +6,7 @@ export const ROUTES = {
   CATEGORIES: '/categories/:id',
   NOTIFICATION: '/notification',
   MANAGEMENT: '/management',
+  CHECKOUT: '/checkout',
   NOT_FOUND: '/404',
   SERVER_ERROR: '/500',
 };

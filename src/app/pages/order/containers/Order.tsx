@@ -77,10 +77,19 @@ const Order = () => {
     const channel = pusher.subscribe(PUSHER_CHANEL);
 
     channel.bind('UpdateOrder', (data: any) => {
-      //!Check thêm điều kiện table_id
       const notification = JSON.parse(JSON.stringify(data));
       if (tableId === notification.notification.table_uuid) {
         refetch();
+        playNotificationSound();
+      }
+    });
+
+    channel.bind('CheckoutSuccess', (data: any) => {
+      console.log(data);
+      const notification = JSON.parse(JSON.stringify(data));
+      if (tableId === notification.notification.table_uuid) {
+        refetch();
+        messageApi.open({ content: 'Checkout successfully', type: 'success', duration: 5 });
         playNotificationSound();
       }
     });
