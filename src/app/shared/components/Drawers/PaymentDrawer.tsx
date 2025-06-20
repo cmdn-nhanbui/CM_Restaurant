@@ -1,4 +1,4 @@
-import { Drawer } from 'antd';
+import { Drawer, message } from 'antd';
 import { useMediaQuery } from 'react-responsive';
 
 import { PaymentCard } from '../PaymentCard';
@@ -6,6 +6,11 @@ import { Icon } from '../Icons';
 import { Button } from '../Button';
 import { useState } from 'react';
 import { OrderItem } from '@/pages/order/components/OrderItem';
+import { cancleOrderItem } from '@/core/services/orderItem.service';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/core/constants/queryKeys';
+import { checkoutPayment } from '@/core/services/checkout.service';
+import { useLocation } from 'react-router-dom';
 
 type PaymentDrawerProps = {
   onClose: () => void;
@@ -14,12 +19,64 @@ type PaymentDrawerProps = {
 };
 
 export const PaymentDrawer = ({ onClose, isOpen, orderData }: PaymentDrawerProps) => {
+  const [messageApi, contextHolder] = message.useMessage();
+
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const placement: 'bottom' | 'right' = isMobile ? 'bottom' : 'right';
   const [paymentMethod, setPaymentMethod] = useState<'credit_card' | 'cash'>('credit_card');
+  const queryClient = useQueryClient();
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const tableId = searchParams.get('table_id');
+
+  const handleDeleteOrderItem = (id: string) => {
+    const cancleRequest = async () => {
+      const key = 'updatable';
+
+      messageApi.open({
+        key,
+        type: 'loading',
+        content: 'Processing...',
+      });
+
+      try {
+        await cancleOrderItem(id);
+        messageApi.open({
+          key,
+          type: 'success',
+          content: 'Cancle order item successfully',
+          duration: 2,
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [QUERY_KEYS.GET_TABLES],
+        });
+      } catch (error) {
+        console.log(error);
+        messageApi.open({
+          key,
+          type: 'error',
+          content: 'Cancle order item unsuccessfully',
+          duration: 2,
+        });
+      }
+    };
+    cancleRequest();
+  };
+
+  const handleCheckout = () => {
+    checkoutPayment(tableId as string, paymentMethod === 'cash' ? paymentMethod : 'vnpay').then((res) => {
+      const url = res?.url;
+      if (url) {
+        window.open(url, '_blank');
+      }
+    });
+  };
 
   return (
     <>
+      {contextHolder}
       <Drawer
         styles={{
           content: {
@@ -60,7 +117,7 @@ export const PaymentDrawer = ({ onClose, isOpen, orderData }: PaymentDrawerProps
             orderData?.order_items?.map((item: any, index: number) => (
               <OrderItem
                 key={index}
-                id={item?.id}
+                id={item?.order_item_uuid}
                 imageUrl={item?.product?.image_url}
                 name={item?.product?.name}
                 note={item?.notes}
@@ -68,6 +125,7 @@ export const PaymentDrawer = ({ onClose, isOpen, orderData }: PaymentDrawerProps
                 quantity={item?.quantity}
                 status={item?.status}
                 total={item}
+                onDelete={handleDeleteOrderItem}
               />
             ))}
         </div>
@@ -76,7 +134,9 @@ export const PaymentDrawer = ({ onClose, isOpen, orderData }: PaymentDrawerProps
           <Button onClick={onClose} className='flex-1' outlined>
             Cancel
           </Button>
-          <Button className='flex-1'>Confirm Payment</Button>
+          <Button onClick={handleCheckout} className='flex-1'>
+            Confirm Payment
+          </Button>
         </div>
       </Drawer>
     </>

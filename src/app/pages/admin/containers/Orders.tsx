@@ -1,9 +1,13 @@
+import { PUSHER_CHANEL } from '@/core/constants/pusher';
+import type { OrderItemRow } from '@/core/constants/types';
 import { getCurrentDate } from '@/core/helpers/timeHelper';
-import { Button } from '@/shared/components/Button';
+import { mapOrderItemRow } from '@/core/mappers/orderItem.mapper';
 import { CreateOrderItemModal } from '@/shared/components/Modals/CreateOrderItemModal';
 import { OrderItemTable } from '@/shared/components/OrderItemTable';
+import { useOrderItemData } from '@/shared/hooks/useOrderItem';
+import { getPusher } from '@/shared/hooks/usePusher';
 import { Pagination, Select } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Orders = () => {
@@ -19,6 +23,23 @@ const Orders = () => {
     newParams.set('page', String(page));
     navigate(`?${newParams.toString()}`);
   };
+
+  const { data, refetch, isLoading } = useOrderItemData({ page, perPage: 15 });
+  const orderItemsData: OrderItemRow[] = data?.docs?.map(mapOrderItemRow);
+
+  useEffect(() => {
+    const pusher = getPusher();
+    const channel = pusher.subscribe(PUSHER_CHANEL);
+
+    channel.bind('NewOrder', () => {
+      refetch();
+    });
+
+    return () => {
+      channel.unbind_all();
+      pusher.unsubscribe(PUSHER_CHANEL);
+    };
+  }, []);
 
   return (
     <>
@@ -58,16 +79,12 @@ const Orders = () => {
                     { value: 'order_desc', label: 'Order DESC' },
                   ]}
                 />
-
-                <Button onClick={handleChangeShowCreate} outlined type='button' className='py-1'>
-                  Create Order
-                </Button>
               </div>
             </div>
 
             {/* -----Table Data-----  */}
             <div className='mt-2 h-full overflow-y-auto pb-4'>
-              <OrderItemTable sort='all' />
+              <OrderItemTable onReload={() => refetch()} data={orderItemsData} isLoading={isLoading} />
             </div>
 
             <div className='pt-3 border-t border-[var(--dark-line)]'>
@@ -76,7 +93,7 @@ const Orders = () => {
                 current={page}
                 align='center'
                 defaultCurrent={1}
-                total={10}
+                total={data?.total_docs || 0}
                 pageSize={10}
                 showSizeChanger={false}
                 showLessItems

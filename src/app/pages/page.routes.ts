@@ -9,6 +9,7 @@ import loginRoutes from './login/login.routes';
 import orderRoutes from './order/order.routes';
 import categoriesRoutes from './Categories/categories.routes';
 import adminRoutes from './admin/admin.routes';
+import checkoutRoutes from './checkout/checkout.routes';
 
 const Page = React.lazy(() => import('./Page'));
 const ProductPage = React.lazy(() => import('./ProductPage'));
@@ -18,7 +19,7 @@ const pageRoutes: PageRoute[] = [
   {
     path: '/',
     element: ProductPage,
-    children: [...homeRoutes, ...categoriesRoutes],
+    children: [...homeRoutes, ...categoriesRoutes, ...checkoutRoutes],
   },
   {
     path: '/',

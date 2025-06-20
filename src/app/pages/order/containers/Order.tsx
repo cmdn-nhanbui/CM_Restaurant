@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Empty, Skeleton } from 'antd';
+import { Empty, message, Skeleton } from 'antd';
 
 import { OrderItem } from '../components/OrderItem';
 import { PaymentDrawer } from '@/shared/components/Drawers/PaymentDrawer';
@@ -7,14 +7,19 @@ import { Button } from '@/shared/components/Button';
 import { ROUTES } from '@/core/constants/routes';
 import { useGetOrderByTableId } from '@/shared/hooks/useOrder';
 import { mapOrderItem } from '@/core/mappers/orderItem.mapper';
-import type { OrderItem as OrderItemType } from '@/core/constants/types';
+import type { Order, OrderItem as OrderItemType } from '@/core/constants/types';
 import { formatVND } from '@/core/helpers/currencyHelper';
 import { getPusher } from '@/shared/hooks/usePusher';
 import { PUSHER_CHANEL } from '@/core/constants/pusher';
 import { LinkWithQuery } from '../components/LinkWithQuery';
 import { useLocation } from 'react-router-dom';
+import { cancleOrderItem } from '@/core/services/orderItem.service';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/core/constants/queryKeys';
+import { playNotificationSound } from '@/core/helpers/soundHelper';
 
 const Order = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const [showCheckoutDrawer, setShowCheckoutDrawer] = useState<boolean>(false);
 
   const location = useLocation();
@@ -22,12 +27,47 @@ const Order = () => {
   const tableId = searchParams.get('table_id');
 
   const { data, isLoading, refetch, error } = useGetOrderByTableId(tableId || '');
-
+  const queryClient = useQueryClient();
   const orderItems: OrderItemType[] = data?.order_items?.map(mapOrderItem);
 
   const total = orderItems?.reduce((prev, curr) => prev + curr?.price * curr?.quantity, 0) || 0;
 
-  const handleRemove = (id: string) => {};
+  const handleRemove = (id: string) => {
+    const cancleRequest = async () => {
+      const key = 'updatable';
+
+      messageApi.open({
+        key,
+        type: 'loading',
+        content: 'Processing...',
+      });
+
+      try {
+        await cancleOrderItem(id);
+        messageApi.open({
+          key,
+          type: 'success',
+          content: 'Cancle order item successfully',
+          duration: 2,
+        });
+        queryClient.setQueryData<any>([QUERY_KEYS.GET_ORDER_BY_TABLE_ID, tableId], (oldData: any) => {
+          const newState = { ...oldData };
+          newState.order_items = newState?.order_items?.filter((orderItem: any) => orderItem.uuid !== id);
+          return newState;
+        });
+      } catch (error) {
+        console.log(error);
+        messageApi.open({
+          key,
+          type: 'error',
+          content: 'Cancle order item unsuccessfully',
+          duration: 2,
+        });
+      }
+    };
+    cancleRequest();
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -37,9 +77,20 @@ const Order = () => {
     const channel = pusher.subscribe(PUSHER_CHANEL);
 
     channel.bind('UpdateOrder', (data: any) => {
-      //!Check thêm điều kiện table_id
-      if (tableId === data?.notificaton?.table_uuid) {
+      const notification = JSON.parse(JSON.stringify(data));
+      if (tableId === notification.notification.table_uuid) {
         refetch();
+        playNotificationSound();
+      }
+    });
+
+    channel.bind('CheckoutSuccess', (data: any) => {
+      console.log(data);
+      const notification = JSON.parse(JSON.stringify(data));
+      if (tableId === notification.notification.table_uuid) {
+        refetch();
+        messageApi.open({ content: 'Checkout successfully', type: 'success', duration: 5 });
+        playNotificationSound();
       }
     });
 
@@ -51,6 +102,8 @@ const Order = () => {
 
   return (
     <>
+      {contextHolder}
+
       <div className='flex flex-col h-full justify-between'>
         {/* Header */}
         <div className='sm:py-6 py-4 flex justify-between text-white text-lg font-semibold border-b border-[var(--dark-line)]'>
@@ -118,5 +171,3 @@ const Order = () => {
 };
 
 export default Order;
-
-//header

@@ -24,6 +24,7 @@ export const OrderTable = ({ data = [], loading, onRefetch }: OrderTableProps) =
       <table className='w-full table-auto text-center text-white'>
         <thead>
           <tr className='border-b border-gray-700'>
+            <th className='py-4 text-left pl-4'>Table ID</th>
             <th className='py-4 text-left pl-4'>Table</th>
             <th className='py-4 text-left'>Checkin At</th>
             <th className='py-4 text-center'>Order Items</th>
@@ -36,6 +37,7 @@ export const OrderTable = ({ data = [], loading, onRefetch }: OrderTableProps) =
           {loading && <TableSkeleton cols={4} />}
           {data?.map((table, idx) => (
             <tr key={idx} className='border-b border-gray-800 hover:bg-[#2a2a3a] transition'>
+              <td className='py-4 text-left pl-4'>{table.id}</td>
               <td className='py-4 text-left pl-4'>{table.name}</td>
               <td className='py-4 text-left'>{formatTimestamp(table?.order?.created_at)}</td>
               <td className='py-4 text-center'>{table.orderItemQuantity}</td>
