@@ -1,14 +1,16 @@
-import { PUSHER_CHANEL } from '@/core/constants/pusher';
+import { Pagination, Select } from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { OrderItemTable } from '@/shared/components/OrderItemTable';
+import { useOrderItemData } from '@/shared/hooks/useOrderItem';
+
 import type { OrderItemRow } from '@/core/constants/types';
 import { getCurrentDate } from '@/core/helpers/timeHelper';
 import { mapOrderItemRow } from '@/core/mappers/orderItem.mapper';
 import { CreateOrderItemModal } from '@/shared/components/Modals/CreateOrderItemModal';
-import { OrderItemTable } from '@/shared/components/OrderItemTable';
-import { useOrderItemData } from '@/shared/hooks/useOrderItem';
 import { getPusher } from '@/shared/hooks/usePusher';
-import { Pagination, Select } from 'antd';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { PUSHER_CHANEL } from '@/core/constants/pusher';
 
 const Orders = () => {
   const [isShowCreateModal, setIsShowCreateModal] = useState<boolean>(false);
@@ -94,7 +96,7 @@ const Orders = () => {
                 align='center'
                 defaultCurrent={1}
                 total={data?.total_docs || 0}
-                pageSize={10}
+                pageSize={15}
                 showSizeChanger={false}
                 showLessItems
                 onChange={handleChangePage}

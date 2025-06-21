@@ -29,11 +29,12 @@ export const OrderDrawer = ({ onClose, isOpen }: CartDrawerProps) => {
   const searchParams = new URLSearchParams(location.search);
   const tableId = searchParams.get('table_id');
 
-  const { data, isLoading, refetch, error } = useGetOrderByTableId(tableId || '');
+  const { data, isLoading, refetch, error } = useGetOrderByTableId(tableId as string);
+
   const queryClient = useQueryClient();
   const orderItems: OrderItemType[] = data?.order_items?.map(mapOrderItem);
 
-  const total = orderItems?.reduce((prev, curr) => prev + curr?.price * curr?.quantity, 0) || 0;
+  const total = orderItems?.reduce((prev, curr) => prev + curr?.price, 0) || 0;
 
   const handleRemove = (id: string) => {
     const cancleRequest = async () => {
@@ -73,15 +74,17 @@ export const OrderDrawer = ({ onClose, isOpen }: CartDrawerProps) => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
     const pusher = getPusher();
     const channel = pusher.subscribe(PUSHER_CHANEL);
 
+    channel.bind('NewOrder', (data: any) => {
+      const notification = JSON.parse(JSON.stringify(data));
+      if (tableId === notification.notification.table_uuid) {
+        refetch();
+      }
+    });
+
     channel.bind('UpdateOrder', (data: any) => {
-      //!Check thêm điều kiện table_id
       const notification = JSON.parse(JSON.stringify(data));
       if (tableId === notification.notification.table_uuid) {
         refetch();
@@ -145,7 +148,7 @@ export const OrderDrawer = ({ onClose, isOpen }: CartDrawerProps) => {
                     name={item?.product?.name || ''}
                     note={item?.notes}
                     quantity={item?.quantity}
-                    price={item?.price}
+                    price={item?.product?.price || 0}
                     imageUrl={item?.product?.imageUrl || ''}
                     status={item?.status}
                     total={total}

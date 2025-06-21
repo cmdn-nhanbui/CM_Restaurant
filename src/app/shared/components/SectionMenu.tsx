@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ProductCard from './ProductCard';
 import { Pagination, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -15,11 +15,18 @@ export const SectionMenu = () => {
 
   const queryParams = new URLSearchParams(location.search);
   const page = Number(queryParams.get('page')) || 1;
+  const [totalDocs, setTotalDocs] = useState<number>(0);
+
+  const topRef = useRef(null);
 
   const handleChangePage = (page: number) => {
     const newParams = new URLSearchParams(location.search);
     newParams.set('page', String(page));
     navigate(`?${newParams.toString()}`);
+
+    if (topRef.current) {
+      (topRef.current as HTMLElement).scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleChangeSortMode = (val: string) => {
@@ -30,8 +37,16 @@ export const SectionMenu = () => {
 
   const products: Product[] = data?.docs?.map(mapProductData);
 
+  useEffect(() => {
+    if (!data) return;
+    if (totalDocs !== data?.total_docs) {
+      setTotalDocs(data.total_docs);
+    }
+  }, [data]);
+
   return (
     <section className='mt-4 sm:mt-6'>
+      <div ref={topRef}></div>
       <div className='flex sm:justify-between justify-end items-center mb-4 sm:mb-5'>
         <h2 className='sm:text-2xl text-base text-white font-semibold sm:block hidden'>Choose Dishes</h2>
 
@@ -71,7 +86,7 @@ export const SectionMenu = () => {
                 ),
               },
               {
-                value: 'order_quantity_desc',
+                value: 'order',
                 label: (
                   <span>
                     Order <ArrowDownOutlined />
@@ -99,7 +114,7 @@ export const SectionMenu = () => {
         current={page}
         align='center'
         defaultCurrent={1}
-        total={data?.total_docs || 0}
+        total={totalDocs}
         pageSize={18}
         showSizeChanger={false}
         showLessItems

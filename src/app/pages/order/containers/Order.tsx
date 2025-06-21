@@ -9,14 +9,11 @@ import { useGetOrderByTableId } from '@/shared/hooks/useOrder';
 import { mapOrderItem } from '@/core/mappers/orderItem.mapper';
 import type { Order, OrderItem as OrderItemType } from '@/core/constants/types';
 import { formatVND } from '@/core/helpers/currencyHelper';
-import { getPusher } from '@/shared/hooks/usePusher';
-import { PUSHER_CHANEL } from '@/core/constants/pusher';
 import { LinkWithQuery } from '../components/LinkWithQuery';
 import { useLocation } from 'react-router-dom';
 import { cancleOrderItem } from '@/core/services/orderItem.service';
 import { useQueryClient } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/core/constants/queryKeys';
-import { playNotificationSound } from '@/core/helpers/soundHelper';
 
 const Order = () => {
   const [messageApi, contextHolder] = message.useMessage();
@@ -26,11 +23,12 @@ const Order = () => {
   const searchParams = new URLSearchParams(location.search);
   const tableId = searchParams.get('table_id');
 
-  const { data, isLoading, refetch, error } = useGetOrderByTableId(tableId || '');
+  const { data, isLoading, error } = useGetOrderByTableId(tableId || '');
+
   const queryClient = useQueryClient();
   const orderItems: OrderItemType[] = data?.order_items?.map(mapOrderItem);
 
-  const total = orderItems?.reduce((prev, curr) => prev + curr?.price * curr?.quantity, 0) || 0;
+  const total = orderItems?.reduce((prev, curr) => prev + (curr?.product?.price || 0) * curr?.quantity, 0) || 0;
 
   const handleRemove = (id: string) => {
     const cancleRequest = async () => {
@@ -44,12 +42,14 @@ const Order = () => {
 
       try {
         await cancleOrderItem(id);
+
         messageApi.open({
           key,
           type: 'success',
           content: 'Cancle order item successfully',
           duration: 2,
         });
+
         queryClient.setQueryData<any>([QUERY_KEYS.GET_ORDER_BY_TABLE_ID, tableId], (oldData: any) => {
           const newState = { ...oldData };
           newState.order_items = newState?.order_items?.filter((orderItem: any) => orderItem.uuid !== id);
@@ -70,34 +70,6 @@ const Order = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    const pusher = getPusher();
-    const channel = pusher.subscribe(PUSHER_CHANEL);
-
-    channel.bind('UpdateOrder', (data: any) => {
-      const notification = JSON.parse(JSON.stringify(data));
-      if (tableId === notification.notification.table_uuid) {
-        refetch();
-        playNotificationSound();
-      }
-    });
-
-    channel.bind('CheckoutSuccess', (data: any) => {
-      console.log(data);
-      const notification = JSON.parse(JSON.stringify(data));
-      if (tableId === notification.notification.table_uuid) {
-        refetch();
-        messageApi.open({ content: 'Checkout successfully', type: 'success', duration: 5 });
-        playNotificationSound();
-      }
-    });
-
-    return () => {
-      channel.unbind_all();
-      pusher.unsubscribe(PUSHER_CHANEL);
-    };
   }, []);
 
   return (
@@ -133,7 +105,7 @@ const Order = () => {
                 name={item?.product?.name || ''}
                 note={item?.notes}
                 quantity={item?.quantity}
-                price={item?.price}
+                price={item?.product?.price || 0}
                 imageUrl={item?.product?.imageUrl || ''}
                 status={item?.status}
                 total={total}

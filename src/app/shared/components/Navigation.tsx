@@ -21,7 +21,7 @@ export const Navigation = ({ categories, loading, additionalItems }: Props) => {
 
   return (
     <nav>
-      <ul className='flex gap-8 sm:mt-6 mt-4 border-b border-[var(--dark-line)] overflow-x-auto scrollbar-hidden whitespace-nowrap pb-4 sm:pb-6'>
+      <ul className='flex gap-8 sm:mt-6 mt-4 border-b border-[var(--dark-line)] overflow-x-auto scrollbar-hidden whitespace-nowrap pb-4 sm:pb-6 pr-4'>
         {additionalItems?.map((item, index) => (
           <li key={index}>
             <NavLinkWithQuery

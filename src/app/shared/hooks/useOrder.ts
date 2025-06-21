@@ -12,5 +12,6 @@ export const useGetOrderByTableId = (tableId: string) => {
     staleTime: 1000 * 60,
     retry: 3,
     refetchOnWindowFocus: false,
+    enabled: !!tableId,
   });
 };

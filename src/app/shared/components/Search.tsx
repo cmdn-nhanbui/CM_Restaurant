@@ -87,7 +87,7 @@ export const Search = () => {
     >
       <div className='relative'>
         <TextField onChange={handleChangeSearchValue} placeholder='Search for food, coffee, etc...' className='pr-6' />
-        <div className='absolute top-1/2 right-3   -translate-y-1/2 flex'>
+        <div className='absolute top-1/2 right-3 -translate-y-1/2 flex'>
           {isLoading ? (
             <Spin indicator={<LoadingOutlined spin style={{ color: 'var(--primary)' }} />} />
           ) : (
