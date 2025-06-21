@@ -1,10 +1,12 @@
-import { ROUTES } from '@/core/constants/routes';
-import { Icon } from './Icons';
-import classNames from 'classnames';
-import { ShoppingCartOutlined } from '@ant-design/icons';
-import { Badge } from 'antd';
-import { NavLinkWithQuery } from '@/pages/order/components/NavLinkWithQuery';
 import { useSelector } from 'react-redux';
+import classNames from 'classnames';
+import { Badge } from 'antd';
+
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { NavLinkWithQuery } from '@/pages/order/components/NavLinkWithQuery';
+import { Icon } from './Icons';
+
+import { ROUTES } from '@/core/constants/routes';
 import type { RootState } from '@src/redux/store';
 
 export const Footer = () => {

@@ -34,7 +34,12 @@ const Categories = () => {
     setSortBy(val);
   };
 
-  const { data, isLoading } = useProductByCategory({ page, perPage: 18, categoryId: Number(id), sort: sortBy });
+  const { data, isLoading, isFetching } = useProductByCategory({
+    page,
+    perPage: 18,
+    categoryId: Number(id),
+    sort: sortBy,
+  });
   const topRef = useRef(null);
   const products: Product[] = data?.docs?.map(mapProductData);
 
@@ -116,7 +121,7 @@ const Categories = () => {
         </ul>
       )}
 
-      {!products?.length && (
+      {!products?.length && !isFetching && (
         <Empty
           style={{
             margin: '16px 0',

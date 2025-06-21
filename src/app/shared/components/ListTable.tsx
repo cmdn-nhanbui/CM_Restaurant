@@ -1,27 +1,31 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Pagination, Select } from 'antd';
 import { OrderTable } from './OrderTable';
 
-import { useGetTables } from '../hooks/useTable';
+import type { Table, TableStatus } from '@/core/constants/types';
 import { mapTableData } from '@/core/mappers/table.mapper';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { getPusher } from '../hooks/usePusher';
 import { PUSHER_CHANEL } from '@/core/constants/pusher';
+import { useGetTables } from '../hooks/useTable';
+import { getPusher } from '../hooks/usePusher';
+
+type SortType = TableStatus | 'all';
 
 export const ListTable = () => {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const page = Number(queryParams.get('page')) || 1;
+  const [sort, setSort] = useState<SortType>('all');
 
   const { data, isLoading, refetch } = useGetTables(page, 10);
+  let tables: Table[] = data?.docs?.map(mapTableData);
+  if (sort !== 'all') tables = tables?.filter((item) => item?.status === sort);
 
   const handleChangePage = (page: number) => {
     const newParams = new URLSearchParams(location.search);
     newParams.set('page', String(page));
     navigate(`?${newParams.toString()}`);
   };
-
-  const tables = data?.docs?.map(mapTableData);
 
   useEffect(() => {
     const pusher = getPusher();
@@ -31,7 +35,11 @@ export const ListTable = () => {
       refetch();
     });
 
-    channel.bind('DeleteOrder', () => {
+    channel.bind('CancelOrder', () => {
+      refetch();
+    });
+
+    channel.bind('AdminPaid', () => {
       refetch();
     });
 
@@ -42,12 +50,12 @@ export const ListTable = () => {
   }, []);
 
   return (
-    <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col'>
+    <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col h-full'>
       <div className='flex items-center justify-between'>
         <h2 className='text-lg font-semibold text-white'>Table Status</h2>
         <Select
           rootClassName='custom-antd-select'
-          defaultValue='available'
+          defaultValue='all'
           style={{ width: 120 }}
           styles={{
             popup: {
@@ -57,13 +65,12 @@ export const ListTable = () => {
               },
             },
           }}
-          onChange={(value) => {
-            console.log(value);
-          }}
+          onChange={(value) => setSort(value as SortType)}
           options={[
-            { value: 'all', label: <span className='text-[var(--orange)]'>All</span> },
+            { value: 'all', label: <span className='text-[var(--blue)]'>All</span> },
             { value: 'available', label: <span className='text-[var(--green)]'>Available</span> },
-            { value: 'reserved', label: <span className='text-[var(--purple)]'>Reserved</span> },
+            { value: 'occupied', label: <span className='text-[var(--orange)]'>Occupied</span> },
+            { value: 'reserved', label: <span className='text-[var(--red)]'>Reserved</span> },
           ]}
         />
       </div>

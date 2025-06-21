@@ -1,8 +1,9 @@
 import React from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+
+import { Image } from './Image';
 import type { Product } from '@/core/constants/types';
 import { formatVND } from '@/core/helpers/currencyHelper';
-import { Image } from './Image';
 
 interface EdtiDishCardProps extends Product {
   onEdit?: () => void;

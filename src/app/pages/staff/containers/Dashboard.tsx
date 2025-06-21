@@ -11,7 +11,7 @@ const Dashboard = () => {
           <h2 className='text-white font-semibold text-3xl'>Dashboard</h2>
           <p className='text-lg'>{getCurrentDate()}</p>
         </div>
-        <div className='pt-6'>
+        <div className='pt-6 h-full'>
           <ListTable />
         </div>
       </div>

@@ -1,7 +1,6 @@
 import { Tooltip } from 'antd';
 import { useState } from 'react';
 
-import { PaymentDrawer } from './Drawers/PaymentDrawer';
 import { TableSkeleton } from './TableSkeleton';
 import { TableStatus } from './TableStatus';
 import { Icon } from './Icons';
@@ -9,6 +8,7 @@ import { Icon } from './Icons';
 import { formatVND } from '@/core/helpers/currencyHelper';
 import type { Table } from '@/core/constants/types';
 import { formatTimestamp } from '@/core/helpers/timeHelper';
+import { CheckoutAdminDrawer } from './Drawers/CheckoutAdminDrawer';
 
 export interface OrderTableProps {
   data: Table[];
@@ -18,6 +18,15 @@ export interface OrderTableProps {
 
 export const OrderTable = ({ data = [], loading, onRefetch }: OrderTableProps) => {
   const [isShowCheckoutPayment, setIsShowCheckoutPayment] = useState<any>(null);
+
+  //TODO Change list order-item list when admin remove order-item in checkout drawer
+  const handleRemoveOrderItem = (removedId: string) => {
+    setIsShowCheckoutPayment((prev: any) => {
+      const newState = { ...prev };
+      newState.order_items = newState.order_items.filter((item: any) => item.order_item_uuid !== removedId);
+      return newState;
+    });
+  };
 
   return (
     <>
@@ -58,10 +67,11 @@ export const OrderTable = ({ data = [], loading, onRefetch }: OrderTableProps) =
           ))}
         </tbody>
       </table>
-      <PaymentDrawer
+      <CheckoutAdminDrawer
         isOpen={isShowCheckoutPayment !== null}
         onClose={() => setIsShowCheckoutPayment(null)}
         orderData={isShowCheckoutPayment}
+        onDelete={handleRemoveOrderItem}
       />
     </>
   );

@@ -138,9 +138,9 @@ export const OrderItemModal = ({ isModalOpen, onCancel, onOk, data }: ModalProps
                 onChange={(value) => setStatus(value)}
                 className='w-full'
                 options={[
-                  { label: 'Pending', value: 'pending' },
-                  { label: 'Preparing', value: 'preparing' },
-                  { label: 'Completed', value: 'completed' },
+                  { value: 'pending', label: <span className='text-[var(--orange)]'>Pending</span> },
+                  { value: 'preparing', label: <span className='text-[var(--blue)]'>Preparing</span> },
+                  { value: 'completed', label: <span className='text-[var(--green)]'>Completed</span> },
                 ]}
               />
             </div>

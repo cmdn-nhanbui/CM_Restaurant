@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
-import ProductCard from './ProductCard';
-import { Pagination, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { useProductData } from '../hooks/useProduct';
-import ProductListSkeleton from './ProductListSkeleton';
+import { Pagination, Select } from 'antd';
+
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import ProductCard from './ProductCard';
+
 import { mapProductData } from '@/core/mappers/product.mapper';
 import type { Product } from '@/core/constants/types';
-import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { useProductData } from '../hooks/useProduct';
+import ProductListSkeleton from './ProductListSkeleton';
 
 export const SectionMenu = () => {
   const navigate = useNavigate();

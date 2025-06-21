@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AddProductModal } from '@/shared/components/Modals/AddProductModal/AddProductModal';
 import { AddNewDishCard } from '@/shared/components/AddNewDishCard';
@@ -90,6 +90,12 @@ const Products = () => {
     name: item.name,
     navigateTo: `/admin/products/${item.id}`,
   }));
+
+  useEffect(() => {
+    const newParams = new URLSearchParams(location.search);
+    newParams.delete('page');
+    navigate(`?${newParams.toString()}`, { replace: true });
+  }, [id]);
 
   return (
     <>

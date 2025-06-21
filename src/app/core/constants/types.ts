@@ -179,3 +179,5 @@ export interface TableSelectItem {
   createdAt: string;
   updatedAt: string;
 }
+
+export type OrderStatus = 'pending' | 'preparing' | 'completed';

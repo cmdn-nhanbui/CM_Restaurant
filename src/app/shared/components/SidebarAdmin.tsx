@@ -20,7 +20,8 @@ const SIDE_BAR_ITEMS = {
     { title: 'Dashboard', end: true, navigate: ADMIN_ROUTES.DASHBOARD, icon: <Icon icon='home' color='inherit' /> },
     { title: 'Products', navigate: ADMIN_ROUTES.PRODUCTS, icon: <Icon icon='products' color='inherit' /> },
     { title: 'Orders', navigate: ADMIN_ROUTES.ORDER, icon: <Icon icon='chart' color='inherit' /> },
-    { title: 'Staffs', navigate: ADMIN_ROUTES.ORDER, icon: <Icon icon='users' color='inherit' /> },
+    { title: 'Staffs', navigate: ADMIN_ROUTES.USER, icon: <Icon icon='users' color='inherit' /> },
+    { title: 'Invoices', navigate: ADMIN_ROUTES.INVOICE, icon: <Icon icon='book-mark' color='inherit' /> },
     { title: 'Settings', navigate: ADMIN_ROUTES.SETTING, icon: <Icon icon='setting' color='inherit' /> },
   ],
   STAFF: [
@@ -51,7 +52,6 @@ export const SidebarAdmin = () => {
     const channel = pusher.subscribe(PUSHER_CHANEL);
 
     channel.bind('NewOrder', (data: any) => {
-      console.log('📩 Notification received:', data);
       const toastMessage = `${data?.notification?.table_name} just created a new order`;
       setNotificationCount((prev) => prev + 1);
       playNotificationSound();

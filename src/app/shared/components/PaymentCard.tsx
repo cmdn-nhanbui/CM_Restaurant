@@ -1,6 +1,6 @@
-import { CheckCircleFilled } from '@ant-design/icons';
-import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
+import classNames from 'classnames';
+import { CheckCircleFilled } from '@ant-design/icons';
 
 type PaymentMethod = 'credit_card' | 'paypal' | 'cash';
 

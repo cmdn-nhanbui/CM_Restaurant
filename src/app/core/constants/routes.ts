@@ -21,6 +21,7 @@ export const ADMIN_ROUTES = {
   PASSWORD: '/admin/setting/password',
   USER: '/admin/user',
   ORDER: '/admin/order',
+  INVOICE: '/admin/invoice',
 };
 
 export const STAFF_ROUTES = {

@@ -14,7 +14,7 @@ export const useOrderItemData = ({ page, perPage }: QueryParams) => {
       const response = await getOrderItemData(page, perPage);
       return response?.data;
     },
-    staleTime: 1000 * 60,
+    staleTime: 1000 * 20,
     refetchOnWindowFocus: false,
   });
 };

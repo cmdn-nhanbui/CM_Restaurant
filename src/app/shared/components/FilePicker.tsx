@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Image, Upload, message } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 
+import { PlusOutlined } from '@ant-design/icons';
 import '@ant-design/v5-patch-for-react-19';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];

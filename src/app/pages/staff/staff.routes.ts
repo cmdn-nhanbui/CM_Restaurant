@@ -6,7 +6,7 @@ import { STAFF_ROUTES } from '../../core/constants/routes';
 
 const Dashboard: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Dashboard'));
 const Setting: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Settings'));
-const Orders: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Orders'));
+const Orders: LazyExoticComponent<() => JSX.Element> = lazy(() => import('../admin/containers/Orders'));
 
 const staffRoutes: PageRoute[] = [
   {
