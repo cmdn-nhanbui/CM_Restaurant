@@ -15,12 +15,19 @@ export const ADMIN_ROUTES = {
   DASHBOARD: '/admin',
   SETTINGS: '/admin/setting/*',
   STATISTIC: '/admin/statistic',
-  NOTIFICATION: '/admin/notify',
   PRODUCTS: '/admin/products',
   CATEGORIES: '/admin/products/:id',
-  TABLES: '/admin/tables',
   SETTING: '/admin/setting',
   PASSWORD: '/admin/setting/password',
   USER: '/admin/user',
   ORDER: '/admin/order',
+};
+
+export const STAFF_ROUTES = {
+  DASHBOARD: '/staff',
+  SETTINGS: '/staff/setting/*',
+  SETTING: '/staff/setting',
+  PRODUCTS: '/staff/products',
+  PASSWORD: '/staff/setting/password',
+  ORDER: '/staff/order',
 };

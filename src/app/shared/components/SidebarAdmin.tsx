@@ -5,22 +5,45 @@ import { Badge, message, Tooltip } from 'antd';
 
 import { ConfirmModal } from './Modals/ConfirmModal';
 import { Icon } from './Icons';
-import { ADMIN_ROUTES, ROUTES } from '@/core/constants/routes';
+import { ADMIN_ROUTES, ROUTES, STAFF_ROUTES } from '@/core/constants/routes';
 import { handleLogout } from '@/core/helpers/authHelper';
 import { getPusher } from '../hooks/usePusher';
 import { PUSHER_CHANEL } from '@/core/constants/pusher';
 import { NotificationPopper } from './Notifications/NotificationPopper';
 import { playNotificationSound } from '@/core/helpers/soundHelper';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@src/redux/store';
+import { ROLES } from '@/core/constants/roles';
+
+const SIDE_BAR_ITEMS = {
+  ADMIN: [
+    { title: 'Dashboard', end: true, navigate: ADMIN_ROUTES.DASHBOARD, icon: <Icon icon='home' color='inherit' /> },
+    { title: 'Products', navigate: ADMIN_ROUTES.PRODUCTS, icon: <Icon icon='products' color='inherit' /> },
+    { title: 'Orders', navigate: ADMIN_ROUTES.ORDER, icon: <Icon icon='chart' color='inherit' /> },
+    { title: 'Staffs', navigate: ADMIN_ROUTES.ORDER, icon: <Icon icon='users' color='inherit' /> },
+    { title: 'Settings', navigate: ADMIN_ROUTES.SETTING, icon: <Icon icon='setting' color='inherit' /> },
+  ],
+  STAFF: [
+    { title: 'Dashboard', end: true, navigate: STAFF_ROUTES.DASHBOARD, icon: <Icon icon='home' color='inherit' /> },
+    { title: 'Orders', navigate: STAFF_ROUTES.ORDER, icon: <Icon icon='chart' color='inherit' /> },
+    { title: 'Settings', navigate: STAFF_ROUTES.SETTING, icon: <Icon icon='setting' color='inherit' /> },
+  ],
+};
 
 export const SidebarAdmin = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const [confirmLogoutModal, setConfirmLogoutModal] = useState<boolean>(false);
   const [notificationCount, setNotificationCount] = useState<number>(0);
 
+  const { data: currentUser } = useSelector((state: RootState) => state.user);
+
+  const sideBarItems = currentUser?.role === ROLES.ADMIN ? SIDE_BAR_ITEMS.ADMIN : SIDE_BAR_ITEMS.STAFF;
+
   const handleDestroyMessages = () => {
     messageApi.destroy();
     setNotificationCount(0);
   };
+
   const [isShowNotification, setIsShowNotification] = useState<boolean>(false);
 
   useEffect(() => {
@@ -60,23 +83,9 @@ export const SidebarAdmin = () => {
               </Link>
             </Tooltip>
           </h1>
-          <div className='p-4'>
-            <Tooltip placement='right' title='Dashboard'>
-              <NavLink
-                to={ADMIN_ROUTES.DASHBOARD}
-                end
-                className={(nav) =>
-                  classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer', {
-                    'bg-[var(--primary)] fill-white': nav.isActive,
-                  })
-                }
-              >
-                <Icon icon='home' color='inherit' />
-              </NavLink>
-            </Tooltip>
-          </div>
-          <div className='p-4'>
-            <Tooltip placement='right' title='Notifications'>
+
+          <Tooltip placement='right' title='Notifications'>
+            <div className='p-4'>
               <NotificationPopper
                 isOpen={isShowNotification}
                 onChangeOpenState={() => {
@@ -94,65 +103,26 @@ export const SidebarAdmin = () => {
                   </Badge>
                 </button>
               </NotificationPopper>
-            </Tooltip>
-          </div>
+            </div>
+          </Tooltip>
 
-          <div className='p-4'>
-            <Tooltip placement='right' title='Products'>
-              <NavLink
-                to={ADMIN_ROUTES.PRODUCTS}
-                className={(nav) =>
-                  classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
-                    'bg-[var(--primary)] fill-white text-white': nav.isActive,
-                  })
-                }
-              >
-                <Icon icon='products' color='inherit' />
-              </NavLink>
-            </Tooltip>
-          </div>
-          <div className='p-4'>
-            <Tooltip placement='right' title='Orders'>
-              <NavLink
-                to={ADMIN_ROUTES.ORDER}
-                className={(nav) =>
-                  classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
-                    'bg-[var(--primary)] fill-white text-white': nav.isActive,
-                  })
-                }
-              >
-                <Icon icon='chart' color='inherit' />
-              </NavLink>
-            </Tooltip>
-          </div>
-          <div className='p-4'>
-            <Tooltip placement='right' title='Staffs'>
-              <NavLink
-                to={ADMIN_ROUTES.USER}
-                className={(nav) =>
-                  classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
-                    'bg-[var(--primary)] fill-white text-white': nav.isActive,
-                  })
-                }
-              >
-                <Icon icon='users' color='inherit' />
-              </NavLink>
-            </Tooltip>
-          </div>
-          <div className='p-4'>
-            <Tooltip placement='right' title='Settings'>
-              <NavLink
-                to={ADMIN_ROUTES.SETTING}
-                className={(nav) =>
-                  classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
-                    'bg-[var(--primary)] fill-white text-white': nav.isActive,
-                  })
-                }
-              >
-                <Icon icon='setting' color='inherit' />
-              </NavLink>
-            </Tooltip>
-          </div>
+          {sideBarItems?.map((item, index) => (
+            <div key={index} className='p-4'>
+              <Tooltip placement='right' title={item?.title}>
+                <NavLink
+                  end={item?.end}
+                  to={item?.navigate}
+                  className={(nav) =>
+                    classNames('flex p-[18px] rounded-xl fill-[var(--primary)] cursor-pointer text-[var(--primary)]', {
+                      'bg-[var(--primary)] fill-white text-white': nav.isActive,
+                    })
+                  }
+                >
+                  {item?.icon}
+                </NavLink>
+              </Tooltip>
+            </div>
+          ))}
         </div>
 
         <div className='p-4'>
