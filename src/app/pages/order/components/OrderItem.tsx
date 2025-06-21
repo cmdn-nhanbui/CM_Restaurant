@@ -72,7 +72,7 @@ export const OrderItem = ({
           {/* Right: Status + Remove */}
           <div className='flex flex-col items-end gap-2 shrink-0'>
             <Badge color={colorMapping[status]}>{status}</Badge>
-            {(status !== 'preparing' || currentUser) && !disableDelete && (
+            {(status === 'pending' || currentUser) && !disableDelete && (
               <button onClick={() => setIsShowModal(true)} className='text-white cursor-pointer w-6 h-6'>
                 <CloseOutlined />
               </button>

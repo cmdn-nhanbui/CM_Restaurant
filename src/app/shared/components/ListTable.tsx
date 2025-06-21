@@ -31,6 +31,10 @@ export const ListTable = () => {
       refetch();
     });
 
+    channel.bind('DeleteOrder', () => {
+      refetch();
+    });
+
     return () => {
       channel.unbind_all();
       pusher.unsubscribe(PUSHER_CHANEL);

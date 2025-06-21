@@ -22,7 +22,16 @@ export const getMyProfile = async () => {
   return response?.data;
 };
 
-export const updateProfile = async () => {};
+interface UpdateProfilePayload {
+  fullname: string;
+  gender: boolean;
+  phone_number: string;
+}
+
+export const updateProfile = async (data: UpdateProfilePayload) => {
+  const response = await request.put('/auth/profile', data);
+  return response?.data;
+};
 
 export const changePassword = async (oldPassword: string, newPassword: string) => {
   const response = await request.put('/auth/change-password', {

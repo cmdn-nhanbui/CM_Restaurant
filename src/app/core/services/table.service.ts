@@ -28,3 +28,8 @@ export const getListTable = async (page: number, perPage: number) => {
   });
   return response?.data;
 };
+
+export const getTableById = async (id: string) => {
+  const response = await request.get(`/tables/${id}`);
+  return response?.data;
+};

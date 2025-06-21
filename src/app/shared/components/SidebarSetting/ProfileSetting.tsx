@@ -1,11 +1,13 @@
-import type { AppDispatch } from '@src/redux/store';
+import type { RootState } from '@src/redux/store';
 import { message, Select } from 'antd';
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { TextField } from '../TextField';
 import { Button } from '../Button';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { updateProfileValidation } from './setting.validation';
+import { useEffect } from 'react';
+import { updateProfile } from '@/core/services/auth.service';
 
 type FormUpdateProfile = {
   userName: string;
@@ -14,13 +16,15 @@ type FormUpdateProfile = {
 };
 
 export const ProfileSetting = () => {
+  const { data: userData } = useSelector((state: RootState) => state.user);
+
   const [messageApi, contextHolder] = message.useMessage();
-  const dispatch = useDispatch<AppDispatch>();
 
   const {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormUpdateProfile>({
     defaultValues: {
@@ -32,8 +36,43 @@ export const ProfileSetting = () => {
   });
 
   const handleUpdateProfile: SubmitHandler<FormUpdateProfile> = (data) => {
-    console.log(data);
+    const key = 'update_key';
+
+    const updateRequest = async () => {
+      try {
+        messageApi.open({
+          type: 'loading',
+          content: 'Updating',
+          key,
+        });
+        await updateProfile({ fullname: data.userName, gender: data.gender, phone_number: data.phoneNumber });
+
+        messageApi.open({
+          type: 'success',
+          content: 'Updated successfully',
+          key,
+          duration: 2,
+        });
+      } catch (error) {
+        messageApi.open({
+          type: 'error',
+          content: 'Update unsuccessfully',
+          key,
+          duration: 2,
+        });
+      }
+    };
+
+    updateRequest();
   };
+
+  useEffect(() => {
+    if (userData) {
+      setValue('gender', userData?.gender);
+      setValue('userName', userData?.fullName);
+      setValue('phoneNumber', userData?.phoneNumber);
+    }
+  }, [userData]);
 
   return (
     <div>

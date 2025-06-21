@@ -9,6 +9,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { ConfirmModal } from './Modals/ConfirmModal';
 import { message } from 'antd';
 import { cancleOrderItem } from '@/core/services/orderItem.service';
+import { useQueryClient } from '@tanstack/react-query';
 
 type OrderStatus = 'pending' | 'preparing' | 'completed';
 
@@ -27,9 +28,12 @@ interface OrderTableProps {
 
 export const OrderItemTable = ({ data, onReload, isLoading }: OrderTableProps) => {
   const [messageApi, contextHolder] = message.useMessage();
-
+  const queryClient = useQueryClient();
   const [selectedOrderItem, setSelectedOrderItem] = useState<OrderItemRow | null>(null);
   const [deleteOrderItemId, setDeleteOrderItemId] = useState<string | null>(null);
+
+  const queryParams = new URLSearchParams(location.search);
+  const page = Number(queryParams.get('page')) || 1;
 
   const handleUpdated = () => {
     setSelectedOrderItem(null);
@@ -55,6 +59,13 @@ export const OrderItemTable = ({ data, onReload, isLoading }: OrderTableProps) =
           duration: 2,
         });
         setDeleteOrderItemId(null);
+
+        // queryClient.setQueryData<any>([QUERY_KEYS.GET_ORDER_ITEM_DATA, page, 15], (oldData: any) => {
+        //   const newState = { ...oldData };
+        //   console.log(newState);
+        //   // newState.order_items = newState?.order_items?.filter((orderItem: any) => orderItem.uuid !== id);
+        //   return newState;
+        // });
         return onReload();
       } catch (error) {
         console.log(error);
@@ -134,7 +145,7 @@ export const OrderItemTable = ({ data, onReload, isLoading }: OrderTableProps) =
         onOk={handleDeleteOrderItem}
         onCancel={() => setDeleteOrderItemId(null)}
         isModalOpen={deleteOrderItemId !== null}
-        title='Delete this user'
+        title='Delete this order item'
         description='Do you really want to delete this records? This process cannot be undone.'
       />
     </>

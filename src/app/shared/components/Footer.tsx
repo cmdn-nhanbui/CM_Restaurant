@@ -4,8 +4,11 @@ import classNames from 'classnames';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Badge } from 'antd';
 import { NavLinkWithQuery } from '@/pages/order/components/NavLinkWithQuery';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@src/redux/store';
 
 export const Footer = () => {
+  const { data } = useSelector((state: RootState) => state.cart);
   return (
     <footer className='fixed bottom-3 w-full block sm:hidden'>
       <div className='m-auto flex h-14 w-[94%] rounded-[4px] bg-[var(--background-secondary)]'>
@@ -36,12 +39,18 @@ export const Footer = () => {
               )
             }
           >
-            <ShoppingCartOutlined
-              color='inherit'
-              style={{
-                fontSize: 22,
-              }}
-            />
+            {(nav) => {
+              return (
+                <Badge count={data?.length}>
+                  <ShoppingCartOutlined
+                    style={{
+                      fontSize: 22,
+                      color: nav.isActive ? 'white' : 'var(--primary)',
+                    }}
+                  />
+                </Badge>
+              );
+            }}
           </NavLinkWithQuery>
         </div>
         <div className='flex flex-1 items-center justify-center'>
@@ -59,7 +68,7 @@ export const Footer = () => {
             <Icon icon='shop' color='inherit' />
           </NavLinkWithQuery>
         </div>
-        <div className='flex flex-1 items-center justify-center'>
+        {/* <div className='flex flex-1 items-center justify-center'>
           <NavLinkWithQuery
             to={ROUTES.NOTIFICATION}
             className={(nav) =>
@@ -75,7 +84,7 @@ export const Footer = () => {
               <Icon icon='bell' color='inherit' />
             </Badge>
           </NavLinkWithQuery>
-        </div>
+        </div> */}
       </div>
     </footer>
   );

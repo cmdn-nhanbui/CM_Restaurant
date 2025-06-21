@@ -171,3 +171,11 @@ export interface OrderItemRow {
   updatedAt: string;
   imageUrl: string;
 }
+
+export interface TableSelectItem {
+  id: string;
+  name: string;
+  status: TableStatus;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -1,12 +1,14 @@
-import type { Product } from '@/core/constants/types';
-import { mapProductData } from '@/core/mappers/product.mapper';
+import { Empty, Pagination, Select } from 'antd';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 import ProductCard from '@/shared/components/ProductCard';
-import ProductListSkeleton from '@/shared/components/ProductListSkeleton';
 import { useProductByCategory } from '@/shared/hooks/useProduct';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import { Empty, Pagination, Select } from 'antd';
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import ProductListSkeleton from '@/shared/components/ProductListSkeleton';
+
+import type { Product } from '@/core/constants/types';
+import { mapProductData } from '@/core/mappers/product.mapper';
 
 const Categories = () => {
   const { id } = useParams();
@@ -14,7 +16,7 @@ const Categories = () => {
   const navigate = useNavigate();
 
   const [sortBy, setSortBy] = useState<string>('name_asc');
-
+  const [totalDocs, setTotalDocs] = useState<number>(0);
   const queryParams = new URLSearchParams(location.search);
   const page = Number(queryParams.get('page')) || 1;
 
@@ -22,6 +24,10 @@ const Categories = () => {
     const newParams = new URLSearchParams(location.search);
     newParams.set('page', String(page));
     navigate(`?${newParams.toString()}`);
+
+    if (topRef.current) {
+      (topRef.current as HTMLElement).scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleChangeSortMode = (val: string) => {
@@ -29,11 +35,25 @@ const Categories = () => {
   };
 
   const { data, isLoading } = useProductByCategory({ page, perPage: 18, categoryId: Number(id), sort: sortBy });
-
+  const topRef = useRef(null);
   const products: Product[] = data?.docs?.map(mapProductData);
+
+  useEffect(() => {
+    const newParams = new URLSearchParams(location.search);
+    newParams.delete('page');
+    navigate(`?${newParams.toString()}`, { replace: true });
+  }, [id]);
+
+  useEffect(() => {
+    if (!data) return;
+    if (totalDocs !== data?.total_docs) {
+      setTotalDocs(data.total_docs);
+    }
+  }, [data, id]);
 
   return (
     <section className='mt-4 sm:mt-6'>
+      <div ref={topRef}></div>
       <div className='flex sm:justify-between justify-end items-center mb-4 sm:mb-5'>
         <h2 className='sm:text-2xl text-base text-white font-semibold sm:block hidden'>Choose Dishes</h2>
 
@@ -73,7 +93,7 @@ const Categories = () => {
                 ),
               },
               {
-                value: 'order_quantity_desc',
+                value: 'order',
                 label: (
                   <span>
                     Order <ArrowDownOutlined />
@@ -117,7 +137,7 @@ const Categories = () => {
           current={page}
           align='center'
           defaultCurrent={1}
-          total={data?.total_docs || 1}
+          total={totalDocs}
           pageSize={18}
           showSizeChanger={false}
           showLessItems

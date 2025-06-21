@@ -15,15 +15,22 @@ export const AddToCartModal = ({ isModalOpen, onOk, onCancel, imageUrl }: ModalP
   const [quantity, setQuantity] = useState<number>(1);
 
   const handleConfirm = () => {
-    return onOk(quantity);
+    onOk(quantity);
+    return setQuantity(1);
   };
+
+  const handleClose = () => {
+    setQuantity(1);
+    return onCancel();
+  };
+
   return (
     <Modal
       className='custom-modal'
       title='Add to Cart'
       open={isModalOpen}
       centered
-      onCancel={onCancel}
+      onCancel={handleClose}
       destroyOnHidden
       footer={
         <div className='flex gap-3 justify-end'>

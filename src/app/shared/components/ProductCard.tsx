@@ -13,14 +13,16 @@ const ProductCard: React.FC<Product> = ({ id, imageUrl, name, price, quantity, o
   const dispatch = useDispatch<AppDispatch>();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const handleAddToCart = (quantity: number) => {
+  const handleAddToCart = (selectedQuantity: number) => {
+    if (quantity && selectedQuantity > quantity) return messageApi.error('Insufficient quantity available');
+
     setIsShowModal(false);
     const cartItem: CartItem = {
       id,
       name,
       imageUrl,
       note: '',
-      quantity: quantity,
+      quantity: selectedQuantity,
       price,
     };
 

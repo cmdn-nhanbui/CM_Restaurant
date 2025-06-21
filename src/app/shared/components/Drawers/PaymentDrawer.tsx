@@ -65,13 +65,16 @@ export const PaymentDrawer = ({ onClose, isOpen, orderData }: PaymentDrawerProps
     cancleRequest();
   };
 
-  const handleCheckout = () => {
-    checkoutPayment(tableId as string, paymentMethod === 'cash' ? paymentMethod : 'vnpay').then((res) => {
+  const handleCheckout = async () => {
+    try {
+      const res = await checkoutPayment(tableId as string, paymentMethod === 'cash' ? paymentMethod : 'vnpay');
       const url = res?.url;
       if (url) {
-        window.open(url, '_blank');
+        window.location.href = url; // 👈 đảm bảo hoạt động cả desktop và mobile
       }
-    });
+    } catch (error) {
+      console.error('Checkout error:', error);
+    }
   };
 
   return (
