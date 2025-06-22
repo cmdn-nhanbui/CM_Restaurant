@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
-import { Empty, message, Skeleton } from 'antd';
-
-import { OrderItem } from '../components/OrderItem';
-import { PaymentDrawer } from '@/shared/components/Drawers/PaymentDrawer';
-import { Button } from '@/shared/components/Button';
-import { ROUTES } from '@/core/constants/routes';
-import { useGetOrderByTableId } from '@/shared/hooks/useOrder';
-import { mapOrderItem } from '@/core/mappers/orderItem.mapper';
-import type { Order, OrderItem as OrderItemType } from '@/core/constants/types';
-import { formatVND } from '@/core/helpers/currencyHelper';
-import { LinkWithQuery } from '../components/LinkWithQuery';
 import { useLocation } from 'react-router-dom';
-import { cancleOrderItem } from '@/core/services/orderItem.service';
+import { Empty, message, Skeleton } from 'antd';
 import { useQueryClient } from '@tanstack/react-query';
+
+import { LinkWithQuery } from '../components/LinkWithQuery';
+import { OrderItem } from '../components/OrderItem';
+import { Button } from '@/shared/components/Button';
+import { PaymentDrawer } from '@/shared/components/Drawers/PaymentDrawer';
+
+import type { Order, OrderItem as OrderItemType } from '@/core/constants/types';
+import { useGetOrderByTableId } from '@/shared/hooks/useOrder';
+import { cancleOrderItem } from '@/core/services/orderItem.service';
 import { QUERY_KEYS } from '@/core/constants/queryKeys';
+import { ROUTES } from '@/core/constants/routes';
+
+import { mapOrderItem } from '@/core/mappers/orderItem.mapper';
+import { formatVND } from '@/core/helpers/currencyHelper';
 
 const Order = () => {
   const [messageApi, contextHolder] = message.useMessage();

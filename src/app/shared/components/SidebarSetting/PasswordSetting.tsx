@@ -39,9 +39,9 @@ export const PasswordSetting = () => {
     const changePasswordRequest = async () => {
       const key = 'updateable';
       try {
-        message.open({ content: 'Processing...', key, type: 'loading' });
+        messageApi.open({ content: 'Processing...', key, type: 'loading' });
         await changePassword(currentPassword, newPassword);
-        message.open({ type: 'success', content: 'Change password successfully', duration: 2, key });
+        messageApi.open({ type: 'success', content: 'Change password successfully', duration: 2, key });
         reset();
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -53,7 +53,7 @@ export const PasswordSetting = () => {
             });
             setValue('currentPassword', '');
           } else {
-            message.open({ type: 'error', content: 'Change password unsuccessfully', duration: 2, key });
+            messageApi.open({ type: 'error', content: 'Change password unsuccessfully', duration: 2, key });
           }
         }
       }

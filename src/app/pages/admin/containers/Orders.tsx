@@ -1,6 +1,6 @@
-import { Pagination, Select } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Pagination, Select } from 'antd';
 
 import { OrderItemTable } from '@/shared/components/OrderItemTable';
 import { useOrderItemData } from '@/shared/hooks/useOrderItem';
@@ -8,14 +8,11 @@ import { useOrderItemData } from '@/shared/hooks/useOrderItem';
 import type { OrderItemRow } from '@/core/constants/types';
 import { getCurrentDate } from '@/core/helpers/timeHelper';
 import { mapOrderItemRow } from '@/core/mappers/orderItem.mapper';
-import { CreateOrderItemModal } from '@/shared/components/Modals/CreateOrderItemModal';
 import { getPusher } from '@/shared/hooks/usePusher';
 import { PUSHER_CHANEL } from '@/core/constants/pusher';
+import { playNotificationSound } from '@/core/helpers/soundHelper';
 
 const Orders = () => {
-  const [isShowCreateModal, setIsShowCreateModal] = useState<boolean>(false);
-  const handleChangeShowCreate = () => setIsShowCreateModal((prev) => !prev);
-
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const page = Number(queryParams.get('page')) || 1;
@@ -35,6 +32,11 @@ const Orders = () => {
 
     channel.bind('NewOrder', () => {
       refetch();
+      playNotificationSound();
+    });
+
+    channel.bind('CancelOrder', () => {
+      refetch();
     });
 
     return () => {
@@ -53,8 +55,8 @@ const Orders = () => {
           </div>
         </div>
 
-        <div>
-          <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col'>
+        <div className='h-full'>
+          <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col h-full'>
             <div className='flex items-center justify-between'>
               <h2 className='text-lg font-semibold text-white'>Order Report</h2>
               <div className='flex items-center gap-3'>
@@ -105,12 +107,6 @@ const Orders = () => {
           </section>
         </div>
       </div>
-
-      <CreateOrderItemModal
-        onCancel={handleChangeShowCreate}
-        isModalOpen={isShowCreateModal}
-        onOk={handleChangeShowCreate}
-      />
     </>
   );
 };

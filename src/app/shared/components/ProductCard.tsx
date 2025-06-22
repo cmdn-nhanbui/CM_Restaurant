@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { AddToCartModal } from './Modals/AddToCartModal';
-import { useDispatch } from 'react-redux';
-import type { AppDispatch } from '@src/redux/store';
-import { addCartItem } from '@src/redux/actions/cartActions';
-import type { CartItem, Product } from '@/core/constants/types';
 import { message } from 'antd';
-import { formatVND } from '@/core/helpers/currencyHelper';
+import { useDispatch } from 'react-redux';
+
+import { AddToCartModal } from './Modals/AddToCartModal';
 import { Image } from './Image';
+
+import { addCartItem } from '@src/redux/actions/cartActions';
+import type { AppDispatch } from '@src/redux/store';
+import type { CartItem, Product } from '@/core/constants/types';
+import { formatVND } from '@/core/helpers/currencyHelper';
 
 const ProductCard: React.FC<Product> = ({ id, imageUrl, name, price, quantity, orderQuantity }) => {
   const [isShowModal, setIsShowModal] = useState(false);

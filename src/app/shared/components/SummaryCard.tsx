@@ -2,10 +2,11 @@ import React from 'react';
 
 import classNames from 'classnames';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { formatVND } from '@/core/helpers/currencyHelper';
 
 type SummaryCardProps = {
   title: string;
-  amount: number | string;
+  amount: number;
   percent: number;
   icon: React.ReactNode;
 };
@@ -30,12 +31,11 @@ export const SummaryCard: React.FC<SummaryCardProps> = ({ title, amount, percent
           )}
         >
           {isIncrease ? '+' : ''}
-          {percent.toFixed(2)}%{isIncrease ? <ArrowUpOutlined size={16} /> : <ArrowDownOutlined size={16} />}
+          {Number.isInteger(percent) ? percent : percent.toFixed(2)}%
+          {isIncrease ? <ArrowUpOutlined size={16} /> : <ArrowDownOutlined size={16} />}
         </div>
       </div>
-      <div className='text-2xl font-semibold mt-2  mb-1'>
-        {typeof amount === 'number' ? `$${amount.toLocaleString()}` : amount}
-      </div>
+      <div className='text-2xl font-semibold mt-2  mb-1'>{formatVND(Number(amount))}</div>
       <div className='text-sm text-[var(--text-light)]'>{title}</div>
     </div>
   );

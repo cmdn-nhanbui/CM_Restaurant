@@ -14,6 +14,7 @@ interface ProductResponse {
   price: number;
   category_id: string | number;
 }
+
 export const addProduct = async ({
   productName,
   price,

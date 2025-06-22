@@ -35,7 +35,7 @@ const User = () => {
       <div className='flex gap-6 flex-col'>
         <div className='w-full overflow-y-hidden flex flex-col'>
           <div className='flex flex-col text-[var(--text-lighter)] pb-6 border-b border-[var(--dark-line)]'>
-            <h2 className='text-white font-semibold text-3xl'>Users</h2>
+            <h2 className='text-white font-semibold text-3xl'>Staff Management</h2>
             <p className='text-lg'>{getCurrentDate()}</p>
           </div>
         </div>
@@ -43,7 +43,7 @@ const User = () => {
         <div>
           <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col'>
             <div className='flex items-center justify-between'>
-              <h2 className='text-lg font-semibold text-white'>User data</h2>
+              <h2 className='text-lg font-semibold text-white'>Staff List</h2>
               <div className='flex items-center gap-3'>
                 <span className='text-white'>Sort by: </span>
                 <Select
@@ -72,7 +72,7 @@ const User = () => {
                 />
 
                 <Button onClick={() => setShowCreateModal(true)} outlined type='button' className='py-1'>
-                  Create User
+                  Create Account
                 </Button>
               </div>
             </div>

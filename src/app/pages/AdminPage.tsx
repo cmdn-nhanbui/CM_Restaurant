@@ -1,11 +1,14 @@
 import { Navigate, Outlet } from 'react-router';
-import ManageLayout from '@/shared/layouts/ManageLayout';
 import { useSelector } from 'react-redux';
+
+import ManageLayout from '@/shared/layouts/ManageLayout';
+import { Loading } from '@/shared/components/Loading';
+
 import type { RootState } from '@src/redux/store';
-import { ROUTES } from '@/core/constants/routes';
 import { useGetProfile } from '@/shared/hooks/useUser';
 import { getLS, KEYS } from '@/core/helpers/storageHelper';
-import { Loading } from '@/shared/components/Loading';
+import { ROUTES } from '@/core/constants/routes';
+import { ROLES } from '@/core/constants/roles';
 
 const AdminPage = () => {
   const { data } = useSelector((state: RootState) => state.user);
@@ -17,7 +20,7 @@ const AdminPage = () => {
 
   if (isLoading) return <Loading />;
 
-  if (error || userData?.role !== 'admin') {
+  if (error || userData?.role !== ROLES.ADMIN) {
     return <Navigate to={ROUTES.LOGIN} replace />;
   }
 
