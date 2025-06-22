@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { message } from 'antd';
+
 import { AddToCartModal } from './Modals/AddToCartModal';
+import { Image } from './Image';
+
 import type { CartItem, Product } from '@/core/constants/types';
 import { formatVND } from '@/core/helpers/currencyHelper';
-import { Image } from './Image';
-import { useDispatch } from 'react-redux';
-import { type AppDispatch } from '@src/redux/store';
-import { message } from 'antd';
 import { addCartItem } from '@src/redux/actions/cartActions';
+import { type AppDispatch } from '@src/redux/store';
 
 export const SearchItem = ({ id, name, orderQuantity, imageUrl, price }: Product) => {
   const [isShowModal, setIsShowModal] = useState(false);

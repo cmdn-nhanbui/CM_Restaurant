@@ -1,13 +1,15 @@
+import { useEffect, useState, type ChangeEvent } from 'react';
+import { Popover, Spin } from 'antd';
+import { useMediaQuery } from 'react-responsive';
+
 import { LoadingOutlined, SearchOutlined } from '@ant-design/icons';
 import { TextField } from './TextField';
-import { Popover, Spin } from 'antd';
-import { useEffect, useState, type ChangeEvent } from 'react';
 import { SearchPopper } from './SearchPopper';
+
 import useDebounce from '../hooks/useDebounce';
 import { type Product } from '@/core/constants/types';
 import { searchProduct } from '@/core/services/product.service';
 import { mapProductData } from '@/core/mappers/product.mapper';
-import { useMediaQuery } from 'react-responsive';
 
 export const Search = () => {
   const isMobile = useMediaQuery({ maxWidth: 767 });

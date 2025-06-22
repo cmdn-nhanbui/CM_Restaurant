@@ -23,7 +23,7 @@ const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
     channel.bind('UpdateOrder', (data: any) => {
       const notification = JSON.parse(JSON.stringify(data));
       if (tableId === notification.notification.table_uuid) {
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_ORDER_BY_TABLE_ID] });
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_ORDER_BY_TABLE_ID, tableId] });
         playNotificationSound();
       }
     });
@@ -37,9 +37,17 @@ const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
       }
     });
 
-    channel.bind('NewOrder', (data: any) => {
-      console.log(data);
+    channel.bind('NewOrder', () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_ORDER_BY_TABLE_ID, tableId] });
+    });
+
+    channel.bind('DeleteOrder', (data: any) => {
+      const notification = JSON.parse(JSON.stringify(data));
+      if (tableId === notification.notification.table_uuid) {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_ORDER_BY_TABLE_ID, tableId] });
+        messageApi.open({ content: 'Your order item be deleted', type: 'success', duration: 5 });
+        playNotificationSound();
+      }
     });
 
     return () => {

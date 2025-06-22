@@ -4,6 +4,8 @@ import { Badge } from './Badge';
 import { useEffect, useState } from 'react';
 import useDebounce from '../hooks/useDebounce';
 import { updateStatusTable } from '@/core/services/table.service';
+import { useQueryClient } from '@tanstack/react-query';
+import { QUERY_KEYS } from '@/core/constants/queryKeys';
 
 type Props = {
   tableId: string;
@@ -26,6 +28,7 @@ const getNextStatus = (current: TableStatusType): TableStatusType => {
 
 export const TableStatus = ({ tableId, status, onUpdated }: Props) => {
   const [messageApi, contextHolder] = message.useMessage();
+  const queryClient = useQueryClient();
 
   const [currentStatus, setCurrentStatus] = useState<TableStatusType>(status);
   const debouncedStatus = useDebounce(currentStatus, 1000);
@@ -53,6 +56,7 @@ export const TableStatus = ({ tableId, status, onUpdated }: Props) => {
             content: 'Updated status',
             duration: 2,
           });
+          queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_TABLES] });
         })
         .catch((err) => {
           console.log(err);
@@ -67,6 +71,10 @@ export const TableStatus = ({ tableId, status, onUpdated }: Props) => {
       onUpdated?.();
     }
   }, [debouncedStatus]);
+
+  useEffect(() => {
+    setCurrentStatus(status);
+  }, [status]);
 
   return (
     <>

@@ -9,12 +9,11 @@ import { useGetOrderByTableId } from '@/shared/hooks/useOrder';
 import { getPusher } from '@/shared/hooks/usePusher';
 import { useQueryClient } from '@tanstack/react-query';
 import { Drawer, Empty, message, Skeleton } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Button } from '../Button';
 import { ROUTES } from '@/core/constants/routes';
 import { formatVND } from '@/core/helpers/currencyHelper';
-import { PaymentDrawer } from './PaymentDrawer';
 
 type CartDrawerProps = {
   onClose: () => void;
@@ -23,7 +22,6 @@ type CartDrawerProps = {
 
 export const OrderDrawer = ({ onClose, isOpen }: CartDrawerProps) => {
   const [messageApi, contextHolder] = message.useMessage();
-  const [showCheckoutDrawer, setShowCheckoutDrawer] = useState<boolean>(false);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -179,10 +177,8 @@ export const OrderDrawer = ({ onClose, isOpen }: CartDrawerProps) => {
                 <span className='text-[var(--text-light)]'>Subtotal</span>
                 <span className='text-white'>{formatVND(total)}</span>
               </div>
-              {!!orderItems?.length && <Button onClick={() => setShowCheckoutDrawer(true)}>Checkout</Button>}
             </div>
           </div>
-          <PaymentDrawer isOpen={showCheckoutDrawer} onClose={() => setShowCheckoutDrawer(false)} />
         </>
       </Drawer>
     </>

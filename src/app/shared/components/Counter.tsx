@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import type { CounterProps } from '../../core/constants/types';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import type { CounterProps } from '../../core/constants/types';
 
 export const Counter = ({ value: defaultValue, onChange, min = 1, max = 1000 }: CounterProps) => {
   const isControlled = typeof onChange === 'function';

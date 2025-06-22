@@ -43,7 +43,7 @@ const User = () => {
         <div>
           <section className='bg-[var(--background-secondary)] rounded-lg p-6 flex-1 overflow-y-hidden flex flex-col'>
             <div className='flex items-center justify-between'>
-              <h2 className='text-lg font-semibold text-white'>Staff data</h2>
+              <h2 className='text-lg font-semibold text-white'>Staff List</h2>
               <div className='flex items-center gap-3'>
                 <span className='text-white'>Sort by: </span>
                 <Select

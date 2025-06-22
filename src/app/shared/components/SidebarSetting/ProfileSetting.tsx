@@ -1,13 +1,14 @@
-import type { RootState } from '@src/redux/store';
+import { type AppDispatch, type RootState } from '@src/redux/store';
 import { message, Select } from 'antd';
 import { useForm, Controller, type SubmitHandler } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TextField } from '../TextField';
 import { Button } from '../Button';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { updateProfileValidation } from './setting.validation';
 import { useEffect } from 'react';
 import { updateProfile } from '@/core/services/auth.service';
+import { fetchCurrentUser } from '@src/redux/actions/userActions';
 
 type FormUpdateProfile = {
   userName: string;
@@ -17,6 +18,7 @@ type FormUpdateProfile = {
 
 export const ProfileSetting = () => {
   const { data: userData } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -53,6 +55,7 @@ export const ProfileSetting = () => {
           key,
           duration: 2,
         });
+        dispatch(fetchCurrentUser());
       } catch (error) {
         messageApi.open({
           type: 'error',

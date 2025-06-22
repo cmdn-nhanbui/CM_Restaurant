@@ -9,10 +9,8 @@ import { OrderItemModal } from './Modals/OrderItemModal';
 import { DeleteOutlined } from '@ant-design/icons';
 
 import { formatVND } from '@/core/helpers/currencyHelper';
-import type { OrderItemRow } from '@/core/constants/types';
+import type { OrderItemRow, OrderStatus } from '@/core/constants/types';
 import { cancleOrderItem } from '@/core/services/orderItem.service';
-
-type OrderStatus = 'pending' | 'preparing' | 'completed';
 
 const colorMapping: Record<OrderStatus, string> = {
   pending: 'orange',

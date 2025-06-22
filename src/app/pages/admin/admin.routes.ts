@@ -10,6 +10,7 @@ const Products: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./co
 const Statistic: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Statistic'));
 const User: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/User'));
 const Orders: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Orders'));
+const Invoice: LazyExoticComponent<() => JSX.Element> = lazy(() => import('./containers/Invoice'));
 
 const adminRoutes: PageRoute[] = [
   {
@@ -39,6 +40,10 @@ const adminRoutes: PageRoute[] = [
   {
     path: ADMIN_ROUTES.ORDER,
     element: Orders,
+  },
+  {
+    path: ADMIN_ROUTES.INVOICE,
+    element: Invoice,
   },
 ];
 

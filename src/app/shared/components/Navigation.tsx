@@ -1,7 +1,8 @@
 import classNames from 'classnames';
-import type { AdditionalNavItem, Category } from '@/core/constants/types';
 import { useSelector } from 'react-redux';
+
 import type { RootState } from '@src/redux/store';
+import type { AdditionalNavItem, Category } from '@/core/constants/types';
 import { NavLinkWithQuery } from '@/pages/order/components/NavLinkWithQuery';
 
 type Props = {
