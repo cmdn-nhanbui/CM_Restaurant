@@ -1,13 +1,23 @@
-# Bước 1: Dùng image Nginx chính thức
+# 1. Build stage
+FROM node:18 AS builder
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# 2. Serve stage
 FROM nginx:stable-alpine
 
-# Bước 2: Xóa cấu hình mặc định
-RUN rm -rf /usr/share/nginx/html/*
+# Copy build output to nginx's html folder
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Bước 3: Copy file build vào thư mục Nginx
-COPY dist /usr/share/nginx/html
-
-# Bước 4: Copy file cấu hình Nginx tùy chỉnh (nếu có)
+# Copy custom nginx config (optional)
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Mặc định Nginx sẽ chạy khi container start
+EXPOSE 5000
+CMD ["nginx", "-g", "daemon off;"]
+
+# docker build -t my-react-app .
+#  docker run -d -p 5000:5000 --name react-container my-react-app
