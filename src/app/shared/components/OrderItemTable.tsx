@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { message } from 'antd';
 
 import { Image } from './Image';
-import { Badge, type BadColor } from './Badge';
+import { Badge, type BadgeColor } from './Badge';
 import { TableSkeleton } from './TableSkeleton';
 import { ConfirmModal } from './Modals/ConfirmModal';
 import { OrderItemModal } from './Modals/OrderItemModal';
@@ -106,7 +106,7 @@ export const OrderItemTable = ({ data, onReload, isLoading }: OrderTableProps) =
               <td className='py-4 text-right'>{formatVND(order.price)}</td>
               <td className='py-4 text-right'>{formatVND(order.total)}</td>
               <td className='py-4'>
-                <Badge color={colorMapping[order.status] as BadColor}>{order.status}</Badge>
+                <Badge color={colorMapping[order.status] as BadgeColor}>{order.status}</Badge>
               </td>
               <td className='py-4'>
                 <button
