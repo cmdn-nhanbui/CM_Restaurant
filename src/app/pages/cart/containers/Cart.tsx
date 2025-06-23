@@ -84,14 +84,12 @@ const Cart = () => {
 
         if (axios.isAxiosError(error) && error.response?.data?.message) {
           errorMessage = error.response.data.message;
-          const status = error.status;
-          if (status === 422) errorMessage = 'Table id is not valid';
         }
 
         messageApi.open({
           key,
           type: 'error',
-          content: errorMessage || 'Order unsuccessfully',
+          content: errorMessage,
           duration: 2,
         });
       } finally {
