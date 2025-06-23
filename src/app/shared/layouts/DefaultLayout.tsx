@@ -41,6 +41,15 @@ const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_ORDER_BY_TABLE_ID, tableId] });
     });
 
+    channel.bind('AdminPaid', (data: any) => {
+      const notification = JSON.parse(JSON.stringify(data));
+      if (tableId === notification.notification.table_uuid) {
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_ORDER_BY_TABLE_ID] });
+        messageApi.open({ content: 'Checkout successfully', type: 'success', duration: 5 });
+        playNotificationSound();
+      }
+    });
+
     channel.bind('DeleteOrder', (data: any) => {
       const notification = JSON.parse(JSON.stringify(data));
       if (tableId === notification.notification.table_uuid) {
